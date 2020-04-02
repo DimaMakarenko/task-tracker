@@ -3,7 +3,13 @@ import {View, Text, StyleSheet} from 'react-native';
 // components
 import Title from '../../../components/Title/Title';
 
-const SignInScreen = ({navigation}) => {
+interface ISignInScreen {
+  navigation: {
+    navigate: Function;
+  };
+}
+
+const SignInScreen: React.FC<ISignInScreen> = ({navigation}) => {
   return (
     <View>
       <Title text="Sign-in" />

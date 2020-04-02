@@ -11,7 +11,7 @@ const Stack = createStackNavigator();
 const AuthNavigation = () => {
   return (
     <NavigationContainer independent>
-      <Stack.Navigator initialRouteName="Sign In">
+      <Stack.Navigator initialRouteName="Sign Up">
         <Stack.Screen name="Sign In" component={SignInScreen} />
         <Stack.Screen name="Sign Up" component={SignUpScreen} />
       </Stack.Navigator>

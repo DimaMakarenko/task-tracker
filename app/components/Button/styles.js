@@ -1,9 +1,11 @@
 import {StyleSheet} from 'react-native';
 
 export const styles = StyleSheet.create({
-  title: {},
+  button: {
+    height: 60,
+    backgroundColor: '#979797',
+  },
   text: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: 16,
   },
 });

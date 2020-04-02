@@ -2,11 +2,22 @@ import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 // components
 import Title from '../../../components/Title/Title';
+import Button from '../../../components/Button/Button';
+import {basicStyles} from '../../../theme/basicStyles';
+import EmailField from '../../../components/Form/Email';
+// styles
 
-const SignUpScreen = ({navigation}) => {
+interface ISignUpScreen {
+  navigation: {
+    navigate: Function;
+  };
+}
+
+const SignUpScreen: React.FC<ISignUpScreen> = ({navigation}) => {
   return (
-    <View>
+    <View style={basicStyles.container}>
       <Title text="Sign-up" />
+      <Button text="Sign up" />
       <View style={styles.textContainer}>
         <Text style={styles.text}>Already have an account?</Text>
         <Text
