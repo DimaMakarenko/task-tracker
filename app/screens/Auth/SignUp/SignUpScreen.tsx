@@ -4,7 +4,8 @@ import {View, Text, StyleSheet} from 'react-native';
 import Title from '../../../components/Title/Title';
 import Button from '../../../components/Button/Button';
 import {basicStyles} from '../../../theme/basicStyles';
-import EmailField from '../../../components/Form/Email';
+import EmailField from '../../../components/Form/Email/Email';
+import PasswordField from '../../../components/Form/Password/Password';
 // styles
 
 interface ISignUpScreen {
@@ -17,6 +18,8 @@ const SignUpScreen: React.FC<ISignUpScreen> = ({navigation}) => {
   return (
     <View style={basicStyles.container}>
       <Title text="Sign-up" />
+      <EmailField />
+      <PasswordField fieldName="Password" />
       <Button text="Sign up" />
       <View style={styles.textContainer}>
         <Text style={styles.text}>Already have an account?</Text>
