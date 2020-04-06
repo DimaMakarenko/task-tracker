@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 // firebase
-import auth from '@react-native-firebase/auth';
 import firebase from '../../../utils/firebaseDb';
 // components
 import Title from '../../../components/Title/Title';
