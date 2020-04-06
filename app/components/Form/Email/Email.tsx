@@ -1,20 +1,37 @@
-import React, {useState} from 'react';
-import {View, StyleSheet, TextInput} from 'react-native';
+import React from 'react';
+import {View, StyleSheet, TextInput, Text} from 'react-native';
 
-const EmailField = () => {
-  const [email, setEmail] = useState('');
+interface IEmailField {
+  onChangeText: Function;
+  onBlur: Function;
+  value: string;
+  error?: string;
+  touched?: boolean;
+}
+
+const EmailField: React.FC<IEmailField> = ({
+  onChangeText,
+  onBlur,
+  value,
+  error,
+  touched,
+}) => {
   return (
-    <View style={styles.container}>
-      <TextInput
-        onChangeText={(text) => setEmail(text)}
-        value={email}
-        placeholder="Email"
-        style={styles.input}
-        autoCompleteType="email"
-        keyboardType="email-address"
-        textContentType="emailAddress"
-      />
-    </View>
+    <>
+      <View style={styles.container}>
+        <TextInput
+          onChangeText={(text) => onChangeText(text)}
+          onBlur={(text) => onBlur(text)}
+          value={value}
+          placeholder="Email"
+          style={styles.input}
+          autoCompleteType="email"
+          keyboardType="email-address"
+          textContentType="emailAddress"
+        />
+      </View>
+      <Text style={styles.error}>{touched && error}</Text>
+    </>
   );
 };
 
@@ -34,6 +51,9 @@ const styles = StyleSheet.create({
   },
   image: {height: 14, width: 20, opacity: 0.5},
   input: {flex: 1, fontSize: 18},
+  error: {
+    color: 'red',
+  },
 });
 
 export default EmailField;

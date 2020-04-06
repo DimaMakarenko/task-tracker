@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "288385915061",
+    "firebase_url": "https://rn-tasktraker.firebaseio.com",
+    "project_id": "rn-tasktraker",
+    "storage_bucket": "rn-tasktraker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:288385915061:android:e753f0b9ae163554d546fc",
+        "android_client_info": {
+          "package_name": "com.tasktraker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "288385915061-bggc7ku2taj0fpk3e42hfhemnlu92mev.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tasktraker",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "288385915061-d01mcetfgq9s64mtiim75aa9ogfoi3pl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdZ-B4IxNLzuZp4XZP7WVH8jNFJaV6vyE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "288385915061-d01mcetfgq9s64mtiim75aa9ogfoi3pl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

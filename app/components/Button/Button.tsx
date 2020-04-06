@@ -5,10 +5,11 @@ import {Button as RNPButton} from 'react-native-paper';
 import {styles} from './styles';
 
 interface IButton {
-  text: string;
+  title: string;
+  onPress: Function;
 }
 
-const Button: React.FC<IButton> = ({text}) => {
+const Button: React.FC<IButton> = ({title, onPress}) => {
   return (
     <View>
       <RNPButton
@@ -17,10 +18,8 @@ const Button: React.FC<IButton> = ({text}) => {
         labelStyle={styles.text}
         color="#fff"
         mode="text"
-        onPress={() => {
-          console.log('click', text);
-        }}>
-        <Text>{text}</Text>
+        onPress={() => onPress()}>
+        <Text>{title}</Text>
       </RNPButton>
     </View>
   );
