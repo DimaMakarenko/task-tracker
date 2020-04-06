@@ -7,9 +7,11 @@ import {styles} from './styles';
 interface IButton {
   title: string;
   onPress: Function;
+  loading?: boolean;
 }
 
-const Button: React.FC<IButton> = ({title, onPress}) => {
+const Button: React.FC<IButton> = ({title, onPress, loading}) => {
+  console.log(loading);
   return (
     <View>
       <RNPButton
@@ -18,6 +20,7 @@ const Button: React.FC<IButton> = ({title, onPress}) => {
         labelStyle={styles.text}
         color="#fff"
         mode="text"
+        loading={loading}
         onPress={() => onPress()}>
         <Text>{title}</Text>
       </RNPButton>

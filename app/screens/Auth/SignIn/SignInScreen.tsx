@@ -1,5 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
+// firebase
+import auth from '@react-native-firebase/auth';
+import firebase from '../../../utils/firebaseDb';
 // components
 import Title from '../../../components/Title/Title';
 import Button from '../../../components/Button/Button';
@@ -9,7 +12,7 @@ import PasswordField from '../../../components/Form/Password/Password';
 import {basicStyles} from '../../../theme/basicStyles';
 // form
 import {Formik} from 'formik';
-import {validationSignUp} from '../../../utils/validation';
+import {validationSignIn} from '../../../utils/validation';
 
 interface ISignInScreen {
   navigation: {
@@ -23,6 +26,8 @@ interface MyFormValues {
 }
 
 const SignInScreen: React.FC<ISignInScreen> = ({navigation}) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const initialValues: MyFormValues = {
     email: '',
     password: '',
@@ -33,9 +38,16 @@ const SignInScreen: React.FC<ISignInScreen> = ({navigation}) => {
       <Title text="Sign-in" />
       <Formik
         initialValues={initialValues}
-        onSubmit={(values) => console.log(values)}
-        validationSchema={validationSignUp}
-        enableReinitialize={true}>
+        onSubmit={(values) => {
+          setIsLoading(true);
+          firebase
+            .auth()
+            .signInWithEmailAndPassword(values.email, values.password)
+            .then((res) => console.log(res))
+            .catch((err) => console.log(err))
+            .finally(() => setIsLoading(false));
+        }}
+        validationSchema={validationSignIn}>
         {({
           handleChange,
           handleBlur,
@@ -61,7 +73,11 @@ const SignInScreen: React.FC<ISignInScreen> = ({navigation}) => {
               touched={touched.password}
             />
 
-            <Button title="Sign in" onPress={handleSubmit} />
+            <Button
+              title="Sign in"
+              onPress={handleSubmit}
+              loading={isLoading}
+            />
           </View>
         )}
       </Formik>

@@ -1,5 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
+// firebase
+import auth from '@react-native-firebase/auth';
+import firebase from '../../../utils/firebaseDb';
 // components
 import Title from '../../../components/Title/Title';
 import Button from '../../../components/Button/Button';
@@ -24,6 +27,8 @@ interface MyFormValues {
 }
 
 const SignUpScreen: React.FC<ISignUpScreen> = ({navigation}) => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const initialValues: MyFormValues = {
     email: '',
     password: '',
@@ -34,9 +39,16 @@ const SignUpScreen: React.FC<ISignUpScreen> = ({navigation}) => {
       <Title text="Sign-up" />
       <Formik
         initialValues={initialValues}
-        onSubmit={(values) => console.log(values)}
-        validationSchema={validationSignUp}
-        enableReinitialize={true}>
+        onSubmit={(values) => {
+          setIsLoading(true);
+          firebase
+            .auth()
+            .createUserWithEmailAndPassword(values.email, values.password)
+            .then((res) => console.log(res))
+            .catch((err) => console.log(err))
+            .finally(() => setIsLoading(false));
+        }}
+        validationSchema={validationSignUp}>
         {({
           handleChange,
           handleBlur,
@@ -69,7 +81,11 @@ const SignUpScreen: React.FC<ISignUpScreen> = ({navigation}) => {
               error={errors.repeatPassword}
               touched={touched.repeatPassword}
             />
-            <Button title="Sign up" onPress={handleSubmit} />
+            <Button
+              title="Sign up"
+              onPress={handleSubmit}
+              loading={isLoading}
+            />
           </View>
         )}
       </Formik>
