@@ -1,12 +1,5 @@
-import React, {useState} from 'react';
-import {
-  Image,
-  View,
-  StyleSheet,
-  TextInput,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
+import React, { useState } from 'react';
+import { Image, View, StyleSheet, TextInput, Text, TouchableOpacity } from 'react-native';
 
 interface IPasswordField {
   fieldName: string;
@@ -17,14 +10,7 @@ interface IPasswordField {
   touched?: boolean;
 }
 
-const PasswordField: React.FC<IPasswordField> = ({
-  fieldName,
-  onChangeText,
-  onBlur,
-  value,
-  error,
-  touched,
-}) => {
+const PasswordField: React.FC<IPasswordField> = ({ fieldName, onChangeText, onBlur, value, error, touched }) => {
   const [isHide, setIsHide] = useState(true);
 
   const eyeOutline = require('../../../assets/eye-outline.png');
@@ -40,13 +26,10 @@ const PasswordField: React.FC<IPasswordField> = ({
           style={styles.input}
           placeholder={fieldName}
           secureTextEntry={isHide}
-          textContentType="password"
+          textContentType='password'
         />
         <TouchableOpacity onPress={() => setIsHide(!isHide)}>
-          <Image
-            source={isHide ? eyeOffOutline : eyeOutline}
-            style={styles.image}
-          />
+          <Image source={isHide ? eyeOffOutline : eyeOutline} style={styles.image} />
         </TouchableOpacity>
       </View>
       <Text style={styles.error}>{touched && error}</Text>
@@ -68,8 +51,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginVertical: 8,
   },
-  image: {height: 14, width: 20, opacity: 0.5},
-  input: {flex: 1, fontSize: 18},
+  image: { height: 14, width: 20, opacity: 0.5 },
+  input: { flex: 1, fontSize: 18 },
   error: {
     color: 'red',
   },

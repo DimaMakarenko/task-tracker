@@ -1,9 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import firebase from 'firebase';
-
+// component
+import Title from '../../../components/Title/Title';
 // styles
-import { basicStyles } from '../../theme/basicStyles';
+import { basicStyles } from '../../../theme/basicStyles';
 
 const Tasks = () => {
   handlePress = () => {
@@ -12,7 +13,7 @@ const Tasks = () => {
   return (
     <View style={basicStyles.container}>
       <View style={styles.header}>
-        <Text style={styles.text}>Tasks</Text>
+        <Title text='Tasks' />
         <Text onPress={handlePress} style={styles.logOut}>
           Log out
         </Text>
