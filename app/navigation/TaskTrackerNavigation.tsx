@@ -10,7 +10,7 @@ const Stack = createStackNavigator();
 const TaskTrackerNavigationas = () => {
   return (
     <NavigationContainer independent>
-      <Stack.Navigator>
+      <Stack.Navigator headerMode='none'>
         <Stack.Screen name='Tasks' component={Tasks} />
       </Stack.Navigator>
     </NavigationContainer>
