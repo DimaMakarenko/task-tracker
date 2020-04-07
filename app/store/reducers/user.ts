@@ -1,12 +1,18 @@
 import { createAction } from '../createAction';
 
-const initialState = {
-  userId: '',
-};
-
 // const
 const SET_USER_ID = 'SET_USER_ID';
 const REMOVE_USER_ID = 'REMOVE_USER_ID';
+
+// interfaces
+interface IInititaState {
+  userId: string;
+}
+
+// state
+const initialState: IInititaState = {
+  userId: '',
+};
 
 // action
 export const setUserId = createAction(SET_USER_ID);

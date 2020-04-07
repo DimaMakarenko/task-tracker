@@ -46,9 +46,9 @@ const SignInScreen: React.FC<ISignInScreen> = ({ navigation, setUserId }) => {
           firebase
             .auth()
             .signInWithEmailAndPassword(values.email, values.password)
-            .then((res) => {
-              setUserId(res.user.uid);
-            })
+            // .then((res) => {
+            //   setUserId(res.user.uid);
+            // })
             .catch((err) => {
               console.log(err);
               actions.setErrors({ error: err.message });
