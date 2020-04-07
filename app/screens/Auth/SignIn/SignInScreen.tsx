@@ -1,5 +1,8 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+// redux
+import { connect } from 'react-redux';
+import { setUserId } from '../../../store/reducers/user';
 // firebase
 import firebase from '../../../utils/firebaseDb';
 // components
@@ -8,10 +11,10 @@ import Button from '../../../components/Button/Button';
 import EmailField from '../../../components/Form/Email/Email';
 import PasswordField from '../../../components/Form/Password/Password';
 // styles
-import {basicStyles} from '../../../theme/basicStyles';
+import { basicStyles } from '../../../theme/basicStyles';
 // form
-import {Formik} from 'formik';
-import {validationSignIn} from '../../../utils/validation';
+import { Formik } from 'formik';
+import { validationSignIn } from '../../../utils/validation';
 
 interface ISignInScreen {
   navigation: {
@@ -22,40 +25,41 @@ interface ISignInScreen {
 interface MyFormValues {
   email: string;
   password: string;
+  error: null;
 }
 
-const SignInScreen: React.FC<ISignInScreen> = ({navigation}) => {
+const SignInScreen: React.FC<ISignInScreen> = ({ navigation, setUserId }) => {
   const [isLoading, setIsLoading] = useState(false);
-
   const initialValues: MyFormValues = {
     email: '',
     password: '',
+    error: null,
   };
 
   return (
     <View style={[basicStyles.container, styles.container]}>
-      <Title text="Sign-in" />
+      <Title text='Sign-in' />
       <Formik
         initialValues={initialValues}
-        onSubmit={(values) => {
+        onSubmit={(values, actions) => {
           setIsLoading(true);
           firebase
             .auth()
             .signInWithEmailAndPassword(values.email, values.password)
-            .then((res) => console.log(res))
-            .catch((err) => console.log(err))
+            .then((res) => {
+              setUserId(res.user.uid);
+            })
+            .catch((err) => {
+              console.log(err);
+              actions.setErrors({ error: err.message });
+            })
             .finally(() => setIsLoading(false));
         }}
-        validationSchema={validationSignIn}>
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          values,
-          errors,
-          touched,
-        }) => (
+        validationSchema={validationSignIn}
+      >
+        {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
           <View>
+            <Text style={styles.error}>{errors.error}</Text>
             <EmailField
               onChangeText={handleChange('email')}
               onBlur={handleBlur('email')}
@@ -64,7 +68,7 @@ const SignInScreen: React.FC<ISignInScreen> = ({navigation}) => {
               touched={touched.email}
             />
             <PasswordField
-              fieldName="Password"
+              fieldName='Password'
               onChangeText={handleChange('password')}
               onBlur={handleBlur('password')}
               value={values.password}
@@ -72,19 +76,13 @@ const SignInScreen: React.FC<ISignInScreen> = ({navigation}) => {
               touched={touched.password}
             />
 
-            <Button
-              title="Sign in"
-              onPress={handleSubmit}
-              loading={isLoading}
-            />
+            <Button title='Sign in' onPress={handleSubmit} loading={isLoading} />
           </View>
         )}
       </Formik>
       <View style={styles.textContainer}>
         <Text style={styles.text}>Don’t have an account yet?</Text>
-        <Text
-          style={[styles.text, styles.textNavigate]}
-          onPress={() => navigation.navigate('Sign Up')}>
+        <Text style={[styles.text, styles.textNavigate]} onPress={() => navigation.navigate('Sign Up')}>
           Sign In
         </Text>
       </View>
@@ -93,13 +91,16 @@ const SignInScreen: React.FC<ISignInScreen> = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {flex: 1, justifyContent: 'space-between'},
+  container: { flex: 1, justifyContent: 'space-between' },
   textContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  text: {fontSize: 16},
-  textNavigate: {marginLeft: 10},
+  text: { fontSize: 16 },
+  textNavigate: { marginLeft: 10 },
+  error: {
+    color: 'red',
+  },
 });
 
-export default SignInScreen;
+export default connect(null, { setUserId })(SignInScreen);

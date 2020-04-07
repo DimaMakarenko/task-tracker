@@ -1,8 +1,8 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import { View, Text } from 'react-native';
 // style
-import {Button as RNPButton} from 'react-native-paper';
-import {styles} from './styles';
+import { Button as RNPButton } from 'react-native-paper';
+import { styles } from './styles';
 
 interface IButton {
   title: string;
@@ -10,18 +10,18 @@ interface IButton {
   loading?: boolean;
 }
 
-const Button: React.FC<IButton> = ({title, onPress, loading}) => {
-  console.log(loading);
+const Button: React.FC<IButton> = ({ title, onPress, loading }) => {
   return (
     <View>
       <RNPButton
         contentStyle={styles.button}
         uppercase={false}
         labelStyle={styles.text}
-        color="#fff"
-        mode="text"
+        color='#fff'
+        mode='text'
         loading={loading}
-        onPress={() => onPress()}>
+        onPress={() => onPress()}
+      >
         <Text>{title}</Text>
       </RNPButton>
     </View>
