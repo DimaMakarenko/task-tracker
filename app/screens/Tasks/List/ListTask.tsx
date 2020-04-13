@@ -6,14 +6,14 @@ import Title from '../../../components/Title/Title';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
 
-const Tasks = () => {
+const ListTask = () => {
   const handlePress = () => {
     firebase.auth().signOut();
   };
   return (
     <View style={basicStyles.container}>
       <View style={styles.header}>
-        <Title text='Tasks' />
+        <Title text='ListTask' />
         <Text onPress={handlePress} style={styles.logOut}>
           Log out
         </Text>
@@ -30,4 +30,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Tasks;
+export default ListTask;

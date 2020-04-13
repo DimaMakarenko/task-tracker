@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 // component
-import Title from '../../../components/Title/Title';
+import Title from '../../components/Title/Title';
 // styles
-import { basicStyles } from '../../../theme/basicStyles';
+import { basicStyles } from '../../theme/basicStyles';
 
 const Tasks = () => {
   return (

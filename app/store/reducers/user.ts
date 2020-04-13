@@ -1,8 +1,8 @@
 import { createAction } from '../createAction';
 
 // const
-const SET_USER_ID = 'SET_USER_ID';
-const REMOVE_USER_ID = 'REMOVE_USER_ID';
+const SET_USER_ID = 'user/SET_USER_ID';
+const REMOVE_USER_ID = 'user/REMOVE_USER_ID';
 
 // interfaces
 interface IInititaState {

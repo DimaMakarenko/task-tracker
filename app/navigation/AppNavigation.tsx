@@ -8,13 +8,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 // component
 import AuthNavigation from './AuthNavigation';
-import TaskTrackerNavigation from './TaskTrackerNavigation';
-
-const Stack = createStackNavigator();
+import TabNavigation from './TabNavigation';
 
 interface IAppNavigation {
   setUserId: Function;
 }
+const Stack = createStackNavigator();
 
 const AppNavigation: React.FC<IAppNavigation> = ({ setUserId }) => {
   const { user } = useAuth();
@@ -27,7 +26,7 @@ const AppNavigation: React.FC<IAppNavigation> = ({ setUserId }) => {
     <NavigationContainer>
       <Stack.Navigator headerMode='none'>
         {user ? (
-          <Stack.Screen name='TaskTracker' component={TaskTrackerNavigation} />
+          <Stack.Screen name='TaskTracker' component={TabNavigation} />
         ) : (
           <Stack.Screen name='Auth' component={AuthNavigation} />
         )}

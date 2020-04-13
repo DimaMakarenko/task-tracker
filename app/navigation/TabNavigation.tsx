@@ -1,8 +1,8 @@
 import React from 'react';
 import { Image } from 'react-native';
 // container
-import Tasks from '../screens/TaskTracker/Tasks/Tasks';
-import Statistic from '../screens/TaskTracker/Statistic/Statistic';
+import TasksNavigation from './TasksNavigation';
+import Statistic from '../screens/Statistic/Statistic';
 // navigation
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -10,7 +10,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 const Tab = createBottomTabNavigator();
 
-const TaskTrackerNavigationas = () => {
+const TabNavigation = () => {
   const taskImage = require('../assets/alarm.png');
   const statImage = require('../assets/trending.png');
   return (
@@ -18,7 +18,7 @@ const TaskTrackerNavigationas = () => {
       <Tab.Navigator>
         <Tab.Screen
           name='Tasks'
-          component={Tasks}
+          component={TasksNavigation}
           options={{
             tabBarLabel: '',
             tabBarIcon: ({ focused }) => <Image source={taskImage} style={{ opacity: focused ? 1 : 0.5 }} />,
@@ -37,4 +37,4 @@ const TaskTrackerNavigationas = () => {
   );
 };
 
-export default TaskTrackerNavigationas;
+export default TabNavigation;
