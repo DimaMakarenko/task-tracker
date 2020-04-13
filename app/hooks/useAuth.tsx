@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import firebase from 'firebase';
 
 export const useAuth = () => {
@@ -8,6 +8,13 @@ export const useAuth = () => {
     firebase.auth().onAuthStateChanged((user) => {
       user ? setAuth({ identified: true, user }) : setAuth({ identified: false, user });
     });
+  }, []);
+  const currentUser = useMemo(() => {
+    return firebase.auth().currentUser;
+  }, []);
+
+  const logout = useCallback(() => {
+    return firebase.auth().signOut();
   }, []);
 
   return auth;

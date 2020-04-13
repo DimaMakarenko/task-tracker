@@ -1,15 +1,11 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import firebase from 'firebase';
 // component
 import Title from '../../../components/Title/Title';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
 
 const Tasks = () => {
-  handlePress = () => {
-    firebase.auth().signOut();
-  };
   return (
     <View style={basicStyles.container}>
       <View style={styles.header}>

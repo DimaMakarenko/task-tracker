@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import firebase from 'firebase';
 // component
 import Title from '../../../components/Title/Title';
@@ -7,7 +7,7 @@ import Title from '../../../components/Title/Title';
 import { basicStyles } from '../../../theme/basicStyles';
 
 const Tasks = () => {
-  handlePress = () => {
+  const handlePress = () => {
     firebase.auth().signOut();
   };
   return (
