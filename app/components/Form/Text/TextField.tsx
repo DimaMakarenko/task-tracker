@@ -1,15 +1,16 @@
 import React from 'react';
 import { View, StyleSheet, TextInput, Text } from 'react-native';
 
-interface IEmailField {
+interface ITextField {
   onChangeText: Function;
   onBlur: Function;
   value: string;
+  placeholder?: string;
   error?: string;
   touched?: boolean;
 }
 
-const EmailField: React.FC<IEmailField> = ({ onChangeText, onBlur, value, error, touched }) => {
+const TextField: React.FC<ITextField> = ({ placeholder, onChangeText, onBlur, value, error, touched }) => {
   return (
     <>
       <View style={styles.container}>
@@ -17,11 +18,8 @@ const EmailField: React.FC<IEmailField> = ({ onChangeText, onBlur, value, error,
           onChangeText={(text) => onChangeText(text)}
           onBlur={(text) => onBlur(text)}
           value={value}
-          placeholder='Email'
+          placeholder={placeholder}
           style={styles.input}
-          autoCompleteType='email'
-          keyboardType='email-address'
-          textContentType='emailAddress'
         />
       </View>
       <Text style={styles.error}>{touched && error}</Text>
@@ -50,4 +48,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EmailField;
+export default TextField;

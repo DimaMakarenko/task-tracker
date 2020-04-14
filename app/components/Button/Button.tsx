@@ -8,11 +8,12 @@ interface IButton {
   title: string;
   onPress: Function;
   loading?: boolean;
+  style?: object;
 }
 
-const Button: React.FC<IButton> = ({ title, onPress, loading }) => {
+const Button: React.FC<IButton> = ({ title, onPress, loading, style }) => {
   return (
-    <View>
+    <View style={style}>
       <RNPButton
         contentStyle={styles.button}
         uppercase={false}

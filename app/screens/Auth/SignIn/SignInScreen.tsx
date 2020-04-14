@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-// redux
-import { connect } from 'react-redux';
-import { setUserId } from '../../../store/reducers/user';
 // firebase
 import firebase from '../../../utils/firebaseDb';
 // components
@@ -28,7 +25,7 @@ interface MyFormValues {
   error: null;
 }
 
-const SignInScreen: React.FC<ISignInScreen> = ({ navigation, setUserId }) => {
+const SignInScreen: React.FC<ISignInScreen> = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
   const initialValues: MyFormValues = {
     email: '',
@@ -99,4 +96,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(null, { setUserId })(SignInScreen);
+export default SignInScreen;
