@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 // redux
-import { connect } from 'react-redux';
-import { ITask } from '../../../store/reducers/tasks';
+import { useSelector } from 'react-redux';
+import { ITask } from '../../../types/store';
 import firebase from 'firebase';
 // component
 import Title from '../../../components/Title/Title';
@@ -12,11 +12,15 @@ import Button from '../../../components/Button/Button';
 import { basicStyles } from '../../../theme/basicStyles';
 
 interface IListTask {
-  tasks: ITask[];
   navigation: { navigate: Function };
 }
 
-const ListTask: FC<IListTask> = ({ tasks, navigation }) => {
+interface IUseSelector {
+  tasks: ITask[];
+}
+const ListTask: FC<IListTask> = ({ navigation }) => {
+  const tasks: any = useSelector<IUseSelector>((state) => state.tasks);
+
   const handlePress = () => {
     firebase.auth().signOut();
   };
@@ -41,7 +45,7 @@ const ListTask: FC<IListTask> = ({ tasks, navigation }) => {
                 data={tasks}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={({ item, index }: { item: ITask; index: number }) => (
-                  <TaskRow {...item} index={index + 1} />
+                  <TaskRow {...item} index={tasks.length - index} />
                 )}
               />
             </View>
@@ -66,4 +70,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect((state) => ({ tasks: state.tasks }))(ListTask);
+export default ListTask;

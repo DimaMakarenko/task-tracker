@@ -5,39 +5,23 @@ import Title from '../../../components/Title/Title';
 // redux
 import { connect } from 'react-redux';
 import { addTask } from '../../../store/reducers/tasks';
+import { addActiveTaskId } from '../../../store/reducers/activeTask';
 // form
-import TaskForm from '../../../components/TaskForm/TaskForm';
+import TaskForm from '../../../components/Task/TaskForm/TaskForm';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
-import { MyFormValues } from '../../../components/TaskForm/TaskForm';
 
 interface ICreateTask {
-  addTask: Function;
   navigation: { navigate: Function };
 }
-interface IHandleSubmit {
-  values: MyFormValues;
-}
 
-const CreateTask: React.FC<ICreateTask> = ({ addTask, navigation }) => {
-  const handleSubmit: IHandleSubmit = (values) => {
-    addTask({
-      id: Date.now(),
-      title: values.title,
-      project: values.project,
-      duration: 0,
-      isPaused: true,
-      isDone: false,
-    });
-    navigation.navigate('List');
-  };
-
+const CreateTask: React.FC<ICreateTask> = ({ navigation }) => {
   return (
     <View style={basicStyles.container}>
       <Title text='Create task' />
-      <TaskForm isCreate formSubmit={handleSubmit} />
+      <TaskForm isCreate onSubmit={() => console.log('create')} />
     </View>
   );
 };
 
-export default connect(null, { addTask })(CreateTask);
+export default connect(null, { addTask, addActiveTaskId })(CreateTask);

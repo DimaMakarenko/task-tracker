@@ -1,15 +1,15 @@
 import React from 'react';
 import { View } from 'react-native';
 // component
-import TextField from '../Form/Text/TextField';
-import Button from '../Button/Button';
+import TextField from '../../Form/Text/TextField';
+import Button from '../../Button/Button';
 // form
 import { Formik } from 'formik';
-import { validationTaskForm } from '../../utils/validation';
+import { validationTaskForm } from '../../../utils/validation';
 
 interface ITaskForm {
   isCreate: boolean;
-  formSubmit: Function;
+  onSubmit: Function;
 }
 
 export interface MyFormValues {
@@ -17,7 +17,7 @@ export interface MyFormValues {
   project: string;
 }
 
-const TaskForm: React.FC<ITaskForm> = ({ isCreate, formSubmit }) => {
+const TaskForm: React.FC<ITaskForm> = ({ isCreate, onSubmit }) => {
   const initialValues: MyFormValues = {
     title: '',
     project: '',
@@ -27,7 +27,7 @@ const TaskForm: React.FC<ITaskForm> = ({ isCreate, formSubmit }) => {
     <View>
       <Formik
         initialValues={initialValues}
-        onSubmit={(values) => formSubmit(values)}
+        onSubmit={(values) => onSubmit(values)}
         validationSchema={validationTaskForm}
       >
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
