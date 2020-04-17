@@ -1,7 +1,7 @@
 import { createAction } from '../createAction';
 
 // const
-const SET_USER_ID = 'user/SET_USER_ID';
+export const SET_USER_ID = 'user/SET_USER_ID';
 const REMOVE_USER_ID = 'user/REMOVE_USER_ID';
 
 // interfaces

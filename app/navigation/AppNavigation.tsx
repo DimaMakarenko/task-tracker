@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useAuth } from '../hooks/useAuth';
 // redux
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setUserId } from '../store/reducers/user';
 // navigation
 import { NavigationContainer } from '@react-navigation/native';
@@ -9,19 +9,19 @@ import { createStackNavigator } from '@react-navigation/stack';
 // component
 import AuthNavigation from './AuthNavigation';
 import TabNavigation from './TabNavigation';
+import { fetchTasks } from '../store/reducers/tasks';
 
-interface IAppNavigation {
-  setUserId: Function;
-}
 const Stack = createStackNavigator();
 
-const AppNavigation: React.FC<IAppNavigation> = ({ setUserId }) => {
+const AppNavigation: React.FC = () => {
   const { user } = useAuth();
+  const dispatch = useDispatch();
   useEffect(() => {
     if (user) {
-      setUserId(user.uid);
+      dispatch(setUserId(user.uid));
+      dispatch(fetchTasks());
     }
-  }, []);
+  }, [user]);
   return (
     <NavigationContainer>
       <Stack.Navigator headerMode='none'>
@@ -35,4 +35,4 @@ const AppNavigation: React.FC<IAppNavigation> = ({ setUserId }) => {
   );
 };
 
-export default connect(null, { setUserId })(AppNavigation);
+export default AppNavigation;

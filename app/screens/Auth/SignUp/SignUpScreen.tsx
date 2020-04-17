@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-// redux
-import { connect } from 'react-redux';
-import { setUserId } from '../../../store/reducers/user';
 // firebase
 import firebase from '../../../utils/firebaseDb';
 // components
@@ -19,7 +16,6 @@ import { validationSignUp } from '../../../utils/validation';
 interface ISignUpScreen {
   navigation: {
     navigate: Function;
-    setUserId: Function;
   };
 }
 
@@ -30,7 +26,7 @@ interface MyFormValues {
   error: null;
 }
 
-const SignUpScreen: React.FC<ISignUpScreen> = ({ navigation, setUserId }) => {
+const SignUpScreen: React.FC<ISignUpScreen> = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const initialValues: MyFormValues = {
@@ -50,7 +46,7 @@ const SignUpScreen: React.FC<ISignUpScreen> = ({ navigation, setUserId }) => {
             .auth()
             .createUserWithEmailAndPassword(values.email, values.password)
             .then((res) => {
-              setUserId(res.user.uid);
+              console.log('sign up is correct');
             })
             .catch((err) => {
               actions.setErrors({ error: err.message });
@@ -112,4 +108,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connect(null, { setUserId })(SignUpScreen);
+export default SignUpScreen;

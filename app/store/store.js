@@ -1,20 +1,10 @@
-import AsyncStorage from '@react-native-community/async-storage';
+import createSagaMiddleware from '@redux-saga/core';
 import { createStore, applyMiddleware, compose } from 'redux';
-import { createLogger } from 'redux-logger';
-import { persistStore, persistReducer } from 'redux-persist';
-
+import { rootSaga } from './rootSaga';
 import { rootReducer } from './rootReducer';
 
-const persistConfig = {
-  key: 'root',
-  storage: AsyncStorage,
-  whitelist: ['user'],
-  blacklist: [],
-};
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const sagaMiddleware = createSagaMiddleware();
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-
-export const store = createStore(persistedReducer, composeEnhancer(applyMiddleware(createLogger())));
-
-export let persistor = persistStore(store);
+export const store = createStore(rootReducer, composeEnhancer(applyMiddleware(sagaMiddleware)));
+sagaMiddleware.run(rootSaga);
