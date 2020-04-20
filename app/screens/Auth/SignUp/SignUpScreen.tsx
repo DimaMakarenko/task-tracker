@@ -45,7 +45,7 @@ const SignUpScreen: React.FC<ISignUpScreen> = ({ navigation }) => {
           firebase
             .auth()
             .createUserWithEmailAndPassword(values.email, values.password)
-            .then((res) => {
+            .then(() => {
               console.log('sign up is correct');
             })
             .catch((err) => {

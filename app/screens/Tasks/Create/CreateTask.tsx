@@ -3,9 +3,8 @@ import { View } from 'react-native';
 // component
 import Title from '../../../components/Title/Title';
 // redux
-import { connect } from 'react-redux';
-import { addTask } from '../../../store/reducers/tasks';
-import { addActiveTaskId } from '../../../store/reducers/activeTask';
+import { useDispatch } from 'react-redux';
+import { createTask } from '../../../store/reducers/tasks';
 // form
 import TaskForm from '../../../components/Task/TaskForm/TaskForm';
 // styles
@@ -16,12 +15,18 @@ interface ICreateTask {
 }
 
 const CreateTask: React.FC<ICreateTask> = ({ navigation }) => {
+  const dispatch = useDispatch();
+
+  const handleClick = (value: any) => {
+    dispatch(createTask(value));
+    navigation.navigate('List');
+  };
   return (
     <View style={basicStyles.container}>
       <Title text='Create task' />
-      <TaskForm isCreate onSubmit={() => console.log('create')} />
+      <TaskForm isCreate onSubmit={handleClick} />
     </View>
   );
 };
 
-export default connect(null, { addTask, addActiveTaskId })(CreateTask);
+export default CreateTask;

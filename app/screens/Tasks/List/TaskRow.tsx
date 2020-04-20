@@ -1,19 +1,20 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
+// utils
+import { dateFromMillis, formatMills } from '../../../utils/time';
 
 interface ITaskRow {
   title: string;
-  index: number;
+  isActive: boolean;
+  startTimer: number;
   duration: number;
 }
 
-const TaskRow: React.FC<ITaskRow> = ({ title, index, duration }) => {
+const TaskRow: React.FC<ITaskRow> = ({ title, duration, isActive, startTimer }) => {
   return (
     <View style={styles.taskRow}>
-      <Text style={styles.title}>
-        Task #{index} {title}
-      </Text>
-      <Text style={styles.duration}>{duration}</Text>
+      <Text style={styles.title}>Task {title}</Text>
+      <Text style={styles.duration}>{isActive ? formatMills(startTimer) : dateFromMillis(duration)}</Text>
     </View>
   );
 };

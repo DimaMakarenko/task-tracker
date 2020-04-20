@@ -19,7 +19,8 @@ export const setUserId = createAction(SET_USER_ID);
 export const removeUserId = createAction(REMOVE_USER_ID);
 
 // reducer
-export const user = (state = initialState, { type, payload }) => {
+export const user = (state = initialState, action: any) => {
+  const { type, payload } = action;
   switch (type) {
     case SET_USER_ID:
       return { ...state, userId: payload };

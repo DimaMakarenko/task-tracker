@@ -3,10 +3,21 @@ export interface ITask {
   title: string;
   project: string;
   duration: number;
-  isPaused: boolean;
+  isActive: boolean;
   isDone: boolean;
-  timerStart: number;
+  startTimer: number;
   timeSession?: { start: number; end: number }[];
   tags?: string[];
   file?: any;
+}
+
+export interface INewTask {
+  title: string;
+  project: string;
+}
+
+export interface IActiveTask {
+  id: number | null;
+  title: string;
+  startTimer: number | null;
 }

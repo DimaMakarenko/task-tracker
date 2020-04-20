@@ -1,26 +1,29 @@
 //types
-import { ITask } from '../../types/store';
+import { ITask, INewTask } from '../../types/store';
 
 // const
 const ADD_TASK = 'tasks/ADD_TASK';
 export const FETCH_TASKS = 'tasks/FETCH_TASKS';
-export const ADD_TASKS = 'tasks/ADD_TASKS';
-
+export const CREATE_TASK = 'tasks/CREATE_TASK';
+export const DELETE_TASKS = 'tasks/DELETE_TASKS';
+export const PAUSE_TASK = 'tasks/PAUSE_TASK';
 // state
 const initialState: ITask[] = [];
 
 // actions
 export const addTask = (payload: ITask) => ({ type: ADD_TASK, payload });
-export const addTasks = (payload: ITask[]) => ({ type: ADD_TASKS, payload });
 export const fetchTasks = () => ({ type: FETCH_TASKS });
+export const createTask = (payload: INewTask) => ({ type: CREATE_TASK, payload });
+export const deleteTasks = () => ({ type: DELETE_TASKS });
+export const pauseTask = (payload: number) => ({ type: PAUSE_TASK, payload });
 
 export const tasks = (state = initialState, action: any) => {
   const { type, payload } = action;
   switch (type) {
-    case ADD_TASKS:
-      return payload;
     case ADD_TASK:
       return [payload, ...state];
+    case DELETE_TASKS:
+      return initialState;
     default:
       return state;
   }

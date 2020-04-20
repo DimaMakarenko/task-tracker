@@ -1,13 +1,15 @@
 import React, { FC } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 // redux
-import { useSelector } from 'react-redux';
-import { ITask } from '../../../types/store';
+import { useSelector, useDispatch } from 'react-redux';
+import { pauseTask } from '../../../store/reducers/tasks';
+import { ITask, IActiveTask } from '../../../types/store';
 import firebase from 'firebase';
 // component
 import Title from '../../../components/Title/Title';
 import TaskRow from './TaskRow';
 import Button from '../../../components/Button/Button';
+import ActiveTask from '../../../components/Task/ActiveTask/ActiveTask';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
 
@@ -15,11 +17,17 @@ interface IListTask {
   navigation: { navigate: Function };
 }
 
-interface IUseSelector {
+interface IUseSelectorTasks {
   tasks: ITask[];
 }
+interface IUseSelectorActiveTask {
+  activeTask: IActiveTask;
+}
+
 const ListTask: FC<IListTask> = ({ navigation }) => {
-  const tasks: any = useSelector<IUseSelector>((state) => state.tasks);
+  const tasks: any = useSelector<IUseSelectorTasks>((state) => state.tasks);
+  const activeTask: any = useSelector<IUseSelectorActiveTask>((state) => state.activeTask);
+  const dispatch = useDispatch();
 
   const handlePress = () => {
     firebase.auth().signOut();
@@ -44,15 +52,23 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
               <FlatList
                 data={tasks}
                 keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item, index }: { item: ITask; index: number }) => (
-                  <TaskRow {...item} index={tasks.length - index} />
-                )}
+                renderItem={({ item }: { item: ITask }) => <TaskRow {...item} />}
               />
             </View>
           )}
         </View>
       </View>
-      <Button title='Add task' onPress={() => navigation.navigate('Create')} style={styles.btn} />
+      {activeTask.id ? (
+        <ActiveTask
+          id={activeTask.id}
+          title={activeTask.title}
+          startTimer={activeTask.startTimer}
+          style={styles.btn}
+          pause={() => dispatch(pauseTask(activeTask.id))}
+        />
+      ) : (
+        <Button title='Add task' onPress={() => navigation.navigate('Create')} style={styles.btn} />
+      )}
     </View>
   );
 };

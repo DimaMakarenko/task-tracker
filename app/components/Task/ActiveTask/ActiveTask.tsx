@@ -1,27 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 // redux
-import { formatSeconds } from '../../../utils/time';
+import { dateFromMillis } from '../../../utils/time';
+
 interface IActiveTask {
-  index: number;
-  duration: number;
   id: number;
-  tickTaskTimer: Function;
+  title: string;
+  startTimer: number;
   style: any;
+  pause: Function;
 }
 
-const ActiveTask: React.FC<IActiveTask> = ({ index, duration, id, style, tickTaskTimer }) => {
-  setInterval(() => {
-    tickTaskTimer(id);
-  }, 1000);
+const ActiveTask: React.FC<IActiveTask> = ({ id, title, startTimer, style, pause }) => {
+  const [timer, setTimer] = useState(Date.now() - startTimer);
+
+  useEffect(() => {
+    let internal: any = null;
+    internal = setInterval(() => {
+      setTimer(Date.now() - startTimer);
+    }, 1000);
+    return () => clearInterval(internal);
+  }, [startTimer]);
+
   return (
     <View style={[styles.activeTask, style]}>
-      <Text>Task#{index}</Text>
-      <Text>{formatSeconds(duration)}</Text>
-      <Text>pause</Text>
+      <Text>Task#{title}</Text>
+      <Text>{dateFromMillis(timer)}</Text>
+      <Text onPress={() => pause()}>pause</Text>
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   activeTask: {
     height: 85,
