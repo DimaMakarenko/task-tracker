@@ -24,3 +24,10 @@ export const updateTaskDb = (uid: string, taskId: number, updates: any) => {
     .child(taskId.toString())
     .update(updates);
 };
+
+export const deleteTaskDb = (uid: string, taskId: number) => {
+  return db
+    .ref('users/' + uid + '/tasks')
+    .child(taskId.toString())
+    .remove();
+};

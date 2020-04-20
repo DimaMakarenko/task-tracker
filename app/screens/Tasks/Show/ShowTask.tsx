@@ -1,6 +1,10 @@
 import React from 'react';
 import { Text, View, StyleSheet, Alert } from 'react-native';
+// interfaces
 import { ITask } from '../../../types/store';
+// redux
+import { useDispatch } from 'react-redux';
+import { deleteTask } from '../../../store/reducers/tasks';
 // components
 import Title from '../../../components/Title/Title';
 // styles
@@ -8,13 +12,15 @@ import { basicStyles } from '../../../theme/basicStyles';
 import { formatMills, dateFromMillis } from '../../../utils/time';
 
 interface IShowTask {
+  navigation: { navigate: Function };
   route: {
     params: ITask;
   };
 }
 
-const ShowTask: React.FC<IShowTask> = ({ route }) => {
-  const { title, project, startTimer, duration } = route.params;
+const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
+  const { title, project, startTimer, duration, id } = route.params;
+  const dispatch = useDispatch();
   const showAlert = () => {
     Alert.alert('Deleting task', 'You really want delete this task?', [
       {
@@ -24,7 +30,8 @@ const ShowTask: React.FC<IShowTask> = ({ route }) => {
       {
         text: 'Yes',
         onPress: () => {
-          console.log('delete');
+          dispatch(deleteTask(id));
+          navigation.navigate('List');
         },
       },
     ]);

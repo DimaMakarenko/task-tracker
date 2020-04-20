@@ -1,8 +1,12 @@
 // @ts-ignore
 import { all, takeLatest, select, put } from 'redux-saga/effects';
-import { FETCH_TASKS, CREATE_TASK, PAUSE_TASK, addTask, deleteTasks } from '../reducers/tasks';
+// reducers
+import { FETCH_TASKS, CREATE_TASK, PAUSE_TASK, DELETE_TASK, addTask, deleteTasks } from '../reducers/tasks';
 import { addActiveTask, removeActiveTask } from '../reducers/activeTask';
-import { getTaskDb, setTaskDb, updateTaskDb } from '../../utils/api';
+// db
+import { getTaskDb, setTaskDb, updateTaskDb, deleteTaskDb } from '../../utils/api';
+// interfaces
+import { IDeleteTask, ICreateTask, IPauseTask } from '../../types/sagas';
 
 function* fetchTasks() {
   const uid = yield select((state) => state.user.userId);
@@ -17,7 +21,8 @@ function* fetchTasks() {
   }
 }
 
-function* createTask({ payload }) {
+function* createTask(props: ICreateTask) {
+  const { payload } = props;
   const uid = yield select((state) => state.user.userId);
   const dn = Date.now();
   const newTask = {
@@ -39,7 +44,8 @@ function* createTask({ payload }) {
   }
 }
 
-function* pauseTask({ payload }) {
+function* pauseTask(props: IPauseTask) {
+  const { payload } = props;
   const uid = yield select((state) => state.user.userId);
   const startTask = yield select((state) => state.activeTask.startTimer);
   const duration = Date.now() - startTask;
@@ -50,10 +56,20 @@ function* pauseTask({ payload }) {
   yield fetchTasks();
 }
 
+function* deleteTask(props: IDeleteTask) {
+  const { payload } = props;
+  const uid = yield select((state) => state.user.userId);
+  yield deleteTaskDb(uid, payload)
+    .then(() => console.log('success'))
+    .catch(() => console.log('not delete task'));
+  yield fetchTasks();
+}
+
 export function* watchTasks() {
   yield all([
     takeLatest(FETCH_TASKS, fetchTasks),
     takeLatest(CREATE_TASK, createTask),
     takeLatest(PAUSE_TASK, pauseTask),
+    takeLatest(DELETE_TASK, deleteTask),
   ]);
 }
