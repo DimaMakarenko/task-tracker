@@ -1,21 +1,25 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 // utils
 import { dateFromMillis, formatMills } from '../../../utils/time';
 
 interface ITaskRow {
-  title: string;
-  isActive: boolean;
-  startTimer: number;
-  duration: number;
+  task: {
+    title: string;
+    isActive: boolean;
+    startTimer: number;
+    duration: number;
+  };
+  navigate: Function;
 }
 
-const TaskRow: React.FC<ITaskRow> = ({ title, duration, isActive, startTimer }) => {
+const TaskRow: React.FC<ITaskRow> = ({ task, navigate }) => {
+  const { title, duration, isActive, startTimer } = task;
   return (
-    <View style={styles.taskRow}>
-      <Text style={styles.title}>Task {title}</Text>
+    <TouchableOpacity style={styles.taskRow} onPress={() => navigate('Show', task)}>
+      <Text style={styles.title}>{title}</Text>
       <Text style={styles.duration}>{isActive ? formatMills(startTimer) : dateFromMillis(duration)}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 

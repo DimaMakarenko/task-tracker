@@ -24,7 +24,7 @@ const ActiveTask: React.FC<IActiveTask> = ({ id, title, startTimer, style, pause
 
   return (
     <View style={[styles.activeTask, style]}>
-      <Text>Task#{title}</Text>
+      <Text>{title}</Text>
       <Text>{dateFromMillis(timer)}</Text>
       <Text onPress={() => pause()}>pause</Text>
     </View>

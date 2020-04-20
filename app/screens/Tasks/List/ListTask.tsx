@@ -32,6 +32,7 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
   const handlePress = () => {
     firebase.auth().signOut();
   };
+
   return (
     <View style={basicStyles.container}>
       <View style={styles.headerWrapper}>
@@ -52,7 +53,7 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
               <FlatList
                 data={tasks}
                 keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }: { item: ITask }) => <TaskRow {...item} />}
+                renderItem={({ item }: { item: ITask }) => <TaskRow task={item} navigate={navigation.navigate} />}
               />
             </View>
           )}
