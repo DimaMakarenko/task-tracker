@@ -7,6 +7,8 @@ import { addActiveTask, removeActiveTask } from '../reducers/activeTask';
 import { getTaskDb, setTaskDb, updateTaskDb, deleteTaskDb } from '../../utils/api';
 // interfaces
 import { IDeleteTask, ICreateTask, IPauseTask } from '../../types/sagas';
+// utils
+import { newTask as getNewTask } from '../../utils/taskGenerate';
 
 function* fetchTasks() {
   const uid = yield select((state) => state.user.userId);
@@ -24,16 +26,7 @@ function* fetchTasks() {
 function* createTask(props: ICreateTask) {
   const { payload } = props;
   const uid = yield select((state) => state.user.userId);
-  const dn = Date.now();
-  const newTask = {
-    id: dn,
-    title: payload.title,
-    project: payload.project,
-    duration: 0,
-    isActive: true,
-    isDone: false,
-    startTimer: dn,
-  };
+  const newTask = getNewTask({ title: payload.title, project: payload.project });
   try {
     yield setTaskDb(uid, newTask).catch(() => {
       throw 'Not recorded task';

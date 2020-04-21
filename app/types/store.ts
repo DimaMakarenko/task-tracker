@@ -4,7 +4,7 @@ export interface ITask {
   project: string;
   duration: number;
   isActive: boolean;
-  isDone: boolean;
+  isFinished: boolean;
   startTimer: number;
   timeSession?: { start: number; end: number }[];
   tags?: string[];

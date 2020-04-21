@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
+
 // redux
 import { useSelector, useDispatch } from 'react-redux';
 import { pauseTask } from '../../../store/reducers/tasks';
