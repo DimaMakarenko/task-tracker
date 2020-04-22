@@ -1,10 +1,6 @@
 import React, { FC } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
-
-// redux
-import { useSelector, useDispatch } from 'react-redux';
-import { pauseTask } from '../../../store/reducers/tasks';
-import { ITask, IActiveTask } from '../../../types/store';
+// db
 import firebase from 'firebase';
 // component
 import Title from '../../../components/Title/Title';
@@ -18,17 +14,8 @@ interface IListTask {
   navigation: { navigate: Function };
 }
 
-interface IUseSelectorTasks {
-  tasks: ITask[];
-}
-interface IUseSelectorActiveTask {
-  activeTask: IActiveTask;
-}
-
 const ListTask: FC<IListTask> = ({ navigation }) => {
-  const tasks: any = useSelector<IUseSelectorTasks>((state) => state.tasks);
-  const activeTask: any = useSelector<IUseSelectorActiveTask>((state) => state.activeTask);
-  const dispatch = useDispatch();
+  const tasks = [{ id: 1 }, { id: 2 }];
 
   const handlePress = () => {
     firebase.auth().signOut();
@@ -54,23 +41,14 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
               <FlatList
                 data={tasks}
                 keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }: { item: ITask }) => <TaskRow task={item} navigate={navigation.navigate} />}
+                renderItem={({ item }: { item: any }) => <TaskRow task={item} navigate={navigation.navigate} />}
               />
             </View>
           )}
         </View>
       </View>
-      {activeTask.id ? (
-        <ActiveTask
-          id={activeTask.id}
-          title={activeTask.title}
-          startTimer={activeTask.startTimer}
-          style={styles.btn}
-          pause={() => dispatch(pauseTask(activeTask.id))}
-        />
-      ) : (
-        <Button title='Add task' onPress={() => navigation.navigate('Create')} style={styles.btn} />
-      )}
+
+      <Button title='Add task' onPress={() => navigation.navigate('Create')} style={styles.btn} />
     </View>
   );
 };

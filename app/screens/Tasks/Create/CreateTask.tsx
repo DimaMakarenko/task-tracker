@@ -2,9 +2,6 @@ import React from 'react';
 import { View } from 'react-native';
 // component
 import Title from '../../../components/Title/Title';
-// redux
-import { useDispatch } from 'react-redux';
-import { createTask } from '../../../store/reducers/tasks';
 // form
 import TaskForm from '../../../components/Task/TaskForm/TaskForm';
 // styles
@@ -15,10 +12,8 @@ interface ICreateTask {
 }
 
 const CreateTask: React.FC<ICreateTask> = ({ navigation }) => {
-  const dispatch = useDispatch();
-
   const handleClick = (value: any) => {
-    dispatch(createTask(value));
+    console.log('create', value);
     navigation.navigate('List');
   };
   return (

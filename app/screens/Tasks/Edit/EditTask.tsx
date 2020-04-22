@@ -3,9 +3,6 @@ import { View } from 'react-native';
 // components
 import Title from '../../../components/Title/Title';
 import TaskForm from '../../../components/Task/TaskForm/TaskForm';
-// redux
-import { useDispatch } from 'react-redux';
-import { updateTask } from '../../../store/reducers/tasks';
 // types
 import { ITask } from '../../../types/store';
 // styles
@@ -19,9 +16,8 @@ interface IEditTask {
 
 const EditTask: React.FC<IEditTask> = ({ route }) => {
   const { params } = route;
-  const dispatch = useDispatch();
   const handleUpdate = (value: any) => {
-    dispatch(updateTask({ id: params.id, task: value }));
+    console.log('updete task', value);
   };
   return (
     <View style={basicStyles.container}>

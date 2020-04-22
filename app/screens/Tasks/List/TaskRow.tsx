@@ -1,14 +1,10 @@
 import React from 'react';
 import { Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-// redux
-import { useDispatch } from 'react-redux';
 // components
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { RectButton } from 'react-native-gesture-handler';
 import { alert } from '../../../components/Alert/Alert';
 // utils
-import { dateFromMillis, formatMills } from '../../../utils/time';
-import { deleteTask } from '../../../store/reducers/tasks';
 
 interface ITaskRow {
   task: {
@@ -26,10 +22,9 @@ const deleteImg = require('../../../assets/image/trash.png');
 const editImg = require('../../../assets/image/edit.png');
 
 const TaskRow: React.FC<ITaskRow> = ({ task, navigate }) => {
-  const { title, duration, isActive, startTimer, id } = task;
-  const dispatch = useDispatch();
+  const { id } = task;
 
-  const handleDelete = () => dispatch(deleteTask(id));
+  const handleDelete = () => console.log('delete');
   const handleEdit = () => navigate('Edit', task);
 
   const showAlert = () => alert('Deleting task', 'You really want delete this task?', handleDelete);
@@ -50,8 +45,8 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate }) => {
   return (
     <Swipeable renderRightActions={renderLeftActions}>
       <TouchableOpacity style={styles.taskRow} onPress={() => navigate('Show', task)}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.duration}>{isActive ? formatMills(startTimer) : dateFromMillis(duration)}</Text>
+        <Text style={styles.title}>{id}</Text>
+        <Text style={styles.duration}>{id}</Text>
       </TouchableOpacity>
     </Swipeable>
   );

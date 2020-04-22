@@ -3,14 +3,11 @@ import { Text, View, StyleSheet } from 'react-native';
 // interfaces
 import { ITask } from '../../../types/store';
 // redux
-import { useDispatch } from 'react-redux';
-import { deleteTask } from '../../../store/reducers/tasks';
 // components
 import Title from '../../../components/Title/Title';
 import { alert } from '../../../components/Alert/Alert';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
-import { formatMills, dateFromMillis } from '../../../utils/time';
 
 interface IShowTask {
   navigation: { navigate: Function };
@@ -20,11 +17,10 @@ interface IShowTask {
 }
 
 const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
-  const { title, project, startTimer, duration, id } = route.params;
-  const dispatch = useDispatch();
+  const { id } = route.params;
 
   const handleClick = () => {
-    dispatch(deleteTask(id));
+    console.log('delete');
     navigation.navigate('List');
   };
 
@@ -35,26 +31,26 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
       <Title text='Task' />
       <View style={styles.block}>
         <Text style={basicStyles.subTitle}>Title</Text>
-        <Text style={basicStyles.text}>{title}</Text>
+        <Text style={basicStyles.text}>{id}</Text>
       </View>
       <View style={styles.block}>
         <Text style={basicStyles.subTitle}>Project</Text>
-        <Text style={basicStyles.text}>{project}</Text>
+        <Text style={basicStyles.text}>{id}</Text>
       </View>
 
       <View style={[styles.block, styles.timeBlock]}>
         <View>
           <Text style={basicStyles.subTitle}>Start time</Text>
-          <Text style={basicStyles.text}>{formatMills(startTimer)}</Text>
+          <Text style={basicStyles.text}>{id}</Text>
         </View>
         <View>
           <Text style={basicStyles.subTitle}>End time</Text>
-          <Text style={basicStyles.text}>{formatMills(startTimer + duration)}</Text>
+          <Text style={basicStyles.text}>{id}</Text>
         </View>
       </View>
       <View style={styles.block}>
         <Text style={basicStyles.subTitle}>Duration</Text>
-        <Text style={basicStyles.text}>{dateFromMillis(duration)} h</Text>
+        <Text style={basicStyles.text}>{id} h</Text>
       </View>
       <View style={styles.block}>
         <Text style={styles.deleteBtn} onPress={showAlert}>
