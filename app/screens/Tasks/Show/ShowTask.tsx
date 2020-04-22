@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, Alert } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 // interfaces
 import { ITask } from '../../../types/store';
 // redux
@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { deleteTask } from '../../../store/reducers/tasks';
 // components
 import Title from '../../../components/Title/Title';
+import { alert } from '../../../components/Alert/Alert';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
 import { formatMills, dateFromMillis } from '../../../utils/time';
@@ -21,46 +22,39 @@ interface IShowTask {
 const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
   const { title, project, startTimer, duration, id } = route.params;
   const dispatch = useDispatch();
-  const showAlert = () => {
-    Alert.alert('Deleting task', 'You really want delete this task?', [
-      {
-        text: 'Cancel',
-        style: 'cancel',
-      },
-      {
-        text: 'Yes',
-        onPress: () => {
-          dispatch(deleteTask(id));
-          navigation.navigate('List');
-        },
-      },
-    ]);
+
+  const handleClick = () => {
+    dispatch(deleteTask(id));
+    navigation.navigate('List');
   };
+
+  const showAlert = () => alert('Deleting task', 'You really want delete this task?', handleClick);
+
   return (
     <View style={basicStyles.container}>
       <Title text='Task' />
       <View style={styles.block}>
-        <Text style={styles.subTitle}>Title</Text>
-        <Text style={styles.text}>{title}</Text>
+        <Text style={basicStyles.subTitle}>Title</Text>
+        <Text style={basicStyles.text}>{title}</Text>
       </View>
       <View style={styles.block}>
-        <Text style={styles.subTitle}>Project</Text>
-        <Text style={styles.text}>{project}</Text>
+        <Text style={basicStyles.subTitle}>Project</Text>
+        <Text style={basicStyles.text}>{project}</Text>
       </View>
 
       <View style={[styles.block, styles.timeBlock]}>
         <View>
-          <Text style={styles.subTitle}>Start time</Text>
-          <Text style={styles.text}>{formatMills(startTimer)}</Text>
+          <Text style={basicStyles.subTitle}>Start time</Text>
+          <Text style={basicStyles.text}>{formatMills(startTimer)}</Text>
         </View>
         <View>
-          <Text style={styles.subTitle}>End time</Text>
-          <Text style={styles.text}>{formatMills(startTimer + duration)}</Text>
+          <Text style={basicStyles.subTitle}>End time</Text>
+          <Text style={basicStyles.text}>{formatMills(startTimer + duration)}</Text>
         </View>
       </View>
       <View style={styles.block}>
-        <Text style={styles.subTitle}>Duration</Text>
-        <Text style={styles.text}>{dateFromMillis(duration)} h</Text>
+        <Text style={basicStyles.subTitle}>Duration</Text>
+        <Text style={basicStyles.text}>{dateFromMillis(duration)} h</Text>
       </View>
       <View style={styles.block}>
         <Text style={styles.deleteBtn} onPress={showAlert}>
@@ -74,8 +68,6 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   block: { marginBottom: 30 },
   timeBlock: { flexDirection: 'row', justifyContent: 'space-between' },
-  subTitle: { fontSize: 12, lineHeight: 18, opacity: 0.54 },
-  text: { fontSize: 14, lineHeight: 21 },
   deleteBtn: { fontSize: 12, color: 'rgba(218, 11, 11,0.6)' },
 });
 

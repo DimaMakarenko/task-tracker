@@ -1,15 +1,19 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 // component
 import TextField from '../../Form/Text/TextField';
 import Button from '../../Button/Button';
 // form
 import { Formik } from 'formik';
 import { validationTaskForm } from '../../../utils/validation';
+// types
+import { ITask } from '../../../types/store';
+import { basicStyles } from '../../../theme/basicStyles';
+import { dateFromMillis, formatMills } from '../../../utils/time';
 
 interface ITaskForm {
-  isCreate: boolean;
   onSubmit: Function;
+  task?: ITask;
 }
 
 export interface MyFormValues {
@@ -17,10 +21,10 @@ export interface MyFormValues {
   project: string;
 }
 
-const TaskForm: React.FC<ITaskForm> = ({ isCreate, onSubmit }) => {
+const TaskForm: React.FC<ITaskForm> = ({ onSubmit, task }) => {
   const initialValues: MyFormValues = {
-    title: '',
-    project: '',
+    title: task ? task.title : '',
+    project: task ? task.project : '',
   };
 
   return (
@@ -48,12 +52,35 @@ const TaskForm: React.FC<ITaskForm> = ({ isCreate, onSubmit }) => {
               error={errors.project}
               touched={touched.project}
             />
-            <Button title={isCreate ? 'Start task' : 'Update task'} onPress={handleSubmit} />
+            {task && (
+              <>
+                <View style={[styles.block, styles.timeBlock]}>
+                  <View>
+                    <Text style={basicStyles.subTitle}>Start time</Text>
+                    <Text style={basicStyles.text}>{formatMills(task.startTimer)}</Text>
+                  </View>
+                  <View>
+                    <Text style={basicStyles.subTitle}>End time</Text>
+                    <Text style={basicStyles.text}>{formatMills(task.startTimer + task.duration)}</Text>
+                  </View>
+                </View>
+                <View style={styles.block}>
+                  <Text style={basicStyles.subTitle}>Duration</Text>
+                  <Text style={basicStyles.text}>{dateFromMillis(task.duration)} h</Text>
+                </View>
+              </>
+            )}
+            <Button title={task ? 'Update task' : 'Start task'} onPress={handleSubmit} />
           </View>
         )}
       </Formik>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  block: { marginBottom: 30 },
+  timeBlock: { flexDirection: 'row', justifyContent: 'space-between' },
+});
 
 export default TaskForm;

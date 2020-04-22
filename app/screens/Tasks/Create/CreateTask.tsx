@@ -24,7 +24,7 @@ const CreateTask: React.FC<ICreateTask> = ({ navigation }) => {
   return (
     <View style={basicStyles.container}>
       <Title text='Create task' />
-      <TaskForm isCreate onSubmit={handleClick} />
+      <TaskForm onSubmit={handleClick} />
     </View>
   );
 };

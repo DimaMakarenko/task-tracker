@@ -1,9 +1,14 @@
 import React from 'react';
-import { Text, StyleSheet, TouchableOpacity, Image, Animated, View } from 'react-native';
+import { Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+// redux
+import { useDispatch } from 'react-redux';
+// components
 import Swipeable from 'react-native-gesture-handler/Swipeable';
+import { RectButton } from 'react-native-gesture-handler';
+import { alert } from '../../../components/Alert/Alert';
 // utils
 import { dateFromMillis, formatMills } from '../../../utils/time';
-import { RectButton } from 'react-native-gesture-handler';
+import { deleteTask } from '../../../store/reducers/tasks';
 
 interface ITaskRow {
   task: {
@@ -11,23 +16,31 @@ interface ITaskRow {
     isActive: boolean;
     startTimer: number;
     duration: number;
+    id: number;
   };
   navigate: Function;
 }
+
 // images
 const deleteImg = require('../../../assets/image/trash.png');
 const editImg = require('../../../assets/image/edit.png');
 
 const TaskRow: React.FC<ITaskRow> = ({ task, navigate }) => {
-  const { title, duration, isActive, startTimer } = task;
+  const { title, duration, isActive, startTimer, id } = task;
+  const dispatch = useDispatch();
+
+  const handleDelete = () => dispatch(deleteTask(id));
+  const handleEdit = () => navigate('Edit', task);
+
+  const showAlert = () => alert('Deleting task', 'You really want delete this task?', handleDelete);
 
   const renderLeftActions = () => {
     return (
       <RectButton style={styles.option}>
-        <TouchableOpacity onPress={() => console.log('delete')} style={styles.optionIcon}>
+        <TouchableOpacity onPress={showAlert} style={styles.optionIcon}>
           <Image source={deleteImg} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => console.log('edit')} style={styles.optionIcon}>
+        <TouchableOpacity onPress={handleEdit} style={styles.optionIcon}>
           <Image source={editImg} />
         </TouchableOpacity>
       </RectButton>

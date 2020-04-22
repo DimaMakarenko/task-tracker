@@ -1,12 +1,20 @@
 // @ts-ignore
 import { all, takeLatest, select, put } from 'redux-saga/effects';
 // reducers
-import { FETCH_TASKS, CREATE_TASK, PAUSE_TASK, DELETE_TASK, addTask, deleteTasks } from '../reducers/tasks';
+import {
+  FETCH_TASKS,
+  CREATE_TASK,
+  PAUSE_TASK,
+  DELETE_TASK,
+  UPDATE_TASK,
+  addTask,
+  deleteTasks,
+} from '../reducers/tasks';
 import { addActiveTask, removeActiveTask } from '../reducers/activeTask';
 // db
 import { getTaskDb, setTaskDb, updateTaskDb, deleteTaskDb } from '../../utils/api';
 // interfaces
-import { IDeleteTask, ICreateTask, IPauseTask } from '../../types/sagas';
+import { IDeleteTask, ICreateTask, IPauseTask, IUpdateTask } from '../../types/sagas';
 // utils
 import { newTask as getNewTask } from '../../utils/taskGenerate';
 
@@ -42,20 +50,37 @@ function* pauseTask(props: IPauseTask) {
   const uid = yield select((state) => state.user.userId);
   const startTask = yield select((state) => state.activeTask.startTimer);
   const duration = Date.now() - startTask;
-  yield updateTaskDb(uid, payload, { isActive: false, duration })
-    .then(() => console.log('update'))
-    .catch(() => console.log('wrong connect'));
-  yield put(removeActiveTask());
-  yield fetchTasks();
+  try {
+    yield updateTaskDb(uid, payload, { isActive: false, duration }).catch(() => console.log('wrong connect'));
+    yield put(removeActiveTask());
+    yield fetchTasks();
+  } catch (e) {
+    console.error(e);
+  }
 }
 
 function* deleteTask(props: IDeleteTask) {
   const { payload } = props;
   const uid = yield select((state) => state.user.userId);
-  yield deleteTaskDb(uid, payload)
-    .then(() => console.log('success'))
-    .catch(() => console.log('not delete task'));
-  yield fetchTasks();
+  try {
+    yield deleteTaskDb(uid, payload).catch(() => console.log('not delete task'));
+    yield fetchTasks();
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+function* updateTask(props: IUpdateTask) {
+  const { payload } = props;
+  const { id, task } = payload;
+  const uid = yield select((state) => state.user.userId);
+
+  try {
+    yield updateTaskDb(uid, id, task);
+    yield fetchTasks();
+  } catch (e) {
+    console.error(e);
+  }
 }
 
 export function* watchTasks() {
@@ -64,5 +89,6 @@ export function* watchTasks() {
     takeLatest(CREATE_TASK, createTask),
     takeLatest(PAUSE_TASK, pauseTask),
     takeLatest(DELETE_TASK, deleteTask),
+    takeLatest(UPDATE_TASK, updateTask),
   ]);
 }
