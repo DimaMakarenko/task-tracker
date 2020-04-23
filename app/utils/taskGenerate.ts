@@ -1,8 +1,9 @@
-import { ITask } from '../types/store';
-interface INewTaskProps {
+import { ITask } from '../store/type';
+
+type INewTaskProps = {
   title: string;
   project: string;
-}
+};
 
 export const newTask = (props: INewTaskProps): ITask => {
   const { title, project } = props;

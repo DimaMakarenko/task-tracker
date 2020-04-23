@@ -1,5 +1,6 @@
 import firebase from './firebaseDb';
 import { ITask } from '../types/store';
+import _ from 'lodash';
 
 const db = firebase.database();
 
@@ -15,7 +16,7 @@ export const getTaskDb = (uid: string) => {
   return db
     .ref('users/' + uid + '/tasks')
     .once('value')
-    .then((snap) => snap.val());
+    .then((snapshot) => _.toArray(snapshot.val()));
 };
 
 export const updateTaskDb = (uid: string, taskId: number, updates: any) => {

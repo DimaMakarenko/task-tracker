@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 // components
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { RectButton } from 'react-native-gesture-handler';
@@ -18,8 +18,8 @@ interface ITaskRow {
 }
 
 // images
-const deleteImg = require('../../../assets/image/trash.png');
-const editImg = require('../../../assets/image/edit.png');
+// const deleteImg = require('../../../assets/image/trash.png');
+// const editImg = require('../../../assets/image/edit.png');
 
 const TaskRow: React.FC<ITaskRow> = ({ task, navigate }) => {
   const { id } = task;
@@ -33,10 +33,10 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate }) => {
     return (
       <RectButton style={styles.option}>
         <TouchableOpacity onPress={showAlert} style={styles.optionIcon}>
-          <Image source={deleteImg} />
+          {/*<Image source={deleteImg} />*/}
         </TouchableOpacity>
         <TouchableOpacity onPress={handleEdit} style={styles.optionIcon}>
-          <Image source={editImg} />
+          {/*<Image source={editImg} />*/}
         </TouchableOpacity>
       </RectButton>
     );

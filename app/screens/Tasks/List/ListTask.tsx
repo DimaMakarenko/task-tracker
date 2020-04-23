@@ -1,12 +1,18 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 // db
 import firebase from 'firebase';
+// redux
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchTasks } from '../../../store/reducers/tasks/actions';
+import { getUser } from '../../../store/reducers/user/selectors';
 // component
 import Title from '../../../components/Title/Title';
 import TaskRow from './TaskRow';
 import Button from '../../../components/Button/Button';
 import ActiveTask from '../../../components/Task/ActiveTask/ActiveTask';
+// types
+import { RootState } from '../../../store/rootReducer';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
 
@@ -16,6 +22,14 @@ interface IListTask {
 
 const ListTask: FC<IListTask> = ({ navigation }) => {
   const tasks = [{ id: 1 }, { id: 2 }];
+  const dispatch = useDispatch();
+  const { uid } = useSelector((state: RootState) => getUser(state));
+
+  useEffect(() => {
+    if (uid) {
+      dispatch(fetchTasks(uid));
+    }
+  }, [uid, dispatch]);
 
   const handlePress = () => {
     firebase.auth().signOut();
