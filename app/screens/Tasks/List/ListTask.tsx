@@ -25,9 +25,10 @@ interface IListTask {
 const ListTask: FC<IListTask> = ({ navigation }) => {
   const tasks = useSelector((state: RootState) => getTasks(state));
   const { uid } = useSelector((state: RootState) => getUser(state));
-  const { isLoading, addTasks } = useTaskAction();
+  const { isLoading, fetchTasks } = useTaskAction();
+
   useEffect(() => {
-    addTasks(uid);
+    fetchTasks({ uid });
   }, [uid]);
 
   const handlePress = () => {
@@ -61,7 +62,6 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
             )}
           </View>
         </View>
-
         <Button title='Add task' onPress={() => navigation.navigate('Create')} style={styles.btn} />
       </Loader>
     </View>

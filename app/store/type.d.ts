@@ -22,7 +22,11 @@ export interface INewTask {
 
 // ACTIONS //
 
-export interface IAddTask {
+export interface ICreateTask {
   uid: string;
   task: ITask;
+}
+
+export interface IFetchTasks {
+  uid: string;
 }

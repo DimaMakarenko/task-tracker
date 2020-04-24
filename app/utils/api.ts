@@ -1,10 +1,12 @@
 import firebase from './firebaseDb';
-import { ITask } from '../store/type';
 import _ from 'lodash';
+// types
+import { ICreateTask, IFetchTasks } from '../store/type';
 
 const db = firebase.database();
 
-export const setTaskDb = (uid: string, task: ITask) => {
+export const setTaskDb = (option: ICreateTask) => {
+  const { uid, task } = option;
   const { id } = task;
   return db
     .ref('users/' + uid + '/tasks/')
@@ -12,7 +14,7 @@ export const setTaskDb = (uid: string, task: ITask) => {
     .set(task);
 };
 
-export const getTaskDb = (options) => {
+export const getTaskDb = (options: IFetchTasks) => {
   const { uid } = options;
   return db
     .ref('users/' + uid + '/tasks')
