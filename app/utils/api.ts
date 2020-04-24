@@ -1,7 +1,7 @@
 import firebase from './firebaseDb';
 import _ from 'lodash';
 // types
-import { ICreateTask, IFetchTasks } from '../store/type';
+import { ICreateTask, IFetchTasks, IUpdateTask } from '../store/type';
 
 const db = firebase.database();
 
@@ -22,7 +22,8 @@ export const getTaskDb = (options: IFetchTasks) => {
     .then((snapshot) => _.toArray(snapshot.val()));
 };
 
-export const updateTaskDb = (uid: string, taskId: number, updates: any) => {
+export const updateTaskDb = (options: IUpdateTask) => {
+  const { uid, taskId, updates } = options;
   return db
     .ref('users/' + uid + '/tasks')
     .child(taskId.toString())

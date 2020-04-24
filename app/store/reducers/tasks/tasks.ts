@@ -1,23 +1,40 @@
 import { createSlice } from '@reduxjs/toolkit';
 // actions
-import { fetchTasksAction, createTaskAction } from './actions';
+import { fetchTasksAction, createTaskAction, pauseTaskAction } from './actions';
 // types
-import { ITask } from '../../type';
+import { ITasks } from '../../type';
+// utils
+import { updateTaskList } from '../../../utils/tasks';
 
-const initialState: ITask[] = [];
+const initialState: ITasks = {
+  tasks: [],
+  activeTask: null,
+};
 
 const tasksSlice = createSlice({
   name: 'tasks',
   initialState,
-  reducers: {},
+  reducers: {
+    addActiveTaskAction: (state, actions) => {
+      state.activeTask = actions.payload;
+    },
+  },
   extraReducers: {
-    [fetchTasksAction.fulfilled]: (state: ITask[], { payload }) => payload,
+    [fetchTasksAction.fulfilled]: (state, { payload }) => {
+      state.tasks = payload;
+    },
     [createTaskAction.fulfilled]: (state, { payload }) => {
-      state.push(payload);
+      state.tasks.push(payload);
+    },
+    [pauseTaskAction.fulfilled]: (state, { payload }) => {
+      state.tasks = updateTaskList(state.tasks, payload);
+      state.activeTask = null;
     },
   },
 });
 
 const { reducer, actions } = tasksSlice;
+
+export const { addActiveTaskAction } = actions;
 
 export default reducer;

@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-// redux
+import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
+// utils
 import { dateFromMillis } from '../../../utils/time';
+// types
+import { ITask } from '../../../store/type';
 
 interface IActiveTask {
-  id: number;
-  title: string;
-  startTimer: number;
-  style: any;
   pause: Function;
+  activeTask: ITask;
+  uid: string;
 }
 
-const ActiveTask: React.FC<IActiveTask> = ({ id, title, startTimer, style, pause }) => {
+const pauseImage = require('../../../assets/images/pause.png');
+
+const ActiveTask: React.FC<IActiveTask> = ({ activeTask, pause, uid }) => {
+  const { id, title, startTimer } = activeTask;
   const [timer, setTimer] = useState(Date.now() - startTimer);
+
+  const pauseTask = () => {
+    pause({ uid, taskId: id });
+  };
 
   useEffect(() => {
     let internal: any = null;
@@ -23,10 +30,12 @@ const ActiveTask: React.FC<IActiveTask> = ({ id, title, startTimer, style, pause
   }, [startTimer]);
 
   return (
-    <View style={[styles.activeTask, style]}>
+    <View style={[styles.activeTask]}>
       <Text>{title}</Text>
       <Text>{dateFromMillis(timer)}</Text>
-      <Text onPress={() => pause()}>pause</Text>
+      <TouchableOpacity onPress={pauseTask} style={styles.image}>
+        <Image source={pauseImage} />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -38,6 +47,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  image: {
+    justifyContent: 'center',
+    borderRadius: 50,
   },
 });
 

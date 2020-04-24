@@ -6,7 +6,7 @@ import firebase from 'firebase';
 // redux
 import { useSelector } from 'react-redux';
 import { getUser } from '../../../store/reducers/user/selectors';
-import { getTasks } from '../../../store/reducers/tasks/selectors';
+import { getTasks, getActiveTask } from '../../../store/reducers/tasks/selectors';
 // component
 import Title from '../../../components/Title/Title';
 import TaskRow from './TaskRow';
@@ -24,20 +24,25 @@ interface IListTask {
 
 const ListTask: FC<IListTask> = ({ navigation }) => {
   const tasks = useSelector((state: RootState) => getTasks(state));
+  const activeTask = useSelector((state: RootState) => getActiveTask(state));
   const { uid } = useSelector((state: RootState) => getUser(state));
-  const { isLoading, fetchTasks } = useTaskAction();
+  const { isLoading, fetchTasks, addActiveTask, pauseTask } = useTaskAction();
 
   useEffect(() => {
     fetchTasks({ uid });
   }, [uid]);
+
+  useEffect(() => {
+    addActiveTask(tasks);
+  }, [tasks]);
 
   const handlePress = () => {
     firebase.auth().signOut();
   };
 
   return (
-    <View style={basicStyles.container}>
-      <Loader isLoading={isLoading}>
+    <Loader isLoading={isLoading}>
+      <View style={basicStyles.container}>
         <View style={styles.headerWrapper}>
           <View>
             <View style={styles.header}>
@@ -61,17 +66,20 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
               </View>
             )}
           </View>
+          {activeTask ? (
+            <ActiveTask activeTask={activeTask} pause={pauseTask} uid={uid} />
+          ) : (
+            <Button title='Add task' onPress={() => navigation.navigate('Create')} />
+          )}
         </View>
-        <Button title='Add task' onPress={() => navigation.navigate('Create')} style={styles.btn} />
-      </Loader>
-    </View>
+      </View>
+    </Loader>
   );
 };
 
 const styles = StyleSheet.create({
   header: { width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   tasks: {},
-  btn: { position: 'absolute', bottom: 0, width: '100%' },
   headerWrapper: { height: '100%', justifyContent: 'space-between' },
   emptyList: { justifyContent: 'center', alignItems: 'center', height: '100%' },
   emptyListText: { textAlign: 'center' },

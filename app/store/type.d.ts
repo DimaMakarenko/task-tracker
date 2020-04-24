@@ -1,7 +1,10 @@
 export interface IUser {
   uid: string;
 }
-
+export interface ITasks {
+  tasks: ITask[];
+  activeTask: ITask | null;
+}
 export interface ITask {
   id: number;
   title: string;
@@ -29,4 +32,9 @@ export interface ICreateTask {
 
 export interface IFetchTasks {
   uid: string;
+}
+
+export interface IUpdateTask {
+  uid: string;
+  taskId: string;
 }

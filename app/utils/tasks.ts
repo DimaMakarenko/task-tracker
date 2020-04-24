@@ -5,6 +5,12 @@ type INewTaskProps = {
   project: string;
 };
 
+export const updateTaskList = (taskList: ITask[], payload) => {
+  return taskList.map((task) => {
+    return task.id === payload.taskId ? { ...task, ...payload.updates } : task;
+  });
+};
+
 export const getNewTask = (props: INewTaskProps): ITask => {
   const { title, project } = props;
   const dn = Date.now();
