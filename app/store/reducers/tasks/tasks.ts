@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 // actions
-import { fetchTasks } from './actions';
+import { fetchTasksAction } from './actions';
 // types
 import { ITask } from '../../type';
 
@@ -11,10 +11,10 @@ const tasksSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    [fetchTasks.fulfilled]: (state: ITask[], { payload }) => payload,
+    [fetchTasksAction.fulfilled]: (state: ITask[], { payload }) => payload,
   },
 });
 
-const { reducer } = tasksSlice;
+const { reducer, actions } = tasksSlice;
 
 export default reducer;

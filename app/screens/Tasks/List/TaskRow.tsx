@@ -1,28 +1,25 @@
 import React from 'react';
-import { Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 // components
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { RectButton } from 'react-native-gesture-handler';
 import { alert } from '../../../components/Alert/Alert';
+// types
+import { ITask } from '../../../store/type';
 // utils
+import { dateFromMillis } from '../../../utils/time';
 
 interface ITaskRow {
-  task: {
-    title: string;
-    isActive: boolean;
-    startTimer: number;
-    duration: number;
-    id: number;
-  };
+  task: ITask;
   navigate: Function;
 }
 
 // images
-// const deleteImg = require('../../../assets/image/trash.png');
-// const editImg = require('../../../assets/image/edit.png');
+const deleteImg = require('../../../assets/images/trash.png');
+const editImg = require('../../../assets/images/edit.png');
 
 const TaskRow: React.FC<ITaskRow> = ({ task, navigate }) => {
-  const { id } = task;
+  const { title, duration } = task;
 
   const handleDelete = () => console.log('delete');
   const handleEdit = () => navigate('Edit', task);
@@ -33,10 +30,10 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate }) => {
     return (
       <RectButton style={styles.option}>
         <TouchableOpacity onPress={showAlert} style={styles.optionIcon}>
-          {/*<Image source={deleteImg} />*/}
+          <Image source={deleteImg} />
         </TouchableOpacity>
         <TouchableOpacity onPress={handleEdit} style={styles.optionIcon}>
-          {/*<Image source={editImg} />*/}
+          <Image source={editImg} />
         </TouchableOpacity>
       </RectButton>
     );
@@ -45,8 +42,8 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate }) => {
   return (
     <Swipeable renderRightActions={renderLeftActions}>
       <TouchableOpacity style={styles.taskRow} onPress={() => navigate('Show', task)}>
-        <Text style={styles.title}>{id}</Text>
-        <Text style={styles.duration}>{id}</Text>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.duration}>{dateFromMillis(duration)}</Text>
       </TouchableOpacity>
     </Swipeable>
   );

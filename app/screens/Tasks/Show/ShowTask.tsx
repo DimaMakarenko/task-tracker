@@ -2,12 +2,13 @@ import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 // interfaces
 import { ITask } from '../../../types/store';
-// redux
 // components
 import Title from '../../../components/Title/Title';
 import { alert } from '../../../components/Alert/Alert';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
+// utils
+import { dateFromMillis } from '../../../utils/time';
 
 interface IShowTask {
   navigation: { navigate: Function };
@@ -17,7 +18,7 @@ interface IShowTask {
 }
 
 const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
-  const { id } = route.params;
+  const { id, title, duration, project } = route.params;
 
   const handleClick = () => {
     console.log('delete');
@@ -31,11 +32,11 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
       <Title text='Task' />
       <View style={styles.block}>
         <Text style={basicStyles.subTitle}>Title</Text>
-        <Text style={basicStyles.text}>{id}</Text>
+        <Text style={basicStyles.text}>{title}</Text>
       </View>
       <View style={styles.block}>
         <Text style={basicStyles.subTitle}>Project</Text>
-        <Text style={basicStyles.text}>{id}</Text>
+        <Text style={basicStyles.text}>{project}</Text>
       </View>
 
       <View style={[styles.block, styles.timeBlock]}>
@@ -50,7 +51,7 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
       </View>
       <View style={styles.block}>
         <Text style={basicStyles.subTitle}>Duration</Text>
-        <Text style={basicStyles.text}>{id} h</Text>
+        <Text style={basicStyles.text}>{dateFromMillis(duration)} h</Text>
       </View>
       <View style={styles.block}>
         <Text style={styles.deleteBtn} onPress={showAlert}>

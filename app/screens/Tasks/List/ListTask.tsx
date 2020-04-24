@@ -1,15 +1,17 @@
 import React, { FC, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { useTaskAction } from '../../../hooks/useTaskAction';
 // db
 import firebase from 'firebase';
 // redux
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchTasks } from '../../../store/reducers/tasks/actions';
+import { useSelector } from 'react-redux';
 import { getUser } from '../../../store/reducers/user/selectors';
+import { getTasks } from '../../../store/reducers/tasks/selectors';
 // component
 import Title from '../../../components/Title/Title';
 import TaskRow from './TaskRow';
 import Button from '../../../components/Button/Button';
+import Loader from '../../../components/Loader/Loader';
 import ActiveTask from '../../../components/Task/ActiveTask/ActiveTask';
 // types
 import { RootState } from '../../../store/rootReducer';
@@ -21,15 +23,12 @@ interface IListTask {
 }
 
 const ListTask: FC<IListTask> = ({ navigation }) => {
-  const tasks = [{ id: 1 }, { id: 2 }];
-  const dispatch = useDispatch();
+  const tasks = useSelector((state: RootState) => getTasks(state));
   const { uid } = useSelector((state: RootState) => getUser(state));
-
+  const { isLoading, addTasks } = useTaskAction();
   useEffect(() => {
-    if (uid) {
-      dispatch(fetchTasks(uid));
-    }
-  }, [uid, dispatch]);
+    addTasks(uid);
+  }, [uid]);
 
   const handlePress = () => {
     firebase.auth().signOut();
@@ -37,32 +36,34 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
 
   return (
     <View style={basicStyles.container}>
-      <View style={styles.headerWrapper}>
-        <View>
-          <View style={styles.header}>
-            <Title text='Tasks' />
-            <Text onPress={handlePress} style={styles.logOut}>
-              Log out
-            </Text>
+      <Loader isLoading={isLoading}>
+        <View style={styles.headerWrapper}>
+          <View>
+            <View style={styles.header}>
+              <Title text='Tasks' />
+              <Text onPress={handlePress} style={styles.logOut}>
+                Log out
+              </Text>
+            </View>
+            {tasks.length === 0 ? (
+              <View style={styles.emptyList}>
+                <Text style={styles.emptyListText}>You don’t have tasks recently added.</Text>
+                <Text style={styles.emptyListText}>Generate list of tasks</Text>
+              </View>
+            ) : (
+              <View style={styles.tasks}>
+                <FlatList
+                  data={tasks}
+                  keyExtractor={(item) => item.id.toString()}
+                  renderItem={({ item }: { item: any }) => <TaskRow task={item} navigate={navigation.navigate} />}
+                />
+              </View>
+            )}
           </View>
-          {tasks.length === 0 ? (
-            <View style={styles.emptyList}>
-              <Text style={styles.emptyListText}>You don’t have tasks recently added.</Text>
-              <Text style={styles.emptyListText}>Generate list of tasks</Text>
-            </View>
-          ) : (
-            <View style={styles.tasks}>
-              <FlatList
-                data={tasks}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }: { item: any }) => <TaskRow task={item} navigate={navigation.navigate} />}
-              />
-            </View>
-          )}
         </View>
-      </View>
 
-      <Button title='Add task' onPress={() => navigation.navigate('Create')} style={styles.btn} />
+        <Button title='Add task' onPress={() => navigation.navigate('Create')} style={styles.btn} />
+      </Loader>
     </View>
   );
 };

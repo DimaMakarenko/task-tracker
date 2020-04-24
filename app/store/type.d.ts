@@ -10,7 +10,7 @@ export interface ITask {
   isActive: boolean;
   isFinished: boolean;
   startTimer: number;
-  timeSession?: { start: number; end: number }[];
+  timeSession: { start: number; end?: number }[];
   tags?: string[];
   file?: any;
 }
@@ -18,4 +18,11 @@ export interface ITask {
 export interface INewTask {
   title: string;
   project: string;
+}
+
+// ACTIONS //
+
+export interface IAddTask {
+  uid: string;
+  task: ITask;
 }

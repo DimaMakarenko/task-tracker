@@ -1,5 +1,5 @@
 import firebase from './firebaseDb';
-import { ITask } from '../types/store';
+import { ITask } from '../store/type';
 import _ from 'lodash';
 
 const db = firebase.database();
@@ -12,7 +12,8 @@ export const setTaskDb = (uid: string, task: ITask) => {
     .set(task);
 };
 
-export const getTaskDb = (uid: string) => {
+export const getTaskDb = (options) => {
+  const { uid } = options;
   return db
     .ref('users/' + uid + '/tasks')
     .once('value')

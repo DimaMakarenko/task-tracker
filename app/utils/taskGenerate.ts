@@ -5,7 +5,7 @@ type INewTaskProps = {
   project: string;
 };
 
-export const newTask = (props: INewTaskProps): ITask => {
+export const getNewTask = (props: INewTaskProps): ITask => {
   const { title, project } = props;
   const dn = Date.now();
   return {
@@ -16,5 +16,6 @@ export const newTask = (props: INewTaskProps): ITask => {
     isActive: true,
     isFinished: false,
     startTimer: dn,
+    timeSession: [{ start: dn }],
   };
 };
