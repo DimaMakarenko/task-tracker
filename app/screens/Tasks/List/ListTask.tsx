@@ -6,7 +6,7 @@ import firebase from 'firebase';
 // redux
 import { useSelector } from 'react-redux';
 import { getUser } from '../../../store/reducers/user/selectors';
-import { getTasks, getActiveTask } from '../../../store/reducers/tasks/selectors';
+import { selectTasks, selectActiveTask } from '../../../store/reducers/tasks/selectors';
 // component
 import Title from '../../../components/Title/Title';
 import TaskRow from './TaskRow';
@@ -23,8 +23,8 @@ interface IListTask {
 }
 
 const ListTask: FC<IListTask> = ({ navigation }) => {
-  const tasks = useSelector((state: RootState) => getTasks(state));
-  const activeTask = useSelector((state: RootState) => getActiveTask(state));
+  const tasks = useSelector(selectTasks);
+  const activeTask = useSelector(selectActiveTask);
   const { uid } = useSelector((state: RootState) => getUser(state));
   const { isLoading, fetchTasks, addActiveTask, pauseTask } = useTaskAction();
 

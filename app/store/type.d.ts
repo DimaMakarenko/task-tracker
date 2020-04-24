@@ -5,6 +5,11 @@ export interface ITasks {
   tasks: ITask[];
   activeTask: ITask | null;
 }
+export type ISession = {
+  start: number;
+  end?: number;
+};
+
 export interface ITask {
   id: number;
   title: string;
@@ -13,7 +18,7 @@ export interface ITask {
   isActive: boolean;
   isFinished: boolean;
   startTimer: number;
-  timeSession: { start: number; end?: number }[];
+  timeSession: ISession[];
   tags?: string[];
   file?: any;
 }
@@ -36,5 +41,5 @@ export interface IFetchTasks {
 
 export interface IUpdateTask {
   uid: string;
-  taskId: string;
+  task: ITask;
 }

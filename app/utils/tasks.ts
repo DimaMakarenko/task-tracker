@@ -7,7 +7,7 @@ type INewTaskProps = {
 
 export const updateTaskList = (taskList: ITask[], payload) => {
   return taskList.map((task) => {
-    return task.id === payload.taskId ? { ...task, ...payload.updates } : task;
+    return task.id === payload.task.id ? { ...task, ...payload.task } : task;
   });
 };
 

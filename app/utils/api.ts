@@ -23,11 +23,11 @@ export const getTaskDb = (options: IFetchTasks) => {
 };
 
 export const updateTaskDb = (options: IUpdateTask) => {
-  const { uid, taskId, updates } = options;
+  const { uid, task } = options;
   return db
     .ref('users/' + uid + '/tasks')
-    .child(taskId.toString())
-    .update(updates);
+    .child(task.id.toString())
+    .update(task);
 };
 
 export const deleteTaskDb = (uid: string, taskId: number) => {

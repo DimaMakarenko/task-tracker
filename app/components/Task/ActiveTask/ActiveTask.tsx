@@ -14,11 +14,11 @@ interface IActiveTask {
 const pauseImage = require('../../../assets/images/pause.png');
 
 const ActiveTask: React.FC<IActiveTask> = ({ activeTask, pause, uid }) => {
-  const { id, title, startTimer } = activeTask;
+  const { title, startTimer } = activeTask;
   const [timer, setTimer] = useState(Date.now() - startTimer);
 
   const pauseTask = () => {
-    pause({ uid, taskId: id });
+    pause({ uid, task: activeTask });
   };
 
   useEffect(() => {
