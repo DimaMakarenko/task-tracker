@@ -1,14 +1,18 @@
 import { useState } from 'react';
 // redux
-import { useDispatch } from 'react-redux';
-import { fetchTasksAction, createTaskAction, pauseTaskAction } from '../store/reducers/tasks/actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchTasksAction, createTaskAction, pauseTaskAction, startTaskAction } from '../store/reducers/tasks/actions';
 import { addActiveTaskAction } from '../store/reducers/tasks/tasks';
+import { getUser } from '../store/reducers/user/selectors';
 // types
-import { ICreateTask, IFetchTasks, ITask, IUpdateTask, ISession } from '../store/type';
+import { ICreateTask, ITask } from '../store/type';
+// utils
+import { findLastDuration, setEndSession, setStartSession } from '../utils/time';
 
 export const useTaskAction = () => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
+  const { uid } = useSelector(getUser);
 
   const loader = (action: Function) => {
     return () => {
@@ -18,18 +22,10 @@ export const useTaskAction = () => {
     };
   };
 
-  const fetchTasks = (options: IFetchTasks) => loader(dispatch(fetchTasksAction(options)));
+  const fetchTasks = () => loader(dispatch(fetchTasksAction({ uid })));
   const createTask = (options: ICreateTask) => loader(dispatch(createTaskAction(options)));
 
-  const findLastDuration = (timeSession: ISession[], dn: number) => {
-    return dn - timeSession[timeSession.length - 1].start;
-  };
-
-  const setEndSession = (timeSession: ISession[], dn: number) => {
-    return [{ ...timeSession[timeSession.length - 1], ...{ end: dn } }];
-  };
-  const pauseTask = (options: IUpdateTask) => {
-    const { uid, task } = options;
+  const pauseTask = ({ task }: { task: ITask }) => {
     const dn = Date.now();
     const updates = {
       uid,
@@ -37,7 +33,7 @@ export const useTaskAction = () => {
         ...task,
         isActive: false,
         duration: task.duration + findLastDuration(task.timeSession, dn),
-        timeSession: setEndSession(task.timeSession, dn),
+        timeSession: setEndSession([...task.timeSession], dn),
       },
     };
     return loader(dispatch(pauseTaskAction(updates)));
@@ -51,11 +47,26 @@ export const useTaskAction = () => {
     });
   };
 
+  const startTask = (task: ITask) => {
+    console.log('start', task);
+    const dn = Date.now();
+    const updates = {
+      uid,
+      task: {
+        ...task,
+        isActive: true,
+        timeSession: setStartSession([...task.timeSession], dn),
+      },
+    };
+    return loader(dispatch(startTaskAction(updates)));
+  };
+
   return {
     isLoading,
     fetchTasks,
     createTask,
     addActiveTask,
     pauseTask,
+    startTask,
   };
 };

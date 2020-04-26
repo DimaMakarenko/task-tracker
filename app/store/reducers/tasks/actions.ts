@@ -22,3 +22,8 @@ export const pauseTaskAction: any = createAsyncThunk('task/updateTask', async (o
   await updateTaskDb(options);
   return options;
 });
+
+export const startTaskAction: any = createAsyncThunk('task/startTask', async (options: IUpdateTask) => {
+  await updateTaskDb(options);
+  return options;
+});

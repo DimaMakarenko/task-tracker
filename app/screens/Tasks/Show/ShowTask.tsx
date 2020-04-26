@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 // interfaces
-import { ITask } from '../../../types/store';
+import { ITask } from '../../../store/type';
 // components
 import Title from '../../../components/Title/Title';
 import { alert } from '../../../components/Alert/Alert';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
 // utils
-import { dateFromMillis } from '../../../utils/time';
+import { dateFromMillis, lastSessionEnd } from '../../../utils/time';
 
 interface IShowTask {
   navigation: { navigate: Function };
@@ -18,12 +18,16 @@ interface IShowTask {
 }
 
 const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
-  const { id, title, duration, project } = route.params;
+  const { id, title, duration, project, startTimer, timeSession, isActive } = route.params;
 
   const handleClick = () => {
     console.log('delete');
     navigation.navigate('List');
   };
+
+  const lastEnd = useMemo(() => {
+    return lastSessionEnd(timeSession, isActive);
+  }, [timeSession, isActive]);
 
   const showAlert = () => alert('Deleting task', 'You really want delete this task?', handleClick);
 
@@ -42,12 +46,14 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
       <View style={[styles.block, styles.timeBlock]}>
         <View>
           <Text style={basicStyles.subTitle}>Start time</Text>
-          <Text style={basicStyles.text}>{id}</Text>
+          <Text style={basicStyles.text}>{dateFromMillis(startTimer)}</Text>
         </View>
-        <View>
-          <Text style={basicStyles.subTitle}>End time</Text>
-          <Text style={basicStyles.text}>{id}</Text>
-        </View>
+        {lastEnd && (
+          <View>
+            <Text style={basicStyles.subTitle}>End time</Text>
+            <Text style={basicStyles.text}>{dateFromMillis(lastEnd)}</Text>
+          </View>
+        )}
       </View>
       <View style={styles.block}>
         <Text style={basicStyles.subTitle}>Duration</Text>

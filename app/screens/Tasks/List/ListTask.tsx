@@ -5,7 +5,6 @@ import { useTaskAction } from '../../../hooks/useTaskAction';
 import firebase from 'firebase';
 // redux
 import { useSelector } from 'react-redux';
-import { getUser } from '../../../store/reducers/user/selectors';
 import { selectTasks, selectActiveTask } from '../../../store/reducers/tasks/selectors';
 // component
 import Title from '../../../components/Title/Title';
@@ -13,8 +12,6 @@ import TaskRow from './TaskRow';
 import Button from '../../../components/Button/Button';
 import Loader from '../../../components/Loader/Loader';
 import ActiveTask from '../../../components/Task/ActiveTask/ActiveTask';
-// types
-import { RootState } from '../../../store/rootReducer';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
 
@@ -25,12 +22,11 @@ interface IListTask {
 const ListTask: FC<IListTask> = ({ navigation }) => {
   const tasks = useSelector(selectTasks);
   const activeTask = useSelector(selectActiveTask);
-  const { uid } = useSelector((state: RootState) => getUser(state));
   const { isLoading, fetchTasks, addActiveTask, pauseTask } = useTaskAction();
 
   useEffect(() => {
-    fetchTasks({ uid });
-  }, [uid]);
+    fetchTasks();
+  }, []);
 
   useEffect(() => {
     addActiveTask(tasks);
@@ -67,7 +63,7 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
             )}
           </View>
           {activeTask ? (
-            <ActiveTask activeTask={activeTask} pause={pauseTask} uid={uid} />
+            <ActiveTask activeTask={activeTask} pause={pauseTask} />
           ) : (
             <Button title='Add task' onPress={() => navigation.navigate('Create')} />
           )}

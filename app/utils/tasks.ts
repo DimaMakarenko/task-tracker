@@ -1,17 +1,12 @@
-import { ITask } from '../store/type';
+import { ITask, INewTask } from '../store/type';
 
-type INewTaskProps = {
-  title: string;
-  project: string;
-};
-
-export const updateTaskList = (taskList: ITask[], payload) => {
+export const updateTaskList = (taskList: ITask[], payload: any) => {
   return taskList.map((task) => {
     return task.id === payload.task.id ? { ...task, ...payload.task } : task;
   });
 };
 
-export const getNewTask = (props: INewTaskProps): ITask => {
+export const getNewTask = (props: INewTask): ITask => {
   const { title, project } = props;
   const dn = Date.now();
   return {

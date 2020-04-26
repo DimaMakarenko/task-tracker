@@ -40,6 +40,6 @@ export interface IFetchTasks {
 }
 
 export interface IUpdateTask {
-  uid: string;
   task: ITask;
+  uid: string;
 }

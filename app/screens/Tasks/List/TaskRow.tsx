@@ -1,5 +1,7 @@
-import React from 'react';
-import { Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import React, { useCallback } from 'react';
+import { Text, StyleSheet, TouchableOpacity, Image, View } from 'react-native';
+// redux
+import { useTaskAction } from '../../../hooks/useTaskAction';
 // components
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { RectButton } from 'react-native-gesture-handler';
@@ -7,22 +9,28 @@ import { alert } from '../../../components/Alert/Alert';
 // types
 import { ITask } from '../../../store/type';
 // utils
-import { dateFromMillis } from '../../../utils/time';
+import { dateFromMillis, formatMills } from '../../../utils/time';
+// images
+import { deleteImg, editImg, playImg, completeImg, pauseImg } from '../../../assets';
 
 interface ITaskRow {
   task: ITask;
   navigate: Function;
 }
 
-// images
-const deleteImg = require('../../../assets/images/trash.png');
-const editImg = require('../../../assets/images/edit.png');
-
 const TaskRow: React.FC<ITaskRow> = ({ task, navigate }) => {
-  const { title, duration } = task;
+  const { title, duration, isActive, isFinished, startTimer } = task;
+  const { pauseTask, startTask } = useTaskAction();
 
   const handleDelete = () => console.log('delete');
   const handleEdit = () => navigate('Edit', task);
+  const handlePause = useCallback(() => {
+    pauseTask({ task });
+  }, [task]);
+
+  const handleStart = useCallback(() => {
+    startTask(task);
+  }, [task]);
 
   const showAlert = () => alert('Deleting task', 'You really want delete this task?', handleDelete);
 
@@ -41,10 +49,31 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate }) => {
 
   return (
     <Swipeable renderRightActions={renderLeftActions}>
-      <TouchableOpacity style={styles.taskRow} onPress={() => navigate('Show', task)}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.duration}>{dateFromMillis(duration)}</Text>
-      </TouchableOpacity>
+      <View style={styles.taskRow}>
+        <TouchableOpacity style={styles.taskInfo} onPress={() => navigate('Show', task)}>
+          <Text>{title}</Text>
+          <View style={styles.row}>
+            <Text>{isActive ? formatMills(startTimer) : dateFromMillis(duration)}</Text>
+          </View>
+        </TouchableOpacity>
+        {isFinished ? (
+          <TouchableOpacity style={styles.image}>
+            <Image source={completeImg} />
+          </TouchableOpacity>
+        ) : (
+          <>
+            {isActive ? (
+              <TouchableOpacity style={styles.image} onPress={handlePause}>
+                <Image source={pauseImg} />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity style={styles.image} onPress={handleStart}>
+                <Image source={playImg} />
+              </TouchableOpacity>
+            )}
+          </>
+        )}
+      </View>
     </Swipeable>
   );
 };
@@ -57,8 +86,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'transparent',
   },
-  title: {},
-  duration: {},
+  taskInfo: { flexDirection: 'row', justifyContent: 'space-between', flex: 1 },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  image: { marginLeft: 14 },
   option: { alignItems: 'center', flexDirection: 'row' },
   optionIcon: { marginLeft: 20 },
 });
