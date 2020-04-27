@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { listenerTaskDb } from '../utils/api';
+import { listenerTaskDb, deleteTaskDb } from '../utils/api';
 import _ from 'lodash';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,7 +21,7 @@ export const useTaskAction = () => {
   }, [dispatch, uid]);
 
   const fetchTasks = useCallback(() => {
-    handleFetch().catch(() => console.log('error in data fetching'));
+    handleFetch().catch(() => console.log('Error in data fetching'));
   }, [handleFetch]);
 
   const createTask = useCallback((options: ICreateTask) => dispatch(createTaskAction(options)), [dispatch]);
@@ -70,6 +70,13 @@ export const useTaskAction = () => {
     [dispatch, uid],
   );
 
+  const deleteTask = useCallback(
+    async (taskId: number) => {
+      await deleteTaskDb({ uid, taskId });
+    },
+    [uid],
+  );
+
   return {
     isLoading,
     fetchTasks,
@@ -77,5 +84,6 @@ export const useTaskAction = () => {
     pauseTask,
     addActiveTask,
     startTask,
+    deleteTask,
   };
 };

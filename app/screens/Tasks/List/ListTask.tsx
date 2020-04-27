@@ -22,7 +22,7 @@ interface IListTask {
 const ListTask: FC<IListTask> = ({ navigation }) => {
   const tasks = useSelector(selectTasks);
   const activeTask = useSelector(selectActiveTask);
-  const { isLoading, fetchTasks, pauseTask, addActiveTask, startTask } = useTaskAction();
+  const { isLoading, fetchTasks, pauseTask, addActiveTask, startTask, deleteTask } = useTaskAction();
 
   useEffect(() => {
     fetchTasks();
@@ -59,7 +59,13 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
                   data={tasks}
                   keyExtractor={(item) => item.id.toString()}
                   renderItem={({ item }: { item: any }) => (
-                    <TaskRow task={item} navigate={navigation.navigate} pauseTask={pauseTask} startTask={startTask} />
+                    <TaskRow
+                      task={item}
+                      navigate={navigation.navigate}
+                      pauseTask={pauseTask}
+                      startTask={startTask}
+                      deleteTask={deleteTask}
+                    />
                   )}
                 />
               </View>

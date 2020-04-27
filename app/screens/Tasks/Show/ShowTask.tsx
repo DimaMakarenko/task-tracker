@@ -13,17 +13,21 @@ import { dateFromMillis, lastSessionEnd } from '../../../utils/time';
 interface IShowTask {
   navigation: { navigate: Function };
   route: {
-    params: ITask;
+    params: {
+      task: ITask;
+      deleteTask: Function;
+    };
   };
 }
 
 const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
-  const { title, duration, project, startTimer, timeSession, isActive } = route.params;
+  const { task, deleteTask } = route.params;
+  const { id, title, duration, project, startTimer, timeSession, isActive } = task;
 
   const handleDelete = useCallback(() => {
-    console.log('delete');
+    deleteTask(id);
     navigation.navigate('List');
-  }, [navigation]);
+  }, [navigation, deleteTask, id]);
 
   const lastEnd = useMemo(() => {
     return lastSessionEnd(timeSession, isActive);

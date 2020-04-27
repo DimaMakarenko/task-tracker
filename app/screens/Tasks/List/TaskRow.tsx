@@ -19,14 +19,15 @@ interface ITaskRow {
   navigate: Function;
   pauseTask: Function;
   startTask: Function;
+  deleteTask: Function;
 }
 
-const TaskRow: React.FC<ITaskRow> = ({ task, navigate, pauseTask, startTask }) => {
-  const { title, duration, isActive, isFinished, startTimer } = task;
+const TaskRow: React.FC<ITaskRow> = ({ task, navigate, pauseTask, startTask, deleteTask }) => {
+  const { id, title, duration, isActive, isFinished, startTimer } = task;
 
   const handleDelete = useCallback(() => {
-    console.log('delete');
-  }, []);
+    deleteTask(id);
+  }, [deleteTask, id]);
 
   const handleEdit = useCallback(() => {
     navigate('Edit', task);
@@ -41,7 +42,7 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate, pauseTask, startTask }) =
   }, [task, startTask]);
 
   const showAlert = useCallback(() => {
-    alert('Deleting task', 'You really want delete this task?', handleDelete);
+    alert('Deleting task', 'Are you really want delete this task?', handleDelete);
   }, [handleDelete]);
 
   const renderLeftActions = () => {
@@ -60,7 +61,7 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate, pauseTask, startTask }) =
   return (
     <Swipeable renderRightActions={renderLeftActions}>
       <View style={styles.taskRow}>
-        <TouchableOpacity style={styles.taskInfo} onPress={() => navigate('Show', task)}>
+        <TouchableOpacity style={styles.taskInfo} onPress={() => navigate('Show', { task, deleteTask })}>
           <Text>{title}</Text>
           <View style={styles.row}>
             <Text>{isActive ? formatMills(startTimer) : dateFromMillis(duration)}</Text>

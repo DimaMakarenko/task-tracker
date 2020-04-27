@@ -45,3 +45,8 @@ export interface IUpdateTask {
   task: ITask;
   uid: string;
 }
+
+export interface IDeleteTask {
+  taskId: number;
+  uid: string;
+}

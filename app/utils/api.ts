@@ -1,6 +1,6 @@
 import firebase from './firebaseDb';
 // types
-import { ICreateTask, IFetchTasks, IUpdateTask } from '../store/type';
+import { ICreateTask, IFetchTasks, IUpdateTask, IDeleteTask } from '../store/type';
 
 const db = firebase.database();
 
@@ -28,7 +28,8 @@ export const updateTaskDb = (options: IUpdateTask) => {
     .update(task);
 };
 
-export const deleteTaskDb = (uid: string, taskId: number) => {
+export const deleteTaskDb = (options: IDeleteTask) => {
+  const { uid, taskId } = options;
   return db
     .ref('users/' + uid + '/tasks')
     .child(taskId.toString())
