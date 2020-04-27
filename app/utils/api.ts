@@ -1,5 +1,4 @@
 import firebase from './firebaseDb';
-import _ from 'lodash';
 // types
 import { ICreateTask, IFetchTasks, IUpdateTask } from '../store/type';
 
@@ -14,12 +13,11 @@ export const setTaskDb = (option: ICreateTask) => {
     .set(task);
 };
 
-export const getTaskDb = (options: IFetchTasks) => {
+export const listenerTaskDb = (options: IFetchTasks, callback: any) => {
   const { uid } = options;
-  return db
-    .ref('users/' + uid + '/tasks')
-    .once('value')
-    .then((snapshot) => _.toArray(snapshot.val()));
+  db.ref('users/' + uid + '/tasks').on('value', (snapshot) => {
+    callback(snapshot.val());
+  });
 };
 
 export const updateTaskDb = (options: IUpdateTask) => {

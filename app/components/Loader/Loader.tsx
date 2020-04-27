@@ -1,20 +1,19 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 
 interface ILoader {
   isLoading: boolean;
-  children: ReactNode;
 }
 
-const Loader: React.FC<ILoader> = ({ isLoading, children }) => {
+const Loader: React.FC<ILoader> = ({ isLoading }) => {
   return (
     <>
-      {isLoading ? (
-        <View style={[styles.container, styles.horizontal]}>
-          <ActivityIndicator size='large' color='#0000ff' />
+      {isLoading && (
+        <View style={styles.loader}>
+          <View style={[styles.container, styles.horizontal]}>
+            <ActivityIndicator size='large' color='#0000ff' />
+          </View>
         </View>
-      ) : (
-        children
       )}
     </>
   );
@@ -31,5 +30,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     padding: 10,
+  },
+  loader: {
+    position: 'absolute',
+    flex: 1,
+    zIndex: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
   },
 });

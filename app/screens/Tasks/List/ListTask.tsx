@@ -22,7 +22,7 @@ interface IListTask {
 const ListTask: FC<IListTask> = ({ navigation }) => {
   const tasks = useSelector(selectTasks);
   const activeTask = useSelector(selectActiveTask);
-  const { isLoading, fetchTasks, addActiveTask, pauseTask } = useTaskAction();
+  const { isLoading, fetchTasks, pauseTask, addActiveTask, startTask } = useTaskAction();
 
   useEffect(() => {
     fetchTasks();
@@ -37,7 +37,8 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
   };
 
   return (
-    <Loader isLoading={isLoading}>
+    <>
+      <Loader isLoading={isLoading} />
       <View style={basicStyles.container}>
         <View style={styles.headerWrapper}>
           <View>
@@ -57,7 +58,9 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
                 <FlatList
                   data={tasks}
                   keyExtractor={(item) => item.id.toString()}
-                  renderItem={({ item }: { item: any }) => <TaskRow task={item} navigate={navigation.navigate} />}
+                  renderItem={({ item }: { item: any }) => (
+                    <TaskRow task={item} navigate={navigation.navigate} pauseTask={pauseTask} startTask={startTask} />
+                  )}
                 />
               </View>
             )}
@@ -69,7 +72,7 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
           )}
         </View>
       </View>
-    </Loader>
+    </>
   );
 };
 

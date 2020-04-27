@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+import { listenerTaskDb } from '../utils/api';
+import _ from 'lodash';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchTasksAction, createTaskAction, pauseTaskAction, startTaskAction } from '../store/reducers/tasks/actions';
-import { addActiveTaskAction } from '../store/reducers/tasks/tasks';
+import { createTaskAction, pauseTaskAction, startTaskAction } from '../store/reducers/tasks/actions';
+import { addTasksAction, addActiveTaskAction } from '../store/reducers/tasks/tasks';
 import { selectUser } from '../store/reducers/user/selectors';
 // types
 import { ICreateTask, ITask } from '../store/type';
@@ -14,59 +16,66 @@ export const useTaskAction = () => {
   const dispatch = useDispatch();
   const { uid } = useSelector(selectUser);
 
-  const loader = (action: Function) => {
-    return () => {
-      setIsLoading(true);
-      action();
-      setIsLoading(false);
-    };
-  };
+  const handleFetch = useCallback(async () => {
+    await listenerTaskDb({ uid }, (value: any) => dispatch(addTasksAction(_.toArray(value))));
+  }, [dispatch, uid]);
 
-  const fetchTasks = () => loader(dispatch(fetchTasksAction({ uid })));
-  const createTask = (options: ICreateTask) => loader(dispatch(createTaskAction(options)));
+  const fetchTasks = useCallback(() => {
+    handleFetch().catch(() => console.log('error in data fetching'));
+  }, [handleFetch]);
 
-  const pauseTask = ({ task }: { task: ITask }) => {
-    const dn = Date.now();
-    const updates = {
-      uid,
-      task: {
-        ...task,
-        isActive: false,
-        duration: task.duration + findLastDuration(task.timeSession, dn),
-        timeSession: setEndSession([...task.timeSession], dn),
-      },
-    };
-    return loader(dispatch(pauseTaskAction(updates)));
-  };
+  const createTask = useCallback((options: ICreateTask) => dispatch(createTaskAction(options)), [dispatch]);
 
-  const addActiveTask = (tasks: ITask[]) => {
-    tasks.forEach((task) => {
-      if (task.isActive) {
-        dispatch(addActiveTaskAction(task));
-      }
-    });
-  };
+  const pauseTask = useCallback(
+    ({ task }: { task: ITask }) => {
+      const dn = Date.now();
+      const updates = {
+        uid,
+        task: {
+          ...task,
+          isActive: false,
+          duration: task.duration + findLastDuration(task.timeSession, dn),
+          timeSession: setEndSession([...task.timeSession], dn),
+        },
+      };
+      dispatch(pauseTaskAction(updates));
+    },
+    [dispatch, uid],
+  );
 
-  const startTask = (task: ITask) => {
-    console.log('start', task);
-    const dn = Date.now();
-    const updates = {
-      uid,
-      task: {
-        ...task,
-        isActive: true,
-        timeSession: setStartSession([...task.timeSession], dn),
-      },
-    };
-    return loader(dispatch(startTaskAction(updates)));
-  };
+  const addActiveTask = useCallback(
+    (tasks: ITask[]) => {
+      tasks.forEach((task) => {
+        if (task.isActive) {
+          dispatch(addActiveTaskAction(task));
+        }
+      });
+    },
+    [dispatch],
+  );
+
+  const startTask = useCallback(
+    (task: ITask) => {
+      const dn = Date.now();
+      const updates = {
+        uid,
+        task: {
+          ...task,
+          isActive: true,
+          timeSession: setStartSession([...task.timeSession], dn),
+        },
+      };
+      dispatch(startTaskAction(updates));
+    },
+    [dispatch, uid],
+  );
 
   return {
     isLoading,
     fetchTasks,
     createTask,
-    addActiveTask,
     pauseTask,
+    addActiveTask,
     startTask,
   };
 };

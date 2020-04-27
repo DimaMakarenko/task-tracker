@@ -17,11 +17,12 @@ import SvgUri from 'react-native-svg-uri';
 interface ITaskRow {
   task: ITask;
   navigate: Function;
+  pauseTask: Function;
+  startTask: Function;
 }
 
-const TaskRow: React.FC<ITaskRow> = ({ task, navigate }) => {
+const TaskRow: React.FC<ITaskRow> = ({ task, navigate, pauseTask, startTask }) => {
   const { title, duration, isActive, isFinished, startTimer } = task;
-  const { pauseTask, startTask } = useTaskAction();
 
   const handleDelete = useCallback(() => {
     console.log('delete');
@@ -41,7 +42,7 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate }) => {
 
   const showAlert = useCallback(() => {
     alert('Deleting task', 'You really want delete this task?', handleDelete);
-  }, []);
+  }, [handleDelete]);
 
   const renderLeftActions = () => {
     return (

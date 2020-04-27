@@ -1,10 +1,12 @@
 export interface IUser {
   uid: string;
 }
+
 export interface ITasks {
   tasks: ITask[];
   activeTask: ITask | null;
 }
+
 export type ISession = {
   start: number;
   end?: number;
