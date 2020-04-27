@@ -1,9 +1,12 @@
 import firebase from './firebaseDb';
-import { ITask } from '../types/store';
+import _ from 'lodash';
+// types
+import { ICreateTask, IFetchTasks, IUpdateTask } from '../store/type';
 
 const db = firebase.database();
 
-export const setTaskDb = (uid: string, task: ITask) => {
+export const setTaskDb = (option: ICreateTask) => {
+  const { uid, task } = option;
   const { id } = task;
   return db
     .ref('users/' + uid + '/tasks/')
@@ -11,18 +14,20 @@ export const setTaskDb = (uid: string, task: ITask) => {
     .set(task);
 };
 
-export const getTaskDb = (uid: string) => {
+export const getTaskDb = (options: IFetchTasks) => {
+  const { uid } = options;
   return db
     .ref('users/' + uid + '/tasks')
     .once('value')
-    .then((snap) => snap.val());
+    .then((snapshot) => _.toArray(snapshot.val()));
 };
 
-export const updateTaskDb = (uid: string, taskId: number, updates: any) => {
+export const updateTaskDb = (options: IUpdateTask) => {
+  const { uid, task } = options;
   return db
     .ref('users/' + uid + '/tasks')
-    .child(taskId.toString())
-    .update(updates);
+    .child(task.id.toString())
+    .update(task);
 };
 
 export const deleteTaskDb = (uid: string, taskId: number) => {

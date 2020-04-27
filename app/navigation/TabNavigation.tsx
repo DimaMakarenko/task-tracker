@@ -11,8 +11,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 const Tab = createBottomTabNavigator();
 
 const TabNavigation = () => {
-  const taskImage = require('../assets/alarm.png');
-  const statImage = require('../assets/trending.png');
+  const taskImage = require('../assets/images/alarm.png');
+  const statImage = require('../assets/images/trending.png');
   return (
     <NavigationContainer independent>
       <Tab.Navigator>

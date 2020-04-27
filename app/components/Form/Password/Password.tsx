@@ -13,8 +13,8 @@ interface IPasswordField {
 const PasswordField: React.FC<IPasswordField> = ({ fieldName, onChangeText, onBlur, value, error, touched }) => {
   const [isHide, setIsHide] = useState(true);
 
-  const eyeOutline = require('../../../assets/eye-outline.png');
-  const eyeOffOutline = require('../../../assets/eye-off-outline.png');
+  const eyeOutline = require('../../../assets/images/eye-outline.png');
+  const eyeOffOutline = require('../../../assets/images/eye-off-outline.png');
 
   return (
     <>
