@@ -1,11 +1,10 @@
 import React, { useCallback } from 'react';
 import { Text, StyleSheet, TouchableOpacity, View } from 'react-native';
-// redux
-import { useTaskAction } from '../../../hooks/useTaskAction';
 // components
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { RectButton } from 'react-native-gesture-handler';
 import { alert } from '../../../components/Alert/Alert';
+import { stopActiveTask } from '../../../components/Toast';
 // types
 import { ITask } from '../../../store/type';
 // utils
@@ -20,9 +19,10 @@ interface ITaskRow {
   pauseTask: Function;
   startTask: Function;
   deleteTask: Function;
+  activeTask: ITask | null;
 }
 
-const TaskRow: React.FC<ITaskRow> = ({ task, navigate, pauseTask, startTask, deleteTask }) => {
+const TaskRow: React.FC<ITaskRow> = ({ task, navigate, pauseTask, startTask, deleteTask, activeTask }) => {
   const { id, title, duration, isActive, isFinished, startTimer } = task;
 
   const handleDelete = useCallback(() => {
@@ -38,12 +38,12 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate, pauseTask, startTask, del
   }, [task, pauseTask]);
 
   const handleStart = useCallback(() => {
-    startTask(task);
-  }, [task, startTask]);
+    activeTask ? stopActiveTask() : startTask(task);
+  }, [task, startTask, activeTask]);
 
   const showAlert = useCallback(() => {
-    alert('Deleting task', 'Are you really want delete this task?', handleDelete);
-  }, [handleDelete]);
+    isActive ? stopActiveTask() : alert('Deleting task', 'Are you really want delete this task?', handleDelete);
+  }, [handleDelete, isActive]);
 
   const renderLeftActions = () => {
     return (
@@ -51,9 +51,11 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate, pauseTask, startTask, del
         <TouchableOpacity onPress={showAlert} style={styles.optionIcon}>
           <SvgUri source={deleteImg} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleEdit} style={styles.optionIcon}>
-          <SvgUri source={editImg} />
-        </TouchableOpacity>
+        {!isFinished && (
+          <TouchableOpacity onPress={handleEdit} style={styles.optionIcon}>
+            <SvgUri source={editImg} />
+          </TouchableOpacity>
+        )}
       </RectButton>
     );
   };
@@ -61,7 +63,10 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate, pauseTask, startTask, del
   return (
     <Swipeable renderRightActions={renderLeftActions}>
       <View style={styles.taskRow}>
-        <TouchableOpacity style={styles.taskInfo} onPress={() => navigate('Show', { task, deleteTask })}>
+        <TouchableOpacity
+          style={styles.taskInfo}
+          onPress={() => navigate('Show', { task, deleteTask, handleEdit, handlePause, handleStart })}
+        >
           <Text>{title}</Text>
           <View style={styles.row}>
             <Text>{isActive ? formatMills(startTimer) : dateFromMillis(duration)}</Text>

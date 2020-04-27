@@ -65,6 +65,7 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
                       pauseTask={pauseTask}
                       startTask={startTask}
                       deleteTask={deleteTask}
+                      activeTask={activeTask}
                     />
                   )}
                 />
