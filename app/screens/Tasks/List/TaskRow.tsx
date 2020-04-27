@@ -22,17 +22,25 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate }) => {
   const { title, duration, isActive, isFinished, startTimer } = task;
   const { pauseTask, startTask } = useTaskAction();
 
-  const handleDelete = () => console.log('delete');
-  const handleEdit = () => navigate('Edit', task);
+  const handleDelete = useCallback(() => {
+    console.log('delete');
+  }, []);
+
+  const handleEdit = useCallback(() => {
+    navigate('Edit', task);
+  }, [task, navigate]);
+
   const handlePause = useCallback(() => {
     pauseTask({ task });
-  }, [task]);
+  }, [task, pauseTask]);
 
   const handleStart = useCallback(() => {
     startTask(task);
-  }, [task]);
+  }, [task, startTask]);
 
-  const showAlert = () => alert('Deleting task', 'You really want delete this task?', handleDelete);
+  const showAlert = useCallback(() => {
+    alert('Deleting task', 'You really want delete this task?', handleDelete);
+  }, []);
 
   const renderLeftActions = () => {
     return (

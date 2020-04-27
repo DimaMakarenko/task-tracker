@@ -7,7 +7,7 @@ import Button from '../../Button/Button';
 import { Formik } from 'formik';
 import { validationTaskForm } from '../../../utils/validation';
 // types
-import { ITask } from '../../../types/store';
+import { ITask } from '../../../store/type';
 import { basicStyles } from '../../../theme/basicStyles';
 import { dateFromMillis, formatMills } from '../../../utils/time';
 

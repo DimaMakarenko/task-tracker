@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTasksAction, createTaskAction, pauseTaskAction, startTaskAction } from '../store/reducers/tasks/actions';
 import { addActiveTaskAction } from '../store/reducers/tasks/tasks';
-import { getUser } from '../store/reducers/user/selectors';
+import { selectUser } from '../store/reducers/user/selectors';
 // types
 import { ICreateTask, ITask } from '../store/type';
 // utils
@@ -12,7 +12,7 @@ import { findLastDuration, setEndSession, setStartSession } from '../utils/time'
 export const useTaskAction = () => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
-  const { uid } = useSelector(getUser);
+  const { uid } = useSelector(selectUser);
 
   const loader = (action: Function) => {
     return () => {

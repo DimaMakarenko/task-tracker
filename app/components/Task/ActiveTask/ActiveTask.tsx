@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 // utils
 import { dateFromMillis, lastSessionStart } from '../../../utils/time';
@@ -16,9 +16,9 @@ const ActiveTask: React.FC<IActiveTask> = ({ activeTask, pause }) => {
   const { title, duration, timeSession } = activeTask;
   const [timer, setTimer] = useState(duration);
 
-  const pauseTask = () => {
+  const pauseTask = useCallback(() => {
     pause({ task: activeTask });
-  };
+  }, [activeTask, pause]);
 
   useEffect(() => {
     let internal: any = null;

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 // interfaces
 import { ITask } from '../../../store/type';
@@ -18,18 +18,20 @@ interface IShowTask {
 }
 
 const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
-  const { id, title, duration, project, startTimer, timeSession, isActive } = route.params;
+  const { title, duration, project, startTimer, timeSession, isActive } = route.params;
 
-  const handleClick = () => {
+  const handleDelete = useCallback(() => {
     console.log('delete');
     navigation.navigate('List');
-  };
+  }, [navigation]);
 
   const lastEnd = useMemo(() => {
     return lastSessionEnd(timeSession, isActive);
   }, [timeSession, isActive]);
 
-  const showAlert = () => alert('Deleting task', 'You really want delete this task?', handleClick);
+  const showAlert = useCallback(() => {
+    alert('Deleting task', 'You really want delete this task?', handleDelete);
+  }, [handleDelete]);
 
   return (
     <View style={basicStyles.container}>
