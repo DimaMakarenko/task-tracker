@@ -1,11 +1,12 @@
 import { useState, useCallback } from 'react';
-import { listenerTaskDb, deleteTaskDb } from '../utils/api';
+import { listenerTaskDb, deleteTaskDb, updateTaskDb } from '../utils/api';
 import _ from 'lodash';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
 import { createTaskAction, pauseTaskAction, startTaskAction } from '../store/reducers/tasks/actions';
 import { addTasksAction, addActiveTaskAction } from '../store/reducers/tasks/tasks';
 import { selectUser } from '../store/reducers/user/selectors';
+import { selectTasks } from '../store/reducers/tasks/selectors';
 // types
 import { ICreateTask, ITask } from '../store/type';
 // utils
@@ -15,6 +16,7 @@ export const useTaskAction = () => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const { uid } = useSelector(selectUser);
+  const taskList = useSelector(selectTasks);
 
   const handleFetch = useCallback(async () => {
     await listenerTaskDb({ uid }, (value: any) => dispatch(addTasksAction(_.toArray(value))));
@@ -77,6 +79,23 @@ export const useTaskAction = () => {
     [uid],
   );
 
+  const finishTask = useCallback(async (task: ITask) => {
+    const updates = {
+      uid,
+      task: {
+        ...task,
+        isFinished: true,
+      },
+    };
+    await updateTaskDb(updates);
+  }, []);
+
+  const getTask = useCallback(
+    (id: number) => {
+      return taskList.filter((task) => task.id === id)[0];
+    },
+    [taskList],
+  );
   return {
     isLoading,
     fetchTasks,
@@ -85,5 +104,7 @@ export const useTaskAction = () => {
     addActiveTask,
     startTask,
     deleteTask,
+    finishTask,
+    getTask,
   };
 };

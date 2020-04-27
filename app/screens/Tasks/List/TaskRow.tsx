@@ -65,7 +65,7 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate, pauseTask, startTask, del
       <View style={styles.taskRow}>
         <TouchableOpacity
           style={styles.taskInfo}
-          onPress={() => navigate('Show', { task, deleteTask, handleEdit, handlePause, handleStart })}
+          onPress={() => navigate('Show', { taskId: task.id, deleteTask, handleEdit, handlePause, handleStart })}
         >
           <Text>{title}</Text>
           <View style={styles.row}>

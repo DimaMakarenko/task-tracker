@@ -13,12 +13,13 @@ import { dateFromMillis, lastSessionEnd } from '../../../utils/time';
 // images
 import SvgUri from 'react-native-svg-uri';
 import { editImg, pauseImg, playImg } from '../../../assets';
+import { useTaskAction } from '../../../hooks/useTaskAction';
 
 interface IShowTask {
   navigation: { navigate: Function };
   route: {
     params: {
-      task: ITask;
+      taskId: number;
       deleteTask: Function;
       handleEdit: Function;
       handlePause: Function;
@@ -28,8 +29,12 @@ interface IShowTask {
 }
 
 const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
-  const { task, deleteTask, handleEdit, handlePause, handleStart } = route.params;
-  const { id, title, duration, project, startTimer, timeSession, isActive, isFinished } = task;
+  const { taskId, deleteTask, handleEdit, handlePause, handleStart } = route.params;
+
+  const { finishTask, getTask } = useTaskAction();
+
+  const currentTask = getTask(taskId);
+  const { id, title, duration, project, startTimer, timeSession, isActive, isFinished } = currentTask;
 
   const handleDelete = useCallback(() => {
     deleteTask(id);
@@ -45,7 +50,7 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
   }, [handleDelete]);
 
   const makeFinished = useCallback(() => {
-    console.log('finish');
+    finishTask(currentTask);
   }, []);
 
   return (
