@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Text, StyleSheet, TouchableOpacity, Image, View } from 'react-native';
+import { Text, StyleSheet, TouchableOpacity, View } from 'react-native';
 // redux
 import { useTaskAction } from '../../../hooks/useTaskAction';
 // components
@@ -12,6 +12,7 @@ import { ITask } from '../../../store/type';
 import { dateFromMillis, formatMills } from '../../../utils/time';
 // images
 import { deleteImg, editImg, playImg, completeImg, pauseImg } from '../../../assets';
+import SvgUri from 'react-native-svg-uri';
 
 interface ITaskRow {
   task: ITask;
@@ -46,10 +47,10 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate }) => {
     return (
       <RectButton style={styles.option}>
         <TouchableOpacity onPress={showAlert} style={styles.optionIcon}>
-          <Image source={deleteImg} />
+          <SvgUri source={deleteImg} />
         </TouchableOpacity>
         <TouchableOpacity onPress={handleEdit} style={styles.optionIcon}>
-          <Image source={editImg} />
+          <SvgUri source={editImg} />
         </TouchableOpacity>
       </RectButton>
     );
@@ -66,17 +67,17 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate }) => {
         </TouchableOpacity>
         {isFinished ? (
           <TouchableOpacity style={styles.image}>
-            <Image source={completeImg} />
+            <SvgUri source={completeImg} />
           </TouchableOpacity>
         ) : (
           <>
             {isActive ? (
               <TouchableOpacity style={styles.image} onPress={handlePause}>
-                <Image source={pauseImg} />
+                <SvgUri source={pauseImg} />
               </TouchableOpacity>
             ) : (
               <TouchableOpacity style={styles.image} onPress={handleStart}>
-                <Image source={playImg} />
+                <SvgUri source={playImg} />
               </TouchableOpacity>
             )}
           </>

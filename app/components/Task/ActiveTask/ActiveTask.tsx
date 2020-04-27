@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 // utils
 import { dateFromMillis, lastSessionStart } from '../../../utils/time';
 // types
 import { ITask } from '../../../store/type';
 // image
+import SvgUri from 'react-native-svg-uri';
 import { pauseImg } from '../../../assets';
 
 interface IActiveTask {
@@ -33,7 +34,7 @@ const ActiveTask: React.FC<IActiveTask> = ({ activeTask, pause }) => {
       <Text>{title}</Text>
       <Text>{dateFromMillis(timer)}</Text>
       <TouchableOpacity onPress={pauseTask} style={styles.image}>
-        <Image source={pauseImg} />
+        <SvgUri source={pauseImg} />
       </TouchableOpacity>
     </View>
   );

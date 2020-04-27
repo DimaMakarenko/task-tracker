@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { Image, View, StyleSheet, TextInput, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TextInput, Text, TouchableOpacity } from 'react-native';
+// images
+import { eyeImg, eyeOffImg } from '../../../assets';
+import SvgUri from 'react-native-svg-uri';
 
 interface IPasswordField {
   fieldName: string;
@@ -12,9 +15,6 @@ interface IPasswordField {
 
 const PasswordField: React.FC<IPasswordField> = ({ fieldName, onChangeText, onBlur, value, error, touched }) => {
   const [isHide, setIsHide] = useState(true);
-
-  const eyeOutline = require('../../../assets/images/eye-outline.png');
-  const eyeOffOutline = require('../../../assets/images/eye-off-outline.png');
 
   return (
     <>
@@ -29,7 +29,7 @@ const PasswordField: React.FC<IPasswordField> = ({ fieldName, onChangeText, onBl
           textContentType='password'
         />
         <TouchableOpacity onPress={() => setIsHide(!isHide)}>
-          <Image source={isHide ? eyeOffOutline : eyeOutline} style={styles.image} />
+          <SvgUri source={isHide ? eyeOffImg : eyeImg} />
         </TouchableOpacity>
       </View>
       <Text style={styles.error}>{touched && error}</Text>
@@ -51,7 +51,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginVertical: 8,
   },
-  image: { height: 14, width: 20, opacity: 0.5 },
   input: { flex: 1, fontSize: 18 },
   error: {
     color: 'red',
