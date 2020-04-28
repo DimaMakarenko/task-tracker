@@ -8,7 +8,7 @@ import { addTasksAction, addActiveTaskAction } from '../store/reducers/tasks/tas
 import { selectUser } from '../store/reducers/user/selectors';
 import { selectTasks } from '../store/reducers/tasks/selectors';
 // types
-import { ICreateTask, ITask } from '../store/type';
+import { ICreateTask, ITask, INewTask } from '../store/type';
 // utils
 import { findLastDuration, setEndSession, setStartSession } from '../utils/time';
 
@@ -79,16 +79,19 @@ export const useTaskAction = () => {
     [uid],
   );
 
-  const finishTask = useCallback(async (task: ITask) => {
-    const updates = {
-      uid,
-      task: {
-        ...task,
-        isFinished: true,
-      },
-    };
-    await updateTaskDb(updates);
-  }, []);
+  const finishTask = useCallback(
+    async (task: ITask) => {
+      const updates = {
+        uid,
+        task: {
+          ...task,
+          isFinished: true,
+        },
+      };
+      await updateTaskDb(updates);
+    },
+    [uid],
+  );
 
   const getTask = useCallback(
     (id: number) => {
@@ -96,6 +99,21 @@ export const useTaskAction = () => {
     },
     [taskList],
   );
+
+  const editTask = useCallback(
+    async (task: ITask, newValue: any) => {
+      const updates = {
+        uid,
+        task: {
+          ...task,
+          ...newValue,
+        },
+      };
+      await updateTaskDb(updates);
+    },
+    [uid],
+  );
+
   return {
     isLoading,
     fetchTasks,
@@ -106,5 +124,6 @@ export const useTaskAction = () => {
     deleteTask,
     finishTask,
     getTask,
+    editTask,
   };
 };

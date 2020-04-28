@@ -8,7 +8,7 @@ import { stopActiveTask } from '../../../components/Toast';
 // types
 import { ITask } from '../../../store/type';
 // utils
-import { dateFromMillis, formatMills } from '../../../utils/time';
+import { formatMills, durationFromMills } from '../../../utils/time';
 // images
 import { deleteImg, editImg, playImg, completeImg, pauseImg } from '../../../assets';
 import SvgUri from 'react-native-svg-uri';
@@ -29,10 +29,6 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate, pauseTask, startTask, del
     deleteTask(id);
   }, [deleteTask, id]);
 
-  const handleEdit = useCallback(() => {
-    navigate('Edit', task);
-  }, [task, navigate]);
-
   const handlePause = useCallback(() => {
     pauseTask({ task });
   }, [task, pauseTask]);
@@ -40,6 +36,14 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate, pauseTask, startTask, del
   const handleStart = useCallback(() => {
     activeTask ? stopActiveTask() : startTask(task);
   }, [task, startTask, activeTask]);
+
+  const handleEdit = useCallback(() => {
+    navigate('Edit', { task, deleteTask, handleEdit, handlePause, handleStart });
+  }, [task, navigate, deleteTask, handlePause, handleStart]);
+
+  const handleShow = useCallback(() => {
+    navigate('Show', { taskId: task.id, deleteTask, handleEdit, handlePause, handleStart });
+  }, [task, deleteTask, handleEdit, handlePause, handleStart, navigate]);
 
   const showAlert = useCallback(() => {
     isActive ? stopActiveTask() : alert('Deleting task', 'Are you really want delete this task?', handleDelete);
@@ -63,13 +67,10 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate, pauseTask, startTask, del
   return (
     <Swipeable renderRightActions={renderLeftActions}>
       <View style={styles.taskRow}>
-        <TouchableOpacity
-          style={styles.taskInfo}
-          onPress={() => navigate('Show', { taskId: task.id, deleteTask, handleEdit, handlePause, handleStart })}
-        >
+        <TouchableOpacity style={styles.taskInfo} onPress={handleShow}>
           <Text>{title}</Text>
           <View style={styles.row}>
-            <Text>{isActive ? formatMills(startTimer) : dateFromMillis(duration)}</Text>
+            <Text>{isActive ? formatMills(startTimer) : durationFromMills(duration)}</Text>
           </View>
         </TouchableOpacity>
         {isFinished ? (

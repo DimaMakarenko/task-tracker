@@ -9,7 +9,7 @@ import Button from '../../../components/Button/Button';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
 // utils
-import { dateFromMillis, lastSessionEnd } from '../../../utils/time';
+import { dateFromMillis, lastSessionEnd, durationFromMills } from '../../../utils/time';
 // images
 import SvgUri from 'react-native-svg-uri';
 import { editImg, pauseImg, playImg } from '../../../assets';
@@ -98,7 +98,7 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
       </View>
       <View style={styles.block}>
         <Text style={basicStyles.subTitle}>Duration</Text>
-        <Text style={basicStyles.text}>{dateFromMillis(duration)} h</Text>
+        <Text style={basicStyles.text}>{durationFromMills(duration)} h</Text>
       </View>
       <View style={styles.block}>
         <Text style={styles.deleteBtn} onPress={showAlert}>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 // utils
-import { dateFromMillis, lastSessionStart } from '../../../utils/time';
+import { lastSessionStart, durationFromMills } from '../../../utils/time';
 // types
 import { ITask } from '../../../store/type';
 // image
@@ -32,7 +32,7 @@ const ActiveTask: React.FC<IActiveTask> = ({ activeTask, pause }) => {
   return (
     <View style={[styles.activeTask]}>
       <Text>{title}</Text>
-      <Text>{dateFromMillis(timer)}</Text>
+      <Text>{durationFromMills(timer)}</Text>
       <TouchableOpacity onPress={pauseTask} style={styles.image}>
         <SvgUri source={pauseImg} />
       </TouchableOpacity>
