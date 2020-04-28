@@ -1,18 +1,59 @@
 import React from 'react';
 import { View, StyleSheet, TextInput, Text } from 'react-native';
+import { Item, Label, Input, Icon, NativeBase } from 'native-base';
 
 interface ITextField {
   onChangeText: Function;
   onBlur: Function;
-  value: string;
-  placeholder?: string;
+  value?: string;
+  label?: string;
   error?: string;
   touched?: boolean;
+  editable?: boolean;
 }
 
-const TextField: React.FC<ITextField> = ({ placeholder, onChangeText, onBlur, value, error, touched }) => {
+const TextField: React.FC<ITextField> = ({ label, onChangeText, onBlur, value, error, touched, editable }) => {
   return (
     <>
+      <Item floatingLabel style={styles.wrapper} error={!!error}>
+        <Label style={styles.label}>{label}</Label>
+        <Input
+          style={styles.input}
+          onChangeText={(text) => onChangeText(text)}
+          onBlur={(text) => onBlur(text)}
+          value={value}
+          placeholder={label}
+          editable={!editable}
+        />
+      </Item>
+      <Text style={styles.error}>{touched && error}</Text>
+    </>
+  );
+};
+
+const styles = StyleSheet.create({
+  label: {
+    paddingHorizontal: 5,
+    fontSize: 14,
+    marginBottom: 5,
+  },
+  wrapper: {
+    paddingHorizontal: 5,
+    marginLeft: 0,
+    marginTop: 20,
+    lineHeight: 18,
+  },
+  image: { height: 14, width: 20, opacity: 0.5 },
+  input: { fontSize: 14, paddingLeft: 0 },
+  error: {
+    color: 'red',
+  },
+});
+
+export default TextField;
+
+/*
+<>
       <View style={styles.container}>
         <TextInput
           onChangeText={(text) => onChangeText(text)}
@@ -24,28 +65,4 @@ const TextField: React.FC<ITextField> = ({ placeholder, onChangeText, onBlur, va
       </View>
       <Text style={styles.error}>{touched && error}</Text>
     </>
-  );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    borderTopWidth: 1,
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
-    borderColor: '#rgba(0,0,0,0.16)',
-    borderRadius: 5,
-    marginVertical: 8,
-  },
-  image: { height: 14, width: 20, opacity: 0.5 },
-  input: { flex: 1, fontSize: 18 },
-  error: {
-    color: 'red',
-  },
-});
-
-export default TextField;
+ */

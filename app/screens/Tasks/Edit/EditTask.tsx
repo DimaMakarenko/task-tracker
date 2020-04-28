@@ -38,8 +38,8 @@ const EditTask: React.FC<IEditTask> = ({ navigation, route }) => {
 
   return (
     <View style={basicStyles.container}>
-      <Title text='Edit4' />
-      <TaskForm onSubmit={handleUpdate} task={task} />
+      <Title text='Edit' />
+      <TaskForm onSubmit={handleUpdate} task={task} navigate={navigation.navigate} />
     </View>
   );
 };

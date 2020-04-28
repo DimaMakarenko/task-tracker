@@ -8,7 +8,7 @@ import { addTasksAction, addActiveTaskAction } from '../store/reducers/tasks/tas
 import { selectUser } from '../store/reducers/user/selectors';
 import { selectTasks } from '../store/reducers/tasks/selectors';
 // types
-import { ICreateTask, ITask, INewTask } from '../store/type';
+import { ICreateTask, ITask } from '../store/type';
 // utils
 import { findLastDuration, setEndSession, setStartSession } from '../utils/time';
 
@@ -23,7 +23,7 @@ export const useTaskAction = () => {
   }, [dispatch, uid]);
 
   const fetchTasks = useCallback(() => {
-    handleFetch().catch(() => console.log('Error in data fetching'));
+    handleFetch().catch(() => console.log('Error in  data fetching'));
   }, [handleFetch]);
 
   const createTask = useCallback((options: ICreateTask) => dispatch(createTaskAction(options)), [dispatch]);

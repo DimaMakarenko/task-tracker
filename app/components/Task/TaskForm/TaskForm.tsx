@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
 // component
 import TextField from '../../Form/Text/TextField';
 import Button from '../../Button/Button';
@@ -14,6 +14,7 @@ import { dateFromMillis, formatMills } from '../../../utils/time';
 interface ITaskForm {
   onSubmit: Function;
   task?: ITask;
+  navigate: Function;
 }
 
 export interface MyFormValues {
@@ -21,14 +22,14 @@ export interface MyFormValues {
   project: string;
 }
 
-const TaskForm: React.FC<ITaskForm> = ({ onSubmit, task }) => {
+const TaskForm: React.FC<ITaskForm> = ({ onSubmit, task, navigate }) => {
   const initialValues: MyFormValues = {
     title: task ? task.title : '',
     project: task ? task.project : '',
   };
 
   return (
-    <View>
+    <ScrollView>
       <Formik
         initialValues={initialValues}
         onSubmit={(values) => onSubmit(values)}
@@ -39,7 +40,7 @@ const TaskForm: React.FC<ITaskForm> = ({ onSubmit, task }) => {
             <TextField
               onChangeText={handleChange('title')}
               onBlur={handleBlur('title')}
-              placeholder='Title'
+              label='Title'
               value={values.title}
               error={errors.title}
               touched={touched.title}
@@ -47,7 +48,7 @@ const TaskForm: React.FC<ITaskForm> = ({ onSubmit, task }) => {
             <TextField
               onChangeText={handleChange('project')}
               onBlur={handleBlur('project')}
-              placeholder='Project'
+              label='Project'
               value={values.project}
               error={errors.project}
               touched={touched.project}
@@ -70,11 +71,14 @@ const TaskForm: React.FC<ITaskForm> = ({ onSubmit, task }) => {
                 </View>
               </>
             )}
+            <TouchableOpacity onPress={() => navigate('Tags')}>
+              <TextField onChangeText={handleChange('tags')} onBlur={handleBlur('tags')} label='Tags' editable />
+            </TouchableOpacity>
             <Button title={task ? 'Update task' : 'Start task'} onPress={handleSubmit} />
           </View>
         )}
       </Formik>
-    </View>
+    </ScrollView>
   );
 };
 

@@ -12,6 +12,7 @@ import { formatMills, durationFromMills } from '../../../utils/time';
 // images
 import { deleteImg, editImg, playImg, completeImg, pauseImg } from '../../../assets';
 import SvgUri from 'react-native-svg-uri';
+import { Icon } from 'native-base';
 
 interface ITaskRow {
   task: ITask;
