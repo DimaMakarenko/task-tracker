@@ -1,6 +1,7 @@
 import React, { FC, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { useTaskAction } from '../../../hooks/useTaskAction';
+import { useTagsAction } from '../../../hooks/useTagsAction';
 // db
 import firebase from 'firebase';
 // redux
@@ -23,6 +24,7 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
   const tasks = useSelector(selectTasks);
   const activeTask = useSelector(selectActiveTask);
   const { isLoading, fetchTasks, pauseTask, addActiveTask, startTask, deleteTask } = useTaskAction();
+  const { fetchTags } = useTagsAction();
 
   useEffect(() => {
     fetchTasks();
@@ -30,6 +32,10 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
 
   useEffect(() => {
     addActiveTask(tasks);
+  }, [tasks]);
+
+  useEffect(() => {
+    fetchTags(tasks);
   }, [tasks]);
 
   const handlePress = () => {
