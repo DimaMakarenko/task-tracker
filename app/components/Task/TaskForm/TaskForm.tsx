@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
 // component
 import TextField from '../../Form/Text/TextField';
@@ -20,14 +20,17 @@ interface ITaskForm {
 export interface MyFormValues {
   title: string;
   project: string;
+  tags?: string[];
 }
 
 const TaskForm: React.FC<ITaskForm> = ({ onSubmit, task, navigate }) => {
+  const [tags, setTags] = useState(task ? task.tags : []);
+
   const initialValues: MyFormValues = {
     title: task ? task.title : '',
     project: task ? task.project : '',
+    tags: task ? task.tags : [],
   };
-
   return (
     <ScrollView>
       <Formik
@@ -35,7 +38,7 @@ const TaskForm: React.FC<ITaskForm> = ({ onSubmit, task, navigate }) => {
         onSubmit={(values) => onSubmit(values)}
         validationSchema={validationTaskForm}
       >
-        {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+        {({ handleChange, handleBlur, handleSubmit, values, errors, touched, setValues, setFieldValue }) => (
           <View>
             <TextField
               onChangeText={handleChange('title')}
@@ -71,8 +74,8 @@ const TaskForm: React.FC<ITaskForm> = ({ onSubmit, task, navigate }) => {
                 </View>
               </>
             )}
-            <TouchableOpacity onPress={() => navigate('Tags')}>
-              <TextField onChangeText={handleChange('tags')} onBlur={handleBlur('tags')} label='Tags' editable />
+            <TouchableOpacity onPress={() => navigate('Tags', { values: values.tags, setFieldValue })}>
+              <Text>Tags</Text>
             </TouchableOpacity>
             <Button title={task ? 'Update task' : 'Start task'} onPress={handleSubmit} />
           </View>

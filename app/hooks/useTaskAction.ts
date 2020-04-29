@@ -23,7 +23,7 @@ export const useTaskAction = () => {
   }, [dispatch, uid]);
 
   const fetchTasks = useCallback(() => {
-    handleFetch().catch(() => console.log('Error in data fetching'));
+    handleFetch().catch(() => console.log('Error in data  fetching'));
   }, [handleFetch]);
 
   const createTask = useCallback((options: ICreateTask) => dispatch(createTaskAction(options)), [dispatch]);
