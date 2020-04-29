@@ -1,15 +1,9 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 // types
-import { ITask, ICreateTask, IFetchTasks, IUpdateTask } from '../../type';
+import { ICreateTask, IUpdateTask } from '../../type';
 // api
-import { getTaskDb, setTaskDb, updateTaskDb } from '../../../utils/api';
+import { setTaskDb, updateTaskDb } from '../../../utils/api';
 import { getNewTask } from '../../../utils/tasks';
-
-export const fetchTasksAction: any = createAsyncThunk('tasks/fetchTasks', async (options: IFetchTasks) => {
-  const { uid } = options;
-  const response: ITask[] = await getTaskDb({ uid });
-  return response;
-});
 
 export const createTaskAction: any = createAsyncThunk('tasks/createTask', async (options: ICreateTask) => {
   const { uid, task } = options;

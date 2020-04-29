@@ -35,6 +35,7 @@ const SignUpScreen: React.FC<ISignUpScreen> = ({ navigation }) => {
     repeatPassword: '',
     error: null,
   };
+
   return (
     <View style={[basicStyles.container, styles.container]}>
       <Title text='Sign-up' />

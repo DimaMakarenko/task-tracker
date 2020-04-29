@@ -1,10 +1,12 @@
 export interface IUser {
   uid: string;
 }
+
 export interface ITasks {
   tasks: ITask[];
   activeTask: ITask | null;
 }
+
 export type ISession = {
   start: number;
   end?: number;
@@ -41,5 +43,10 @@ export interface IFetchTasks {
 
 export interface IUpdateTask {
   task: ITask;
+  uid: string;
+}
+
+export interface IDeleteTask {
+  taskId: number;
   uid: string;
 }

@@ -1,7 +1,6 @@
 import firebase from './firebaseDb';
-import _ from 'lodash';
 // types
-import { ICreateTask, IFetchTasks, IUpdateTask } from '../store/type';
+import { ICreateTask, IFetchTasks, IUpdateTask, IDeleteTask } from '../store/type';
 
 const db = firebase.database();
 
@@ -14,12 +13,11 @@ export const setTaskDb = (option: ICreateTask) => {
     .set(task);
 };
 
-export const getTaskDb = (options: IFetchTasks) => {
+export const listenerTaskDb = (options: IFetchTasks, callback: any) => {
   const { uid } = options;
-  return db
-    .ref('users/' + uid + '/tasks')
-    .once('value')
-    .then((snapshot) => _.toArray(snapshot.val()));
+  db.ref('users/' + uid + '/tasks').on('value', (snapshot) => {
+    callback(snapshot.val());
+  });
 };
 
 export const updateTaskDb = (options: IUpdateTask) => {
@@ -30,7 +28,8 @@ export const updateTaskDb = (options: IUpdateTask) => {
     .update(task);
 };
 
-export const deleteTaskDb = (uid: string, taskId: number) => {
+export const deleteTaskDb = (options: IDeleteTask) => {
+  const { uid, taskId } = options;
   return db
     .ref('users/' + uid + '/tasks')
     .child(taskId.toString())

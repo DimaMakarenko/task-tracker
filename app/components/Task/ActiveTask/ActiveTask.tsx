@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState, useCallback } from 'react';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 // utils
-import { dateFromMillis, lastSessionStart } from '../../../utils/time';
+import { lastSessionStart, durationFromMills } from '../../../utils/time';
 // types
 import { ITask } from '../../../store/type';
 // image
+import SvgUri from 'react-native-svg-uri';
 import { pauseImg } from '../../../assets';
 
 interface IActiveTask {
@@ -16,9 +17,9 @@ const ActiveTask: React.FC<IActiveTask> = ({ activeTask, pause }) => {
   const { title, duration, timeSession } = activeTask;
   const [timer, setTimer] = useState(duration);
 
-  const pauseTask = () => {
+  const pauseTask = useCallback(() => {
     pause({ task: activeTask });
-  };
+  }, [activeTask, pause]);
 
   useEffect(() => {
     let internal: any = null;
@@ -31,9 +32,9 @@ const ActiveTask: React.FC<IActiveTask> = ({ activeTask, pause }) => {
   return (
     <View style={[styles.activeTask]}>
       <Text>{title}</Text>
-      <Text>{dateFromMillis(timer)}</Text>
+      <Text>{durationFromMills(timer)}</Text>
       <TouchableOpacity onPress={pauseTask} style={styles.image}>
-        <Image source={pauseImg} />
+        <SvgUri source={pauseImg} />
       </TouchableOpacity>
     </View>
   );

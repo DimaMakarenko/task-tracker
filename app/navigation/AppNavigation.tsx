@@ -16,6 +16,7 @@ const Stack = createStackNavigator();
 const AppNavigation: React.FC = () => {
   const { user } = useAuth();
   const dispatch = useDispatch();
+
   useEffect(() => {
     if (user) {
       dispatch(setUser(user.uid));
