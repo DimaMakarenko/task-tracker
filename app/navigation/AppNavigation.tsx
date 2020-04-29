@@ -18,9 +18,7 @@ const AppNavigation: React.FC = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (user) {
-      dispatch(setUser(user.uid));
-    }
+    user && dispatch(setUser(user.uid));
   });
   return (
     <NavigationContainer>

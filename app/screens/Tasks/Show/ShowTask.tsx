@@ -1,11 +1,10 @@
 import React, { useMemo, useCallback } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
-// interfaces
-import { ITask } from '../../../store/type';
 // components
 import Title from '../../../components/Title/Title';
 import { alert } from '../../../components/Alert/Alert';
 import Button from '../../../components/Button/Button';
+import TagList from '../../../components/Tags/TagList';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
 // utils
@@ -34,7 +33,8 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
   const { finishTask, getTask } = useTaskAction();
 
   const currentTask = getTask(taskId);
-  const { id, title, duration, project, startTimer, timeSession, isActive, isFinished } = currentTask;
+
+  const { id, title, duration, project, startTimer, timeSession, isActive, isFinished, tags } = currentTask;
 
   const handleDelete = useCallback(() => {
     deleteTask(id);
@@ -101,6 +101,11 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
         <Text style={basicStyles.text}>{durationFromMills(duration)} h</Text>
       </View>
       <View style={styles.block}>
+        <Text style={basicStyles.subTitle}>Tags</Text>
+        {tags && <TagList tags={tags} />}
+      </View>
+
+      <View style={styles.block}>
         <Text style={styles.deleteBtn} onPress={showAlert}>
           Delete
         </Text>
@@ -114,7 +119,7 @@ const styles = StyleSheet.create({
   block: { marginBottom: 30 },
   timeBlock: { flexDirection: 'row', justifyContent: 'space-between' },
   deleteBtn: { fontSize: 12, color: 'rgba(218, 11, 11,0.6)' },
-  header: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 45 },
+  header: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20 },
   optionIcon: { marginLeft: 14 },
   icons: { flexDirection: 'row' },
 });

@@ -28,7 +28,7 @@ const CreateTask: React.FC<ICreateTask> = ({ navigation }) => {
   );
 
   return (
-    <View style={basicStyles.container}>
+    <View style={[basicStyles.container, basicStyles.fullScreen]}>
       <Title text='Create task' />
       <TaskForm onSubmit={handleClick} navigate={navigation.navigate} />
     </View>

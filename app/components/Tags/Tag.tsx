@@ -1,14 +1,16 @@
 import React from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Icon } from 'native-base';
+// types
+import { ITagFunc } from '../../store/type';
 
 interface ITagContainer {
   title: string;
-  onRemove?: (title: string) => void;
-  onAdd?: (title: string) => void;
+  onRemove?: ITagFunc;
+  onAdd?: ITagFunc;
 }
 
-const TagContainer: React.FC<ITagContainer> = ({ title, onRemove, onAdd }) => {
+const Tag: React.FC<ITagContainer> = ({ title, onRemove, onAdd }) => {
   return (
     <TouchableOpacity style={styles.wrapper} onPress={onAdd ? () => onAdd(title) : undefined} activeOpacity={1}>
       <Text style={styles.text}>{title}</Text>
@@ -23,7 +25,7 @@ const TagContainer: React.FC<ITagContainer> = ({ title, onRemove, onAdd }) => {
   );
 };
 
-export default TagContainer;
+export default Tag;
 
 const styles = StyleSheet.create({
   wrapper: {

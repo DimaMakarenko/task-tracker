@@ -37,7 +37,7 @@ const EditTask: React.FC<IEditTask> = ({ navigation, route }) => {
   );
 
   return (
-    <View style={basicStyles.container}>
+    <View style={[basicStyles.container, basicStyles.fullScreen]}>
       <Title text='Edit' />
       <TaskForm onSubmit={handleUpdate} task={task} navigate={navigation.navigate} />
     </View>

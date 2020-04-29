@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { Item, Label, Input, Icon, NativeBase } from 'native-base';
+import { View, StyleSheet, Text, TouchableOpacity, TextInput } from 'react-native';
+import { Item, Label, Icon, NativeBase, Input } from 'native-base';
 
 interface ITextField {
   onChangeText?: Function;
@@ -27,7 +27,7 @@ const TextField: React.FC<ITextField> = ({
 }) => {
   return (
     <View>
-      <Item style={styles.field}>
+      <Item style={styles.field} floatingLabel>
         <Label style={styles.label}>{label}</Label>
         <Input
           style={styles.input}
@@ -43,23 +43,22 @@ const TextField: React.FC<ITextField> = ({
           </TouchableOpacity>
         )}
       </Item>
-
       <Text style={styles.error}>{touched && error}</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  field: {},
+  field: { marginTop: 10 },
   label: {
-    // paddingHorizontal: 5,
+    paddingHorizontal: 5,
     fontSize: 14,
-    // marginBottom: 5,
+    marginBottom: 5,
   },
   wrapper: {
     paddingHorizontal: 5,
-    // marginLeft: 0,
-    // marginTop: 20,
+    marginLeft: 0,
+    marginTop: 20,
     lineHeight: 18,
   },
   image: { color: '#666' },
