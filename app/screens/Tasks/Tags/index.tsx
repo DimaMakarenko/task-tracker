@@ -10,6 +10,8 @@ import TagContainer from '../../../components/Tags/TagContainer';
 import { basicStyles } from '../../../theme/basicStyles';
 // types
 import { ITag } from '../../../store/type';
+// routes
+import { tasksRoutes } from '../../../navigation/routes';
 
 interface ITags {
   navigation: {
@@ -29,7 +31,7 @@ const Tags: React.FC<ITags> = ({ navigation, route }) => {
 
   const submit = (tags: ITag) => {
     setFieldValue('tags', tags);
-    navigation.navigate('Edit');
+    navigation.navigate(tasksRoutes.EDIT);
   };
 
   return (

@@ -10,6 +10,8 @@ import { selectUser } from '../../../store/reducers/user/selectors';
 import TaskForm from '../../../components/Task/TaskForm/TaskForm';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
+// routes
+import { tasksRoutes } from '../../../navigation/routes';
 
 interface ICreateTask {
   navigation: { navigate: Function };
@@ -22,7 +24,7 @@ const CreateTask: React.FC<ICreateTask> = ({ navigation }) => {
   const handleClick = useCallback(
     (value: any) => {
       createTask({ uid, task: value });
-      navigation.navigate('List');
+      navigation.navigate(tasksRoutes.LIST);
     },
     [uid],
   );

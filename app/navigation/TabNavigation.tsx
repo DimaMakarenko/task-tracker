@@ -9,6 +9,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // images
 import SvgUri from 'react-native-svg-uri';
 import { clocksImg, statsImg } from '../assets';
+// routes
+import { tabsRoutes } from './routes';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,7 +19,7 @@ const TabNavigation = () => {
     <NavigationContainer independent>
       <Tab.Navigator>
         <Tab.Screen
-          name='Tasks'
+          name={tabsRoutes.TASKS}
           component={TasksNavigation}
           options={{
             tabBarLabel: '',
@@ -25,7 +27,7 @@ const TabNavigation = () => {
           }}
         />
         <Tab.Screen
-          name='Statistic'
+          name={tabsRoutes.STATISTIC}
           component={Statistic}
           options={{
             tabBarLabel: '',

@@ -8,6 +8,8 @@ import TaskForm from '../../../components/Task/TaskForm/TaskForm';
 import { ITask } from '../../../store/type';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
+// routes
+import { tasksRoutes } from '../../../navigation/routes';
 
 interface IEditTask {
   navigation: {
@@ -33,7 +35,7 @@ const EditTask: React.FC<IEditTask> = ({ navigation, route }) => {
   const handleUpdate = useCallback(
     (value: any) => {
       editTask(currentTask, value);
-      navigation.navigate('Show', { taskId: task.id, deleteTask, handleEdit, handlePause, handleStart });
+      navigation.navigate(tasksRoutes.SHOW, { taskId: task.id, deleteTask, handleEdit, handlePause, handleStart });
     },
     [currentTask, deleteTask, handleEdit, handlePause, handleStart, navigation, editTask],
   );

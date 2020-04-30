@@ -13,6 +13,8 @@ import { dateFromMillis, lastSessionEnd, durationFromMills } from '../../../util
 import SvgUri from 'react-native-svg-uri';
 import { editImg, pauseImg, playImg } from '../../../assets';
 import { useTasks } from '../../../hooks/useTasks';
+// routes
+import { tasksRoutes } from '../../../navigation/routes';
 
 interface IShowTask {
   navigation: { navigate: Function };
@@ -38,7 +40,7 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
 
   const handleDelete = useCallback(() => {
     deleteTask(id);
-    navigation.navigate('List');
+    navigation.navigate(tasksRoutes.LIST);
   }, [navigation, deleteTask, id]);
 
   const lastEnd = useMemo(() => {

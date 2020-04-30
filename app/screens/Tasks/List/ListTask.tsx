@@ -15,6 +15,8 @@ import Loader from '../../../components/Loader/Loader';
 import ActiveTask from '../../../components/Task/ActiveTask/ActiveTask';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
+// routes
+import { tasksRoutes } from '../../../navigation/routes';
 
 interface IListTask {
   navigation: { navigate: Function };
@@ -81,7 +83,7 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
           {activeTask ? (
             <ActiveTask activeTask={activeTask} pause={pauseTask} />
           ) : (
-            <Button title='Add task' onPress={() => navigation.navigate('Create')} />
+            <Button title='Add task' onPress={() => navigation.navigate(tasksRoutes.CREATE)} />
           )}
         </View>
       </View>

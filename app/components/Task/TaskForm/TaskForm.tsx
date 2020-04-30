@@ -13,6 +13,8 @@ import { ITask, ITag } from '../../../store/type';
 import { basicStyles } from '../../../theme/basicStyles';
 // utils
 import { dateFromMillis, formatMills } from '../../../utils/time';
+// routes
+import { tasksRoutes } from '../../../navigation/routes';
 
 interface ITaskForm {
   onSubmit: Function;
@@ -32,6 +34,7 @@ const TaskForm: React.FC<ITaskForm> = ({ onSubmit, task, navigate }) => {
     project: task ? task.project : '',
     tags: task ? task.tags : [],
   };
+
   return (
     <Formik initialValues={initialValues} onSubmit={(values) => onSubmit(values)} validationSchema={validationTaskForm}>
       {({ handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue }) => (
@@ -72,7 +75,7 @@ const TaskForm: React.FC<ITaskForm> = ({ onSubmit, task, navigate }) => {
                   </View>
                 </>
               )}
-              <TouchableOpacity onPress={() => navigate('Tags', { values: values.tags, setFieldValue })}>
+              <TouchableOpacity onPress={() => navigate(tasksRoutes.TAGS, { values: values.tags, setFieldValue })}>
                 <TextField label='Tags' editable value=' ' />
                 {values.tags && <TagList tags={values.tags} />}
               </TouchableOpacity>
