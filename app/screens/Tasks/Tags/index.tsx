@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ScrollView } from 'react-native';
+import { View } from 'react-native';
 // redux
 import { useSelector } from 'react-redux';
 import { selectTags } from '../../../store/reducers/tags/selectors';
@@ -12,6 +12,9 @@ import { basicStyles } from '../../../theme/basicStyles';
 import { ITag } from '../../../store/type';
 
 interface ITags {
+  navigation: {
+    navigate: Function;
+  };
   route: {
     params: {
       values: ITag;
@@ -20,12 +23,13 @@ interface ITags {
   };
 }
 
-const Tags: React.FC<ITags> = ({ route }) => {
+const Tags: React.FC<ITags> = ({ navigation, route }) => {
   const { values, setFieldValue } = route.params;
   const tagsList = useSelector(selectTags);
 
   const submit = (tags: ITag) => {
     setFieldValue('tags', tags);
+    navigation.navigate('Edit');
   };
 
   return (

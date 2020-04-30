@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 // types
 import { ITask } from '../store/type';
 
-export const useTagsAction = () => {
+export const useTags = () => {
   const dispatch = useDispatch();
 
   const fetchTags = useCallback(

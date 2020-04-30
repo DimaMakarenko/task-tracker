@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
-import { useTaskAction } from '../../../hooks/useTaskAction';
-import { useTagsAction } from '../../../hooks/useTagsAction';
+import { useTasks } from '../../../hooks/useTasks';
+import { useTags } from '../../../hooks/useTags';
 // db
 import firebase from 'firebase';
 // redux
@@ -23,8 +23,8 @@ interface IListTask {
 const ListTask: FC<IListTask> = ({ navigation }) => {
   const tasks = useSelector(selectTasks);
   const activeTask = useSelector(selectActiveTask);
-  const { isLoading, fetchTasks, pauseTask, addActiveTask, startTask, deleteTask } = useTaskAction();
-  const { fetchTags } = useTagsAction();
+  const { isLoading, fetchTasks, pauseTask, addActiveTask, startTask, deleteTask } = useTasks();
+  const { fetchTags } = useTags();
 
   useEffect(() => {
     fetchTasks();

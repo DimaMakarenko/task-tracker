@@ -30,13 +30,19 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate, pauseTask, startTask, del
     deleteTask(id);
   }, [deleteTask, id]);
 
-  const handlePause = useCallback(() => {
-    pauseTask({ task });
-  }, [task, pauseTask]);
+  const handlePause = useCallback(
+    (pausedTask) => {
+      pauseTask({ task: pausedTask });
+    },
+    [pauseTask],
+  );
 
-  const handleStart = useCallback(() => {
-    activeTask ? stopActiveTask() : startTask(task);
-  }, [task, startTask, activeTask]);
+  const handleStart = useCallback(
+    (startedTask) => {
+      activeTask ? stopActiveTask() : startTask(startedTask);
+    },
+    [startTask, activeTask],
+  );
 
   const handleEdit = useCallback(() => {
     navigate('Edit', { task, deleteTask, handleEdit, handlePause, handleStart });
@@ -81,11 +87,11 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate, pauseTask, startTask, del
         ) : (
           <>
             {isActive ? (
-              <TouchableOpacity style={styles.image} onPress={handlePause}>
+              <TouchableOpacity style={styles.image} onPress={() => handlePause(task)}>
                 <SvgUri source={pauseImg} />
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity style={styles.image} onPress={handleStart}>
+              <TouchableOpacity style={styles.image} onPress={() => handleStart(task)}>
                 <SvgUri source={playImg} />
               </TouchableOpacity>
             )}

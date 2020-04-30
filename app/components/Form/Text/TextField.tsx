@@ -27,7 +27,7 @@ const TextField: React.FC<ITextField> = ({
 }) => {
   return (
     <View>
-      <Item style={styles.field} floatingLabel>
+      <Item style={styles.field}>
         <Label style={styles.label}>{label}</Label>
         <Input
           style={styles.input}

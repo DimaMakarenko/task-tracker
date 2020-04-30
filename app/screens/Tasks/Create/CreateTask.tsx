@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { View } from 'react-native';
-import { useTaskAction } from '../../../hooks/useTaskAction';
+import { useTasks } from '../../../hooks/useTasks';
 // component
 import Title from '../../../components/Title/Title';
 // redux
@@ -17,7 +17,7 @@ interface ICreateTask {
 
 const CreateTask: React.FC<ICreateTask> = ({ navigation }) => {
   const { uid } = useSelector(selectUser);
-  const { createTask } = useTaskAction();
+  const { createTask } = useTasks();
 
   const handleClick = useCallback(
     (value: any) => {

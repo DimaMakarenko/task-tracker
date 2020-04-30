@@ -12,7 +12,7 @@ import { dateFromMillis, lastSessionEnd, durationFromMills } from '../../../util
 // images
 import SvgUri from 'react-native-svg-uri';
 import { editImg, pauseImg, playImg } from '../../../assets';
-import { useTaskAction } from '../../../hooks/useTaskAction';
+import { useTasks } from '../../../hooks/useTasks';
 
 interface IShowTask {
   navigation: { navigate: Function };
@@ -30,7 +30,7 @@ interface IShowTask {
 const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
   const { taskId, deleteTask, handleEdit, handlePause, handleStart } = route.params;
 
-  const { finishTask, getTask } = useTaskAction();
+  const { finishTask, getTask } = useTasks();
 
   const currentTask = getTask(taskId);
 
@@ -63,11 +63,11 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
               <SvgUri source={editImg} />
             </TouchableOpacity>
             {isActive ? (
-              <TouchableOpacity style={styles.optionIcon} onPress={() => handlePause()}>
+              <TouchableOpacity style={styles.optionIcon} onPress={() => handlePause(currentTask)}>
                 <SvgUri source={pauseImg} />
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity style={styles.optionIcon} onPress={() => handleStart()}>
+              <TouchableOpacity style={styles.optionIcon} onPress={() => handleStart(currentTask)}>
                 <SvgUri source={playImg} />
               </TouchableOpacity>
             )}
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   block: { marginBottom: 30 },
   timeBlock: { flexDirection: 'row', justifyContent: 'space-between' },
   deleteBtn: { fontSize: 12, color: 'rgba(218, 11, 11,0.6)' },
-  header: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 20 },
+  header: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 45 },
   optionIcon: { marginLeft: 14 },
   icons: { flexDirection: 'row' },
 });
