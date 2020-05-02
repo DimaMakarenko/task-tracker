@@ -57,3 +57,8 @@ export interface IDeleteTask {
   taskId: number;
   uid: string;
 }
+export interface IFilterTask {
+  uid: string;
+  filterTags: ITag;
+  ref: string;
+}

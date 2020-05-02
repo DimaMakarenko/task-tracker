@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 // firebase
-import firebase from '../../../utils/firebaseDb';
+import firebase from '../../../db/firebaseDb';
 // components
 import Title from '../../../components/Title/Title';
 import Button from '../../../components/Button/Button';

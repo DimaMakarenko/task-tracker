@@ -12,4 +12,8 @@ export const basicStyles = StyleSheet.create({
   },
   subTitle: { fontSize: 12, lineHeight: 18, opacity: 0.54 },
   text: { fontSize: 14, lineHeight: 21 },
+  flexRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 });

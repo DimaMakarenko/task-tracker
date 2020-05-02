@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { useTasks } from '../../../hooks/useTasks';
 import { useTags } from '../../../hooks/useTags';
 // db
@@ -15,6 +15,7 @@ import Loader from '../../../components/Loader/Loader';
 import ActiveTask from '../../../components/Task/ActiveTask/ActiveTask';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
+import { Icon } from 'native-base';
 // routes
 import { tasksRoutes } from '../../../navigation/routes';
 
@@ -51,7 +52,12 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
         <View style={styles.headerWrapper}>
           <View>
             <View style={styles.header}>
-              <Title text='Tasks' />
+              <View style={basicStyles.flexRow}>
+                <Title text='Tasks' />
+                <TouchableOpacity onPress={() => navigation.navigate(tasksRoutes.FILTERS)}>
+                  <Icon type='MaterialCommunityIcons' name='filter-variant' style={styles.filterIcon} />
+                </TouchableOpacity>
+              </View>
               <Text onPress={handlePress} style={styles.logOut}>
                 Log out
               </Text>
@@ -100,6 +106,10 @@ const styles = StyleSheet.create({
   logOut: { color: 'rgba(218, 11, 11,0.6)' },
   text: {
     fontSize: 26,
+  },
+  filterIcon: {
+    fontSize: 20,
+    marginLeft: 10,
   },
 });
 

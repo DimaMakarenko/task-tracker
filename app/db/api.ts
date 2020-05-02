@@ -1,6 +1,7 @@
 import firebase from './firebaseDb';
 // types
-import { ICreateTask, IFetchTasks, IUpdateTask, IDeleteTask } from '../store/type';
+import { ICreateTask, IFetchTasks, IUpdateTask, IDeleteTask, IFilterTask } from '../store/type';
+import { proxyFilter } from './proxy';
 
 const db = firebase.database();
 
@@ -34,4 +35,8 @@ export const deleteTaskDb = (options: IDeleteTask) => {
     .ref('users/' + uid + '/tasks')
     .child(taskId.toString())
     .remove();
+};
+
+export const filterTaskDb = (options: IFilterTask) => {
+  return proxyFilter(options);
 };
