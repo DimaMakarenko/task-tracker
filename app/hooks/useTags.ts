@@ -1,12 +1,12 @@
 import { useCallback } from 'react';
 import _ from 'lodash';
 // api
-import { proxyFilter } from '../db/proxy';
 import { filterTaskDb } from '../db/api';
 // redux
 import { fetchTagsAction, clearTagsAction } from '../store/reducers/tags';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUser } from '../store/reducers/user/selectors';
+import { addTasksAction } from '../store/reducers/tasks/tasks';
 // types
 import { ITask, ITag } from '../store/type';
 
@@ -26,11 +26,10 @@ export const useTags = () => {
     [dispatch],
   );
 
-  const filterTags = async () => {
-    const filteredTags: ITag = ['hi'];
-    const ref = `users/ ${uid}/tasks`;
+  const filterTags = async (filteredTags: ITag) => {
+    const ref = `users/${uid}/tasks`;
     const filtered = await filterTaskDb({ uid, filterTags: filteredTags, ref });
-    console.log('filtered', filtered);
+    dispatch(addTasksAction(filtered));
   };
 
   return {

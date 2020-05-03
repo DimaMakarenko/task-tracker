@@ -11,7 +11,7 @@ interface IProxyFilter {
 }
 
 const filter = (_filter: any[], data: any[]) => {
-  return _filter.some((r: string) => data.includes(r));
+  return _filter.every((r: string) => data.includes(r));
 };
 
 export const proxyFilter = async (options: IProxyFilter) => {

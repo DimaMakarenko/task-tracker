@@ -1,5 +1,8 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { StyleSheet, View, ScrollView } from 'react-native';
+// redux
+import { useSelector } from 'react-redux';
+import { selectTags } from '../../store/reducers/tags/selectors';
 // component
 import Button from '../Button/Button';
 import TextField from '../Form/Text/TextField';
@@ -11,15 +14,15 @@ import { ITag } from '../../store/type';
 
 interface ITagContainer {
   taskTags: ITag;
-  tagsList: ITag;
   onSubmit: (arg0: ITag) => void;
   btnText: string;
   isField?: boolean;
 }
 
-const TagContainer: React.FC<ITagContainer> = ({ taskTags, tagsList, onSubmit, btnText, isField }) => {
+const TagContainer: React.FC<ITagContainer> = ({ taskTags, onSubmit, btnText, isField }) => {
   const [tags, setTags] = useState(taskTags ? taskTags : []);
   const [fieldTag, setFieldTag] = useState('');
+  const tagsList = useSelector(selectTags);
 
   const unSelectTags = useMemo(() => tagsList.filter((tag) => (tags.length > 0 ? !tags.includes(tag) : tagsList)), [
     tagsList,

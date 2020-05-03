@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 export const basicStyles = StyleSheet.create({
+  header: { width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   container: {
     padding: 24,
   },
@@ -16,4 +17,5 @@ export const basicStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  dangerText: { color: 'rgba(218, 11, 11,0.6)' },
 });
