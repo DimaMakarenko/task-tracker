@@ -48,9 +48,7 @@ export const useTasks = () => {
   const addActiveTask = useCallback(
     (tasks: ITask[]) => {
       tasks.forEach((task) => {
-        if (task.isActive) {
-          dispatch(addActiveTaskAction(task));
-        }
+        task.isActive && dispatch(addActiveTaskAction(task));
       });
     },
     [dispatch],

@@ -31,10 +31,11 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
   const { isLoading, fetchTasks, pauseTask, addActiveTask, startTask, deleteTask } = useTasks();
   const { fetchTags } = useTags();
   const { filterTags } = useTags();
-
-  const [filteredTags, setFilteredTags] = useState<ITag>([]);
-
-  const isFilteredTags = useMemo(() => filteredTags.length > 0, [filteredTags]);
+  const isListEmpty = tasks.length > 0;
+  const [filteredTags, setFilteredTags] = useState<{ isFiltered: boolean; tags: ITag }>({
+    isFiltered: false,
+    tags: [],
+  });
 
   useEffect(() => {
     fetchTasks();
@@ -42,11 +43,11 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
 
   useEffect(() => {
     addActiveTask(tasks);
-    fetchTags(tasks);
+    fetchTags();
   }, [tasks]);
 
   useEffect(() => {
-    isFilteredTags ? filterTags(filteredTags) : fetchTasks();
+    filteredTags.isFiltered ? filterTags(filteredTags.tags) : fetchTasks();
   }, [filteredTags]);
 
   const handlePress = () => {
@@ -54,11 +55,11 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
   };
 
   const setFilter = useCallback((tags: ITag) => {
-    setFilteredTags(tags);
+    tags.length > 0 ? setFilteredTags({ isFiltered: true, tags }) : setFilteredTags({ isFiltered: false, tags });
   }, []);
 
   const handleFilter = useCallback(() => {
-    navigation.navigate(tasksRoutes.FILTERS, { setFilter, filteredTags });
+    navigation.navigate(tasksRoutes.FILTERS, { setFilter, filteredTags: filteredTags.tags });
   }, [navigation, setFilter, filteredTags]);
 
   return (
@@ -74,7 +75,7 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
                   <Icon
                     type='MaterialCommunityIcons'
                     name='filter-variant'
-                    style={[styles.filterIcon, isFilteredTags && basicStyles.dangerText]}
+                    style={[styles.filterIcon, filteredTags.isFiltered && basicStyles.dangerText]}
                   />
                 </TouchableOpacity>
               </View>
@@ -82,30 +83,36 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
                 Log out
               </Text>
             </View>
-            {tasks.length === 0 ? (
+            {!isListEmpty && !filteredTags.isFiltered ? (
               <View style={styles.emptyList}>
                 <Text style={styles.emptyListText}>You don’t have tasks recently added.</Text>
                 <Text style={styles.emptyListText}>Generate list of tasks</Text>
               </View>
             ) : (
               <>
-                {isFilteredTags && <TagList tags={filteredTags} />}
-                <View style={styles.tasks}>
-                  <FlatList
-                    data={tasks}
-                    keyExtractor={(item) => item.id.toString()}
-                    renderItem={({ item }: { item: any }) => (
-                      <TaskRow
-                        task={item}
-                        navigate={navigation.navigate}
-                        pauseTask={pauseTask}
-                        startTask={startTask}
-                        deleteTask={deleteTask}
-                        activeTask={activeTask}
-                      />
-                    )}
-                  />
-                </View>
+                {filteredTags.isFiltered && <TagList tags={filteredTags.tags} />}
+                {!isListEmpty && filteredTags.isFiltered ? (
+                  <View style={styles.emptyList}>
+                    <Text style={styles.emptyListText}>Not found tasks</Text>
+                  </View>
+                ) : (
+                  <View style={styles.tasks}>
+                    <FlatList
+                      data={tasks}
+                      keyExtractor={(item) => item.id.toString()}
+                      renderItem={({ item }: { item: any }) => (
+                        <TaskRow
+                          task={item}
+                          navigate={navigation.navigate}
+                          pauseTask={pauseTask}
+                          startTask={startTask}
+                          deleteTask={deleteTask}
+                          activeTask={activeTask}
+                        />
+                      )}
+                    />
+                  </View>
+                )}
               </>
             )}
           </View>
