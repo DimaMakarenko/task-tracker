@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState, useMemo } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { useTasks } from '../../../hooks/useTasks';
 import { useTags } from '../../../hooks/useTags';
@@ -31,11 +31,11 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
   const { isLoading, fetchTasks, pauseTask, addActiveTask, startTask, deleteTask } = useTasks();
   const { fetchTags } = useTags();
   const { filterTags } = useTags();
-  const isListEmpty = tasks.length > 0;
   const [filteredTags, setFilteredTags] = useState<{ isFiltered: boolean; tags: ITag }>({
     isFiltered: false,
     tags: [],
   });
+  const isListEmpty = useMemo(() => tasks.length > 0, [tasks]);
 
   useEffect(() => {
     fetchTasks();
@@ -55,12 +55,20 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
   };
 
   const setFilter = useCallback((tags: ITag) => {
-    tags.length > 0 ? setFilteredTags({ isFiltered: true, tags }) : setFilteredTags({ isFiltered: false, tags });
+    setFilteredTags({ isFiltered: tags.length > 0, tags });
   }, []);
 
   const handleFilter = useCallback(() => {
     navigation.navigate(tasksRoutes.FILTERS, { setFilter, filteredTags: filteredTags.tags });
   }, [navigation, setFilter, filteredTags]);
+
+  const removeFilterTag = useCallback(
+    (value) => {
+      const newFilteredTags = filteredTags.tags.filter((tag) => value !== tag);
+      setFilteredTags({ tags: newFilteredTags, isFiltered: newFilteredTags.length > 0 });
+    },
+    [filteredTags],
+  );
 
   return (
     <>
@@ -90,7 +98,7 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
               </View>
             ) : (
               <>
-                {filteredTags.isFiltered && <TagList tags={filteredTags.tags} />}
+                {filteredTags.isFiltered && <TagList tags={filteredTags.tags} remove={removeFilterTag} />}
                 {!isListEmpty && filteredTags.isFiltered ? (
                   <View style={styles.emptyList}>
                     <Text style={styles.emptyListText}>Not found tasks</Text>
