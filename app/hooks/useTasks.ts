@@ -8,11 +8,11 @@ import { addTasksAction, addActiveTaskAction } from '../store/reducers/tasks/tas
 import { selectUser } from '../store/reducers/user/selectors';
 import { selectTasks } from '../store/reducers/tasks/selectors';
 // types
-import { ICreateTask, ITask, INewTask } from '../store/type';
+import { ICreateTask, ITask } from '../store/type';
 // utils
 import { findLastDuration, setEndSession, setStartSession } from '../utils/time';
 
-export const useTaskAction = () => {
+export const useTasks = () => {
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const { uid } = useSelector(selectUser);

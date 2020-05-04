@@ -1,48 +1,70 @@
 import React from 'react';
-import { View, StyleSheet, TextInput, Text } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, TextInput } from 'react-native';
+import { Item, Label, Icon, NativeBase, Input } from 'native-base';
 
 interface ITextField {
-  onChangeText: Function;
-  onBlur: Function;
-  value: string;
-  placeholder?: string;
+  onChangeText?: Function;
+  onBlur?: Function;
+  submit?: () => void;
+  value?: string;
+  label?: string;
   error?: string;
   touched?: boolean;
+  editable?: boolean;
+  iconName?: string;
 }
 
-const TextField: React.FC<ITextField> = ({ placeholder, onChangeText, onBlur, value, error, touched }) => {
+const TextField: React.FC<ITextField> = ({
+  label,
+  iconName,
+  onChangeText,
+  onBlur,
+  value,
+  error,
+  touched,
+  editable,
+  submit,
+}) => {
   return (
-    <>
-      <View style={styles.container}>
-        <TextInput
-          onChangeText={(text) => onChangeText(text)}
-          onBlur={(text) => onBlur(text)}
-          value={value}
-          placeholder={placeholder}
+    <View>
+      <Item style={styles.field}>
+        <Label style={styles.label}>{label}</Label>
+        <Input
           style={styles.input}
+          onChangeText={(text) => onChangeText && onChangeText(text)}
+          onBlur={(text) => onBlur && onBlur(text)}
+          value={value}
+          placeholder={label}
+          editable={!editable}
         />
-      </View>
+        {iconName && (
+          <TouchableOpacity onPress={submit}>
+            <Icon type='MaterialCommunityIcons' name={iconName} style={styles.image} />
+          </TouchableOpacity>
+        )}
+      </Item>
       <Text style={styles.error}>{touched && error}</Text>
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    borderTopWidth: 1,
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
-    borderColor: '#rgba(0,0,0,0.16)',
-    borderRadius: 5,
-    marginVertical: 8,
+  field: { marginTop: 10 },
+  label: {
+    paddingHorizontal: 5,
+    fontSize: 14,
+    marginBottom: 5,
   },
-  image: { height: 14, width: 20, opacity: 0.5 },
-  input: { flex: 1, fontSize: 18 },
+  wrapper: {
+    paddingHorizontal: 5,
+    marginLeft: 0,
+    marginTop: 20,
+    lineHeight: 18,
+  },
+  image: { color: '#666' },
+  input: {
+    fontSize: 14,
+  },
   error: {
     color: 'red',
   },

@@ -1,6 +1,7 @@
 import React, { FC, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
-import { useTaskAction } from '../../../hooks/useTaskAction';
+import { useTasks } from '../../../hooks/useTasks';
+import { useTags } from '../../../hooks/useTags';
 // db
 import firebase from 'firebase';
 // redux
@@ -14,6 +15,8 @@ import Loader from '../../../components/Loader/Loader';
 import ActiveTask from '../../../components/Task/ActiveTask/ActiveTask';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
+// routes
+import { tasksRoutes } from '../../../navigation/routes';
 
 interface IListTask {
   navigation: { navigate: Function };
@@ -22,7 +25,8 @@ interface IListTask {
 const ListTask: FC<IListTask> = ({ navigation }) => {
   const tasks = useSelector(selectTasks);
   const activeTask = useSelector(selectActiveTask);
-  const { isLoading, fetchTasks, pauseTask, addActiveTask, startTask, deleteTask } = useTaskAction();
+  const { isLoading, fetchTasks, pauseTask, addActiveTask, startTask, deleteTask } = useTasks();
+  const { fetchTags } = useTags();
 
   useEffect(() => {
     fetchTasks();
@@ -30,6 +34,10 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
 
   useEffect(() => {
     addActiveTask(tasks);
+  }, [tasks]);
+
+  useEffect(() => {
+    fetchTags(tasks);
   }, [tasks]);
 
   const handlePress = () => {
@@ -75,7 +83,7 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
           {activeTask ? (
             <ActiveTask activeTask={activeTask} pause={pauseTask} />
           ) : (
-            <Button title='Add task' onPress={() => navigation.navigate('Create')} />
+            <Button title='Add task' onPress={() => navigation.navigate(tasksRoutes.CREATE)} />
           )}
         </View>
       </View>

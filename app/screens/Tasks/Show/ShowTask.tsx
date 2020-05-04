@@ -1,11 +1,10 @@
 import React, { useMemo, useCallback } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
-// interfaces
-import { ITask } from '../../../store/type';
 // components
 import Title from '../../../components/Title/Title';
 import { alert } from '../../../components/Alert/Alert';
 import Button from '../../../components/Button/Button';
+import TagList from '../../../components/Tags/TagList';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
 // utils
@@ -13,7 +12,9 @@ import { dateFromMillis, lastSessionEnd, durationFromMills } from '../../../util
 // images
 import SvgUri from 'react-native-svg-uri';
 import { editImg, pauseImg, playImg } from '../../../assets';
-import { useTaskAction } from '../../../hooks/useTaskAction';
+import { useTasks } from '../../../hooks/useTasks';
+// routes
+import { tasksRoutes } from '../../../navigation/routes';
 
 interface IShowTask {
   navigation: { navigate: Function };
@@ -31,14 +32,15 @@ interface IShowTask {
 const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
   const { taskId, deleteTask, handleEdit, handlePause, handleStart } = route.params;
 
-  const { finishTask, getTask } = useTaskAction();
+  const { finishTask, getTask } = useTasks();
 
   const currentTask = getTask(taskId);
-  const { id, title, duration, project, startTimer, timeSession, isActive, isFinished } = currentTask;
+
+  const { id, title, duration, project, startTimer, timeSession, isActive, isFinished, tags } = currentTask;
 
   const handleDelete = useCallback(() => {
     deleteTask(id);
-    navigation.navigate('List');
+    navigation.navigate(tasksRoutes.LIST);
   }, [navigation, deleteTask, id]);
 
   const lastEnd = useMemo(() => {
@@ -63,11 +65,11 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
               <SvgUri source={editImg} />
             </TouchableOpacity>
             {isActive ? (
-              <TouchableOpacity style={styles.optionIcon} onPress={() => handlePause()}>
+              <TouchableOpacity style={styles.optionIcon} onPress={() => handlePause(currentTask)}>
                 <SvgUri source={pauseImg} />
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity style={styles.optionIcon} onPress={() => handleStart()}>
+              <TouchableOpacity style={styles.optionIcon} onPress={() => handleStart(currentTask)}>
                 <SvgUri source={playImg} />
               </TouchableOpacity>
             )}
@@ -100,6 +102,11 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
         <Text style={basicStyles.subTitle}>Duration</Text>
         <Text style={basicStyles.text}>{durationFromMills(duration)} h</Text>
       </View>
+      <View style={styles.block}>
+        <Text style={basicStyles.subTitle}>Tags</Text>
+        {tags && <TagList tags={tags} />}
+      </View>
+
       <View style={styles.block}>
         <Text style={styles.deleteBtn} onPress={showAlert}>
           Delete

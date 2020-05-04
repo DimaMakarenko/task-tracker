@@ -18,5 +18,6 @@ export const getNewTask = (props: INewTask): ITask => {
     isFinished: false,
     startTimer: dn,
     timeSession: [{ start: dn }],
+    tags: ['hi', 'bro'],
   };
 };

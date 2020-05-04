@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { View } from 'react-native';
-import { useTaskAction } from '../../../hooks/useTaskAction';
+import { useTasks } from '../../../hooks/useTasks';
 // component
 import Title from '../../../components/Title/Title';
 // redux
@@ -10,6 +10,8 @@ import { selectUser } from '../../../store/reducers/user/selectors';
 import TaskForm from '../../../components/Task/TaskForm/TaskForm';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
+// routes
+import { tasksRoutes } from '../../../navigation/routes';
 
 interface ICreateTask {
   navigation: { navigate: Function };
@@ -17,20 +19,20 @@ interface ICreateTask {
 
 const CreateTask: React.FC<ICreateTask> = ({ navigation }) => {
   const { uid } = useSelector(selectUser);
-  const { createTask } = useTaskAction();
+  const { createTask } = useTasks();
 
   const handleClick = useCallback(
     (value: any) => {
       createTask({ uid, task: value });
-      navigation.navigate('List');
+      navigation.navigate(tasksRoutes.LIST);
     },
     [uid],
   );
 
   return (
-    <View style={basicStyles.container}>
+    <View style={[basicStyles.container, basicStyles.fullScreen]}>
       <Title text='Create task' />
-      <TaskForm onSubmit={handleClick} />
+      <TaskForm onSubmit={handleClick} navigate={navigation.navigate} />
     </View>
   );
 };

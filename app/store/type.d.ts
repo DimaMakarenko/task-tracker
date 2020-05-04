@@ -1,7 +1,14 @@
+// user
 export interface IUser {
   uid: string;
 }
 
+// tag
+
+export type ITag = string[];
+export type ITagFunc = (title: string) => void;
+
+// task
 export interface ITasks {
   tasks: ITask[];
   activeTask: ITask | null;
@@ -21,7 +28,7 @@ export interface ITask {
   isFinished: boolean;
   startTimer: number;
   timeSession: ISession[];
-  tags?: string[];
+  tags?: ITag;
   file?: any;
 }
 

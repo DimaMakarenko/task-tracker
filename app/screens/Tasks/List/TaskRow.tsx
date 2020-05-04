@@ -12,6 +12,7 @@ import { formatMills, durationFromMills } from '../../../utils/time';
 // images
 import { deleteImg, editImg, playImg, completeImg, pauseImg } from '../../../assets';
 import SvgUri from 'react-native-svg-uri';
+import {tasksRoutes} from '../../../navigation/routes';
 
 interface ITaskRow {
   task: ITask;
@@ -29,20 +30,26 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate, pauseTask, startTask, del
     deleteTask(id);
   }, [deleteTask, id]);
 
-  const handlePause = useCallback(() => {
-    pauseTask({ task });
-  }, [task, pauseTask]);
+  const handlePause = useCallback(
+    (pausedTask) => {
+      pauseTask({ task: pausedTask });
+    },
+    [pauseTask],
+  );
 
-  const handleStart = useCallback(() => {
-    activeTask ? stopActiveTask() : startTask(task);
-  }, [task, startTask, activeTask]);
+  const handleStart = useCallback(
+    (startedTask) => {
+      activeTask ? stopActiveTask() : startTask(startedTask);
+    },
+    [startTask, activeTask],
+  );
 
   const handleEdit = useCallback(() => {
-    navigate('Edit', { task, deleteTask, handleEdit, handlePause, handleStart });
+    navigate(tasksRoutes.EDIT, { task, deleteTask, handleEdit, handlePause, handleStart });
   }, [task, navigate, deleteTask, handlePause, handleStart]);
 
   const handleShow = useCallback(() => {
-    navigate('Show', { taskId: task.id, deleteTask, handleEdit, handlePause, handleStart });
+    navigate(tasksRoutes.SHOW, { taskId: task.id, deleteTask, handleEdit, handlePause, handleStart });
   }, [task, deleteTask, handleEdit, handlePause, handleStart, navigate]);
 
   const showAlert = useCallback(() => {
@@ -80,11 +87,11 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate, pauseTask, startTask, del
         ) : (
           <>
             {isActive ? (
-              <TouchableOpacity style={styles.image} onPress={handlePause}>
+              <TouchableOpacity style={styles.image} onPress={() => handlePause(task)}>
                 <SvgUri source={pauseImg} />
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity style={styles.image} onPress={handleStart}>
+              <TouchableOpacity style={styles.image} onPress={() => handleStart(task)}>
                 <SvgUri source={playImg} />
               </TouchableOpacity>
             )}

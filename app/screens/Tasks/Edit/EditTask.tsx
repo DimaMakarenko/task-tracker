@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { View } from 'react-native';
-import { useTaskAction } from '../../../hooks/useTaskAction';
+import { useTasks } from '../../../hooks/useTasks';
 // components
 import Title from '../../../components/Title/Title';
 import TaskForm from '../../../components/Task/TaskForm/TaskForm';
@@ -8,6 +8,8 @@ import TaskForm from '../../../components/Task/TaskForm/TaskForm';
 import { ITask } from '../../../store/type';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
+// routes
+import { tasksRoutes } from '../../../navigation/routes';
 
 interface IEditTask {
   navigation: {
@@ -26,20 +28,22 @@ interface IEditTask {
 
 const EditTask: React.FC<IEditTask> = ({ navigation, route }) => {
   const { task, deleteTask, handleEdit, handlePause, handleStart } = route.params;
-  const { editTask } = useTaskAction();
+  const { editTask, getTask } = useTasks();
+
+  const currentTask = getTask(task.id);
 
   const handleUpdate = useCallback(
     (value: any) => {
-      editTask(task, value);
-      navigation.navigate('Show', { taskId: task.id, deleteTask, handleEdit, handlePause, handleStart });
+      editTask(currentTask, value);
+      navigation.navigate(tasksRoutes.SHOW, { taskId: task.id, deleteTask, handleEdit, handlePause, handleStart });
     },
-    [task, deleteTask, handleEdit, handlePause, handleStart, navigation, editTask],
+    [currentTask, deleteTask, handleEdit, handlePause, handleStart, navigation, editTask],
   );
 
   return (
-    <View style={basicStyles.container}>
-      <Title text='Edit4' />
-      <TaskForm onSubmit={handleUpdate} task={task} />
+    <View style={[basicStyles.container, basicStyles.fullScreen]}>
+      <Title text='Edit' />
+      <TaskForm onSubmit={handleUpdate} task={currentTask} navigate={navigation.navigate} />
     </View>
   );
 };

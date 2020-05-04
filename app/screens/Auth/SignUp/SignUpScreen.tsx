@@ -12,6 +12,8 @@ import { basicStyles } from '../../../theme/basicStyles';
 // form
 import { Formik } from 'formik';
 import { validationSignUp } from '../../../utils/validation';
+// routes
+import { authRoutes } from '../../../navigation/routes';
 
 interface ISignUpScreen {
   navigation: {
@@ -88,7 +90,7 @@ const SignUpScreen: React.FC<ISignUpScreen> = ({ navigation }) => {
       </Formik>
       <View style={styles.textContainer}>
         <Text style={styles.text}>Already have an account?</Text>
-        <Text style={[styles.text, styles.textNavigate]} onPress={() => navigation.navigate('Sign In')}>
+        <Text style={[styles.text, styles.textNavigate]} onPress={() => navigation.navigate(authRoutes.SIGN_IN)}>
           Sign In
         </Text>
       </View>
