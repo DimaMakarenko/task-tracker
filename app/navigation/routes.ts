@@ -14,6 +14,7 @@ export enum tasksRoutes {
   EDIT = 'EDIT',
   CREATE = 'CREATE',
   TAGS = 'TAGS',
+  FILTERS = 'FILTERS',
 }
 
 export enum authRoutes {

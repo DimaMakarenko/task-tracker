@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { listenerTaskDb, deleteTaskDb, updateTaskDb } from '../utils/api';
+import { listenerTaskDb, deleteTaskDb, updateTaskDb } from '../db/api';
 import _ from 'lodash';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
@@ -48,9 +48,7 @@ export const useTasks = () => {
   const addActiveTask = useCallback(
     (tasks: ITask[]) => {
       tasks.forEach((task) => {
-        if (task.isActive) {
-          dispatch(addActiveTaskAction(task));
-        }
+        task.isActive && dispatch(addActiveTaskAction(task));
       });
     },
     [dispatch],

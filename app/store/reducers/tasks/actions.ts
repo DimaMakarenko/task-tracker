@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 // types
 import { ICreateTask, IUpdateTask } from '../../type';
 // api
-import { setTaskDb, updateTaskDb } from '../../../utils/api';
+import { setTaskDb, updateTaskDb } from '../../../db/api';
 import { getNewTask } from '../../../utils/tasks';
 
 export const createTaskAction: any = createAsyncThunk('tasks/createTask', async (options: ICreateTask) => {

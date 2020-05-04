@@ -15,7 +15,7 @@ const TagList: React.FC<ITagList> = ({ tags, add, remove }) => {
   return (
     <View style={styles.tagsWrapper}>
       {tags.map((tag) => (
-        <Tag title={tag} onAdd={add} onRemove={remove} />
+        <Tag title={tag} onAdd={add} onRemove={remove} key={tag} />
       ))}
     </View>
   );

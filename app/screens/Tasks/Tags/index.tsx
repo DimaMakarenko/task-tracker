@@ -1,8 +1,5 @@
 import React from 'react';
 import { View } from 'react-native';
-// redux
-import { useSelector } from 'react-redux';
-import { selectTags } from '../../../store/reducers/tags/selectors';
 // component
 import Title from '../../../components/Title/Title';
 import TagContainer from '../../../components/Tags/TagContainer';
@@ -27,7 +24,6 @@ interface ITags {
 
 const Tags: React.FC<ITags> = ({ navigation, route }) => {
   const { values, setFieldValue } = route.params;
-  const tagsList = useSelector(selectTags);
 
   const submit = (tags: ITag) => {
     setFieldValue('tags', tags);
@@ -37,7 +33,7 @@ const Tags: React.FC<ITags> = ({ navigation, route }) => {
   return (
     <View style={[basicStyles.container, basicStyles.fullScreen]}>
       <Title text='Add tags' />
-      <TagContainer taskTags={values} tagsList={tagsList} btnText='Done' onSubmit={submit} isField />
+      <TagContainer taskTags={values} btnText='Done' onSubmit={submit} isField />
     </View>
   );
 };
