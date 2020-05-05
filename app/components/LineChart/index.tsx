@@ -8,9 +8,10 @@ import { LINE_CHART_CONFIG, LINE_CHART_HEIGHT } from '../../utils/charts';
 
 interface ILineChart {
   data: LineChartData;
+  yAxisSuffix?: string;
 }
 
-const LineChart: React.FC<ILineChart> = ({ data }) => {
+const LineChart: React.FC<ILineChart> = ({ data, yAxisSuffix }) => {
   const screenWidth = useMemo(() => Dimensions.get('window').width, []);
 
   return (
@@ -20,6 +21,7 @@ const LineChart: React.FC<ILineChart> = ({ data }) => {
       height={LINE_CHART_HEIGHT}
       chartConfig={LINE_CHART_CONFIG}
       withInnerLines={false}
+      yAxisSuffix={yAxisSuffix && yAxisSuffix}
     />
   );
 };

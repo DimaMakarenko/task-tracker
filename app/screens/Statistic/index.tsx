@@ -8,20 +8,9 @@ import LineChart from '../../components/LineChart';
 // styles
 import { basicStyles } from '../../theme/basicStyles';
 
-import { LineChartData } from 'react-native-chart-kit';
-
 const Statistic = () => {
   const { isLoading, dateChartHours, dateChartTasks } = useCharts();
 
-  const data: LineChartData = {
-    labels: ['2', '4', '6', '8', '10', '12'],
-    datasets: [
-      {
-        data: [20, 45, 28, 80, 80, 43, 64, 53],
-      },
-    ],
-  };
-  console.log('dateChartTasks', dateChartTasks);
   return (
     <View style={basicStyles.container}>
       <View style={basicStyles.header}>
@@ -30,6 +19,7 @@ const Statistic = () => {
       <View>
         <Loader isLoading={isLoading}>
           <LineChart data={dateChartTasks} />
+          <LineChart data={dateChartHours} yAxisSuffix='h' />
         </Loader>
       </View>
     </View>
