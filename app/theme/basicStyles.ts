@@ -4,6 +4,7 @@ export const basicStyles = StyleSheet.create({
   header: { width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   container: {
     padding: 24,
+    backgroundColor: '#fff',
   },
   fullScreen: { height: '100%' },
   justify: {

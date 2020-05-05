@@ -1,8 +1,7 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 // container
 import TasksNavigation from './TasksNavigation';
-import Statistic from '../screens/Statistic/Statistic';
+import Statistic from '../screens/Statistic';
 // navigation
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -40,9 +39,3 @@ const TabNavigation = () => {
 };
 
 export default TabNavigation;
-
-const styles = StyleSheet.create({
-  tabs: {
-    backgroundColor: 'red',
-  },
-});
