@@ -13,7 +13,15 @@ interface ILineChart {
 const LineChart: React.FC<ILineChart> = ({ data }) => {
   const screenWidth = useMemo(() => Dimensions.get('window').width, []);
 
-  return <LineChartKit data={data} width={screenWidth} height={LINE_CHART_HEIGHT} chartConfig={LINE_CHART_CONFIG} />;
+  return (
+    <LineChartKit
+      data={data}
+      width={screenWidth}
+      height={LINE_CHART_HEIGHT}
+      chartConfig={LINE_CHART_CONFIG}
+      withInnerLines={false}
+    />
+  );
 };
 
 export default LineChart;

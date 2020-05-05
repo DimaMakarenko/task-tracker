@@ -5,15 +5,17 @@ interface ILoader {
   isLoading: boolean;
 }
 
-const Loader: React.FC<ILoader> = ({ isLoading }) => {
+const Loader: React.FC<ILoader> = ({ isLoading, children }) => {
   return (
     <>
-      {isLoading && (
+      {isLoading ? (
         <View style={styles.loader}>
           <View style={[styles.container, styles.horizontal]}>
             <ActivityIndicator size='large' color='#0000ff' />
           </View>
         </View>
+      ) : (
+        children
       )}
     </>
   );
@@ -35,7 +37,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     flex: 1,
     zIndex: 10,
-    justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
   },

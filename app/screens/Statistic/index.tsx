@@ -1,14 +1,18 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
+import { useCharts } from '../../hooks/useCharts';
 // component
 import Title from '../../components/Title/Title';
-import LineChart from './LineChart';
+import Loader from '../../components/Loader/Loader';
+import LineChart from '../../components/LineChart';
 // styles
 import { basicStyles } from '../../theme/basicStyles';
-// types
+
 import { LineChartData } from 'react-native-chart-kit';
 
-const Tasks = () => {
+const Statistic = () => {
+  const { isLoading, dateChartHours, dateChartTasks } = useCharts();
+
   const data: LineChartData = {
     labels: ['2', '4', '6', '8', '10', '12'],
     datasets: [
@@ -17,24 +21,19 @@ const Tasks = () => {
       },
     ],
   };
+  console.log('dateChartTasks', dateChartTasks);
   return (
     <View style={basicStyles.container}>
-      <View style={styles.header}>
+      <View style={basicStyles.header}>
         <Title text='Statistic' />
       </View>
       <View>
-        <LineChart data={data} />
+        <Loader isLoading={isLoading}>
+          <LineChart data={dateChartTasks} />
+        </Loader>
       </View>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  header: { width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  logOut: { color: 'rgba(218, 11, 11,0.6)' },
-  text: {
-    fontSize: 26,
-  },
-});
-
-export default Tasks;
+export default Statistic;
