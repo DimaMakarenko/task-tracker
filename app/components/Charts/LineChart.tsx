@@ -3,7 +3,7 @@ import { Dimensions } from 'react-native';
 // component
 import { LineChart as LineChartKit, LineChartData } from 'react-native-chart-kit';
 // const
-import { LINE_CHART_CONFIG, LINE_CHART_HEIGHT } from '../../utils/charts';
+import { LINE_CHART_CONFIG, CHART_HEIGHT } from '../../utils/charts';
 // types
 
 interface ILineChart {
@@ -18,9 +18,10 @@ const LineChart: React.FC<ILineChart> = ({ data, yAxisSuffix }) => {
     <LineChartKit
       data={data}
       width={screenWidth}
-      height={LINE_CHART_HEIGHT}
+      height={CHART_HEIGHT}
       chartConfig={LINE_CHART_CONFIG}
       withInnerLines={false}
+      segments={3}
       yAxisSuffix={yAxisSuffix && yAxisSuffix}
     />
   );

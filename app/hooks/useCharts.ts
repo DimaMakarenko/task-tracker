@@ -6,8 +6,7 @@ import { listenerTaskDb } from '../db/api';
 import { selectUser } from '../store/reducers/user/selectors';
 import { useSelector } from 'react-redux';
 // utils
-import { loggedByHours, loggerByTasks } from '../utils/helpersChart';
-import { ITask } from '../store/type';
+import { loggedByHours, loggerByTasks, loggerPerDay } from '../utils/helpersChart';
 
 export const useCharts = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -30,9 +29,12 @@ export const useCharts = () => {
 
   const dateChartTasks = useMemo(() => loggerByTasks(date), [date]);
 
+  const dateChartPerDay = useMemo(() => loggerPerDay(date), [date]);
+
   return {
     isLoading,
     dateChartHours,
     dateChartTasks,
+    dateChartPerDay,
   };
 };

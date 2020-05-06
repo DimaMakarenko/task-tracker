@@ -27,6 +27,7 @@
     "lodash": "^4.17.15",
     "luxon": "^1.23.0",
     "native-base": "^2.13.12",
+    "randomcolor": "^0.5.4",
     "react": "16.11.0",
     "react-hook-form": "^5.2.0",
     "react-native": "0.62.0",
