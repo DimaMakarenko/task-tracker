@@ -10,6 +10,8 @@ export const durationFromMills = (milliseconds: number): string =>
 
 export const dateToPicker = (date: Date): string => DateTime.fromMillis(+date).toFormat('DD');
 
+export const dateToSelect = (date: Date): string => DateTime.fromMillis(+date).toFormat('d.LL');
+
 export const findLastDuration = (timeSession: ISession[], dn: number) => {
   return dn - timeSession[timeSession.length - 1].start;
 };

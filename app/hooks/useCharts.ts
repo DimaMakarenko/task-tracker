@@ -6,7 +6,9 @@ import { listenerTaskDb } from '../db/api';
 import { selectUser } from '../store/reducers/user/selectors';
 import { useSelector } from 'react-redux';
 // utils
-import { loggedByHours, loggerByTasks, loggerPerDay } from '../utils/helpersChart';
+import { loggedByHours, loggerByTasks, loggerPerDay, getActiveWeeks } from '../components/Charts/helpersChart';
+// types
+import { TWeek } from '../components/Charts/type';
 
 export const useCharts = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -25,9 +27,11 @@ export const useCharts = () => {
     fetch().catch(() => console.log('error useCatch'));
   }, [fetch]);
 
-  const dateChartHours = useMemo(() => loggedByHours(date), [date]);
+  const activeWeeks = useMemo(() => (date.length > 0 ? getActiveWeeks(date) : undefined), [date]);
 
-  const dateChartTasks = useMemo(() => loggerByTasks(date), [date]);
+  const dateChartHours = useCallback((week: TWeek) => loggedByHours(date, week), [date]);
+
+  const dateChartTasks = useCallback((week: TWeek) => loggerByTasks(date, week), [date]);
 
   const dateChartPerDay = useCallback((searchData) => loggerPerDay(date, searchData), [date]);
 
@@ -36,5 +40,6 @@ export const useCharts = () => {
     dateChartHours,
     dateChartTasks,
     dateChartPerDay,
+    activeWeeks,
   };
 };
