@@ -51,8 +51,6 @@ export const loggerByTasks: (date: ITask[]) => LineChartData = (date: ITask[]) =
   };
 };
 
-const newDate = new Date(2020, 4, 3);
-
 export const loggedByHours: (date: ITask[]) => LineChartData = (date: ITask[]) => {
   const datesInterval = getIntervalBetweenDates(dates.start, dates.end);
   const dayIntervals = datesInterval.splitBy(Duration.fromObject({ days: 1 }));
@@ -92,8 +90,11 @@ export const loggedByHours: (date: ITask[]) => LineChartData = (date: ITask[]) =
   };
 };
 
-export const loggerPerDay: (date: ITask[]) => StackedBarChartData = (date: ITask[]) => {
-  const datesInterval = getIntervalBetweenDates(newDate, newDate);
+export const loggerPerDay: (date: ITask[], searchData: Date) => StackedBarChartData = (
+  date: ITask[],
+  searchData: Date,
+) => {
+  const datesInterval = getIntervalBetweenDates(searchData, searchData);
   const dayIntervals = datesInterval.splitBy(Duration.fromObject({ hour: 1 }));
 
   const resultsByDate = dayIntervals.map((dayInterval) => {
@@ -107,8 +108,8 @@ export const loggerPerDay: (date: ITask[]) => StackedBarChartData = (date: ITask
           const sessionStart = DateTime.fromMillis(session.start);
           const sessionEnd = DateTime.fromMillis(session.end);
 
-          const dayStart = DateTime.fromJSDate(newDate).startOf('day');
-          const dayEnd = DateTime.fromJSDate(newDate).endOf('day');
+          const dayStart = DateTime.fromJSDate(searchData).startOf('day');
+          const dayEnd = DateTime.fromJSDate(searchData).endOf('day');
 
           const dayIntervalStart = dayInterval.start;
           const dayIntervalEnd = dayInterval.end;

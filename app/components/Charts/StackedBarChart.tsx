@@ -4,7 +4,7 @@ import { View } from 'react-native';
 // svg
 import { Svg, Rect, G } from 'react-native-svg';
 // chart-kit
-import { AbstractChart } from 'react-native-chart-kit';
+import { AbstractChart, StackedBarChartData } from 'react-native-chart-kit';
 
 const barWidth = 32;
 

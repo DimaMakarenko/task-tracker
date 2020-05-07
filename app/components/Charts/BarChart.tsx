@@ -1,17 +1,21 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Dimensions, View } from 'react-native';
 // component
 import { StackedBarChartData } from 'react-native-chart-kit';
 import StackedBarChart from './StackedBarChart';
+import DatePicker from '../DatePicker';
 // utils
-import { BAR_CHART_CONFIG, CHART_HEIGHT } from '../../utils/charts';
+import { BAR_CHART_CONFIG, CHART_HEIGHT } from './helpers';
 
 interface IBarChart {
-  data: StackedBarChartData;
+  dataCallback: (searchData: Date) => StackedBarChartData;
 }
 
-const BarChart: React.FC<IBarChart> = ({ data }) => {
+const BarChart: React.FC<IBarChart> = ({ dataCallback }) => {
   const screenWidth = useMemo(() => Dimensions.get('window').width, []);
+  const [searchData, setSearchData] = useState(new Date(2020, 4, 3));
+
+  const data = useMemo(() => dataCallback(searchData), [dataCallback, searchData]);
 
   return (
     <View>
@@ -26,6 +30,7 @@ const BarChart: React.FC<IBarChart> = ({ data }) => {
         decimalPlaces={0}
         withVerticalLabels={true}
       />
+      <DatePicker setData={setSearchData} data={searchData} />
     </View>
   );
 };

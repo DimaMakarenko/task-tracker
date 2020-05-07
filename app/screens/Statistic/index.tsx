@@ -11,7 +11,6 @@ import { basicStyles } from '../../theme/basicStyles';
 
 const Statistic = () => {
   const { isLoading, dateChartHours, dateChartTasks, dateChartPerDay } = useCharts();
-  console.log(dateChartPerDay);
 
   return (
     <ScrollView>
@@ -23,7 +22,7 @@ const Statistic = () => {
           <Loader isLoading={isLoading}>
             <LineChart data={dateChartTasks} />
             <LineChart data={dateChartHours} yAxisSuffix='h' />
-            <BarChart data={dateChartPerDay} />
+            <BarChart dataCallback={dateChartPerDay} />
           </Loader>
         </View>
       </View>

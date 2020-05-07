@@ -3,7 +3,7 @@ import { Dimensions } from 'react-native';
 // component
 import { LineChart as LineChartKit, LineChartData } from 'react-native-chart-kit';
 // const
-import { LINE_CHART_CONFIG, CHART_HEIGHT } from '../../utils/charts';
+import { LINE_CHART_CONFIG, CHART_HEIGHT } from './helpers';
 // types
 
 interface ILineChart {

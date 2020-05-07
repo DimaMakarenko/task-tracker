@@ -29,7 +29,7 @@ export const useCharts = () => {
 
   const dateChartTasks = useMemo(() => loggerByTasks(date), [date]);
 
-  const dateChartPerDay = useMemo(() => loggerPerDay(date), [date]);
+  const dateChartPerDay = useCallback((searchData) => loggerPerDay(date, searchData), [date]);
 
   return {
     isLoading,

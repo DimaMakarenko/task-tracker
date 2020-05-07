@@ -1,6 +1,7 @@
-import React from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, TextInput } from 'react-native';
-import { Item, Label, Icon, NativeBase, Input } from 'native-base';
+import React, { useMemo } from 'react';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { Icon } from 'native-base';
+import { TextInput } from 'react-native-paper';
 
 interface ITextField {
   onChangeText?: Function;
@@ -12,6 +13,7 @@ interface ITextField {
   touched?: boolean;
   editable?: boolean;
   iconName?: string;
+  iconSize?: number;
 }
 
 const TextField: React.FC<ITextField> = ({
@@ -24,25 +26,37 @@ const TextField: React.FC<ITextField> = ({
   touched,
   editable,
   submit,
+  iconSize = 20,
 }) => {
+  const imageStyle = useMemo(
+    () => ({
+      imageStyle: {
+        transform: [{ translateY: -iconSize }],
+      },
+    }),
+    [iconSize],
+  );
   return (
-    <View>
-      <Item style={styles.field}>
-        <Label style={styles.label}>{label}</Label>
-        <Input
-          style={styles.input}
-          onChangeText={(text) => onChangeText && onChangeText(text)}
-          onBlur={(text) => onBlur && onBlur(text)}
-          value={value}
-          placeholder={label}
-          editable={!editable}
-        />
-        {iconName && (
-          <TouchableOpacity onPress={submit}>
-            <Icon type='MaterialCommunityIcons' name={iconName} style={styles.image} />
-          </TouchableOpacity>
-        )}
-      </Item>
+    <View style={styles.wrapper}>
+      <TextInput
+        label={label}
+        style={styles.input}
+        onChangeText={(text) => onChangeText && onChangeText(text)}
+        onBlur={(text: any) => onBlur && onBlur(text)}
+        value={value}
+        theme={{
+          colors: {
+            primary: 'rgba(0,0,0, 0.55)',
+          },
+        }}
+        editable={!editable}
+        mode='outlined'
+      />
+      {iconName && (
+        <TouchableOpacity onPress={submit} style={styles.imageWrapper}>
+          <Icon type='MaterialCommunityIcons' name={iconName} style={[styles.image, imageStyle.imageStyle]} />
+        </TouchableOpacity>
+      )}
       <Text style={styles.error}>{touched && error}</Text>
     </View>
   );
@@ -56,13 +70,12 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   wrapper: {
-    paddingHorizontal: 5,
-    marginLeft: 0,
-    marginTop: 20,
-    lineHeight: 18,
+    position: 'relative',
   },
+  imageWrapper: { position: 'absolute', right: 10, top: '50%', zIndex: 2 },
   image: { color: '#666' },
   input: {
+    flex: 1,
     fontSize: 14,
   },
   error: {
