@@ -37,7 +37,7 @@ const EditTask: React.FC<IEditTask> = ({ navigation, route }) => {
       editTask(currentTask, value);
       navigation.navigate(tasksRoutes.SHOW, { taskId: task.id, deleteTask, handleEdit, handlePause, handleStart });
     },
-    [currentTask, deleteTask, handleEdit, handlePause, handleStart, navigation, editTask],
+    [currentTask, deleteTask, handleEdit, handlePause, handleStart, navigation, editTask, task.id],
   );
 
   return (

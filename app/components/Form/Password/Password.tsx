@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, TextInput, Text, TouchableOpacity } from 'react-native';
-// images
-import { eyeImg, eyeOffImg } from '../../../assets';
-import SvgUri from 'react-native-svg-uri';
+// styles
+import { basicStyles } from '../../../theme/basicStyles';
+import { Icon } from 'native-base';
 
 interface IPasswordField {
   fieldName: string;
@@ -29,7 +29,7 @@ const PasswordField: React.FC<IPasswordField> = ({ fieldName, onChangeText, onBl
           textContentType='password'
         />
         <TouchableOpacity onPress={() => setIsHide(!isHide)}>
-          <SvgUri source={isHide ? eyeOffImg : eyeImg} />
+          <Icon type='MaterialCommunityIcons' name={`eye-${isHide && 'off'}-outline`} style={basicStyles.icon} />
         </TouchableOpacity>
       </View>
       <Text style={styles.error}>{touched && error}</Text>

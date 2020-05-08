@@ -1,15 +1,15 @@
 import React from 'react';
+import { View } from 'react-native';
 // container
 import TasksNavigation from './TasksNavigation';
 import StatisticNavigation from './StatisticNavigation';
 // navigation
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-// images
-import SvgUri from 'react-native-svg-uri';
-import { clocksImg, statsImg } from '../assets';
 // routes
 import { tabsRoutes } from './routes';
+import { Icon } from 'native-base';
+import { basicStyles } from '../theme/basicStyles';
 
 const Tab = createBottomTabNavigator();
 
@@ -22,7 +22,11 @@ const TabNavigation = () => {
           component={TasksNavigation}
           options={{
             tabBarLabel: '',
-            tabBarIcon: ({ focused }) => <SvgUri source={clocksImg} fill={focused ? '#000' : '#888'} />,
+            tabBarIcon: ({ focused }) => (
+              <View>
+                <Icon type='MaterialCommunityIcons' name='alarm-check' style={[!focused && basicStyles.grayColor]} />
+              </View>
+            ),
           }}
         />
         <Tab.Screen
@@ -30,7 +34,11 @@ const TabNavigation = () => {
           component={StatisticNavigation}
           options={{
             tabBarLabel: '',
-            tabBarIcon: ({ focused }) => <SvgUri source={statsImg} fill={focused ? '#000' : '#888'} />,
+            tabBarIcon: ({ focused }) => (
+              <View>
+                <Icon type='MaterialCommunityIcons' name='trending-up' style={[!focused && basicStyles.grayColor]} />
+              </View>
+            ),
           }}
         />
       </Tab.Navigator>

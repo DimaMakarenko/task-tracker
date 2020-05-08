@@ -34,7 +34,6 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   loader: {
-    position: 'absolute',
     flex: 1,
     alignItems: 'center',
     flexDirection: 'row',
