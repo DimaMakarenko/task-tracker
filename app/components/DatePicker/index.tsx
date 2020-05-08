@@ -26,7 +26,7 @@ const DatePicker: React.FC<IDatePicker> = ({ setData, data }) => {
     <View style={basicStyles.container}>
       {show && <DateTimePicker value={data} onChange={onChange} mode={'date'} />}
       <TouchableOpacity onPress={() => setShow(true)} activeOpacity={0.7}>
-        <TextField value={dateToPicker(data)} editable iconName='calendar-text-outline' />
+        <TextField value={dateToPicker(data)} disable iconName='calendar-text-outline' />
       </TouchableOpacity>
     </View>
   );

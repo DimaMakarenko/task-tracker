@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+// component
 import { Icon } from 'native-base';
 import { TextInput } from 'react-native-paper';
 
@@ -11,7 +12,7 @@ interface ITextField {
   label?: string;
   error?: string;
   touched?: boolean;
-  editable?: boolean;
+  disable?: boolean;
   iconName?: string;
   iconSize?: number;
 }
@@ -24,7 +25,7 @@ const TextField: React.FC<ITextField> = ({
   value,
   error,
   touched,
-  editable,
+  disable,
   submit,
   iconSize = 20,
 }) => {
@@ -49,7 +50,7 @@ const TextField: React.FC<ITextField> = ({
             primary: 'rgba(0,0,0, 0.55)',
           },
         }}
-        editable={!editable}
+        editable={!disable}
         mode='outlined'
       />
       {iconName && (

@@ -2,17 +2,17 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { Dimensions, Text, View, StyleSheet } from 'react-native';
 // component
 import { StackedBarChartData } from 'react-native-chart-kit';
-import StackedBarChart from './StackedBarChart';
-import DatePicker from '../DatePicker';
+import StackedBarChart from '../StackedBarChart';
+import DatePicker from '../../DatePicker';
 // utils
-import { BAR_CHART_CONFIG, CHART_HEIGHT } from './configs';
-import { basicStyles } from '../../theme/basicStyles';
+import { BAR_CHART_CONFIG, CHART_HEIGHT } from '../configs';
+import { basicStyles } from '../../../theme/basicStyles';
 
 interface IBarChart {
-  dataCallback: (searchData: Date) => StackedBarChartData;
+  dataCallback: (searchData: Date) => StackedBarChartData | [];
   title?: string;
 }
-const screenWidth = () => Dimensions.get('window').width;
+const screenWidth = Dimensions.get('window').width;
 
 const BarChart: React.FC<IBarChart> = ({ dataCallback, title }) => {
   const [searchData, setSearchData] = useState(new Date());
