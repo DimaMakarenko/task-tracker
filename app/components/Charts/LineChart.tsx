@@ -16,9 +16,9 @@ interface ILineChart {
   dataIntervals: TWeek[];
   title?: string;
 }
+const screenWidth = Dimensions.get('window').width - 35;
 
 const LineChart: React.FC<ILineChart> = ({ dataCallback, yAxisSuffix, dataIntervals, title }) => {
-  const screenWidth = useMemo(() => Dimensions.get('window').width - 35, []);
   const [activeWeek, setActiveWeek] = useState(dataIntervals.length - 1);
 
   const data = useMemo(() => dataCallback(dataIntervals[activeWeek]), [dataCallback, activeWeek, dataIntervals]);

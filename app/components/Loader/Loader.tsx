@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
   loader: {
     position: 'absolute',
     flex: 1,
-    zIndex: 10,
     alignItems: 'center',
     flexDirection: 'row',
   },

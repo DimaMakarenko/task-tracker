@@ -12,9 +12,9 @@ interface IBarChart {
   dataCallback: (searchData: Date) => StackedBarChartData;
   title?: string;
 }
+const screenWidth = () => Dimensions.get('window').width;
 
 const BarChart: React.FC<IBarChart> = ({ dataCallback, title }) => {
-  const screenWidth = useMemo(() => Dimensions.get('window').width, []);
   const [searchData, setSearchData] = useState(new Date());
   const formatYLabel = useCallback((label) => Math.round(Number(label)).toString(), []);
 
