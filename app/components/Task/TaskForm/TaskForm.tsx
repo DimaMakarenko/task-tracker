@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 // component
 import TextField from '../../Form/Text/TextField';
 import Button from '../../Button/Button';
@@ -12,7 +12,7 @@ import { ITask, ITag } from '../../../store/type';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
 // utils
-import { dateFromMillis, formatMills } from '../../../utils/time';
+import { dateFromMillis, durationFromMills, formatMills } from '../../../utils/time';
 // routes
 import { tasksRoutes } from '../../../navigation/routes';
 
@@ -39,48 +39,46 @@ const TaskForm: React.FC<ITaskForm> = ({ onSubmit, task, navigate }) => {
     <Formik initialValues={initialValues} onSubmit={(values) => onSubmit(values)} validationSchema={validationTaskForm}>
       {({ handleChange, handleBlur, handleSubmit, values, errors, touched, setFieldValue }) => (
         <View style={basicStyles.justify}>
-          <ScrollView>
-            <>
-              <TextField
-                onChangeText={handleChange('title')}
-                onBlur={handleBlur('title')}
-                label='Title'
-                value={values.title}
-                error={errors.title}
-                touched={touched.title}
-              />
-              <TextField
-                onChangeText={handleChange('project')}
-                onBlur={handleBlur('project')}
-                label='Project'
-                value={values.project}
-                error={errors.project}
-                touched={touched.project}
-              />
-              {task && (
-                <>
-                  <View style={[styles.block, styles.timeBlock]}>
-                    <View>
-                      <Text style={basicStyles.subTitle}>Start time</Text>
-                      <Text style={basicStyles.text}>{formatMills(task.startTimer)}</Text>
-                    </View>
-                    <View>
-                      <Text style={basicStyles.subTitle}>End time</Text>
-                      <Text style={basicStyles.text}>{formatMills(task.startTimer + task.duration)}</Text>
-                    </View>
+          <View style={styles.block}>
+            <TextField
+              onChangeText={handleChange('title')}
+              onBlur={handleBlur('title')}
+              label='Title'
+              value={values.title}
+              error={errors.title}
+              touched={touched.title}
+            />
+            <TextField
+              onChangeText={handleChange('project')}
+              onBlur={handleBlur('project')}
+              label='Project'
+              value={values.project}
+              error={errors.project}
+              touched={touched.project}
+            />
+            {task && (
+              <>
+                <View style={[styles.block, styles.timeBlock]}>
+                  <View>
+                    <Text style={basicStyles.subTitle}>Start time</Text>
+                    <Text style={basicStyles.text}>{formatMills(task.startTimer)}</Text>
                   </View>
-                  <View style={styles.block}>
-                    <Text style={basicStyles.subTitle}>Duration</Text>
-                    <Text style={basicStyles.text}>{dateFromMillis(task.duration)} h</Text>
+                  <View>
+                    <Text style={basicStyles.subTitle}>End time</Text>
+                    <Text style={basicStyles.text}>{formatMills(task.startTimer + task.duration)}</Text>
                   </View>
-                </>
-              )}
-              <TouchableOpacity onPress={() => navigate(tasksRoutes.TAGS, { values: values.tags, setFieldValue })}>
-                <TextField label='Tags' editable value=' ' />
-                {values.tags && <TagList tags={values.tags} />}
-              </TouchableOpacity>
-            </>
-          </ScrollView>
+                </View>
+                <View style={styles.block}>
+                  <Text style={basicStyles.subTitle}>Duration</Text>
+                  <Text style={basicStyles.text}>{durationFromMills(task.duration)} h</Text>
+                </View>
+              </>
+            )}
+            <TouchableOpacity onPress={() => navigate(tasksRoutes.TAGS, { values: values.tags, setFieldValue })}>
+              <TextField label='Tags' editable value=' ' />
+              {values.tags && <TagList tags={values.tags} />}
+            </TouchableOpacity>
+          </View>
           <Button title={task ? 'Update task' : 'Start task'} onPress={handleSubmit} />
         </View>
       )}

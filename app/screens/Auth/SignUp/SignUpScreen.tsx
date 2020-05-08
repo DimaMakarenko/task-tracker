@@ -40,7 +40,7 @@ const SignUpScreen: React.FC<ISignUpScreen> = ({ navigation }) => {
 
   return (
     <View style={[basicStyles.container, styles.container]}>
-      <Title text='Sign-up' />
+      <Title text='Sign-up' style={[basicStyles.header, basicStyles.screenHeader]} />
       <Formik
         initialValues={initialValues}
         onSubmit={(values, actions) => {

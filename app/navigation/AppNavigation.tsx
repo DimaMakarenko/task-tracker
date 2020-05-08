@@ -21,6 +21,7 @@ const AppNavigation: React.FC = () => {
   useEffect(() => {
     user && dispatch(setUser(user.uid));
   });
+
   return (
     <NavigationContainer>
       <Stack.Navigator headerMode='none'>

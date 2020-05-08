@@ -1,8 +1,7 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 // container
 import TasksNavigation from './TasksNavigation';
-import Statistic from '../screens/Statistic/Statistic';
+import StatisticNavigation from './StatisticNavigation';
 // navigation
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -28,7 +27,7 @@ const TabNavigation = () => {
         />
         <Tab.Screen
           name={tabsRoutes.STATISTIC}
-          component={Statistic}
+          component={StatisticNavigation}
           options={{
             tabBarLabel: '',
             tabBarIcon: ({ focused }) => <SvgUri source={statsImg} fill={focused ? '#000' : '#888'} />,
@@ -40,9 +39,3 @@ const TabNavigation = () => {
 };
 
 export default TabNavigation;
-
-const styles = StyleSheet.create({
-  tabs: {
-    backgroundColor: 'red',
-  },
-});

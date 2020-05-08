@@ -5,11 +5,12 @@ import { styles } from './styles';
 
 interface IText {
   text: string;
+  style?: object;
 }
 
-const Title: React.FC<IText> = ({ text }) => {
+const Title: React.FC<IText> = ({ text, style }) => {
   return (
-    <View style={styles.title}>
+    <View style={[styles.title, style]}>
       <Text style={styles.text}>{text}</Text>
     </View>
   );

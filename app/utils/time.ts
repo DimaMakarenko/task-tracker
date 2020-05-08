@@ -8,6 +8,10 @@ export const dateFromMillis = (milliseconds: number): string => DateTime.fromMil
 export const durationFromMills = (milliseconds: number): string =>
   DateTime.fromMillis(milliseconds).setZone('UTC+0').toFormat('HH:mm:ss');
 
+export const dateToPicker = (date: Date): string => DateTime.fromMillis(+date).toFormat('DD');
+
+export const dateToSelect = (date: Date): string => DateTime.fromMillis(+date).toFormat('d.LL');
+
 export const findLastDuration = (timeSession: ISession[], dn: number) => {
   return dn - timeSession[timeSession.length - 1].start;
 };

@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { useTasks } from '../../../hooks/useTasks';
 // component
 import Title from '../../../components/Title/Title';
@@ -30,9 +30,11 @@ const CreateTask: React.FC<ICreateTask> = ({ navigation }) => {
   );
 
   return (
-    <View style={[basicStyles.container, basicStyles.fullScreen]}>
-      <Title text='Create task' />
-      <TaskForm onSubmit={handleClick} navigate={navigation.navigate} />
+    <View style={[basicStyles.container, basicStyles.fullScreen, basicStyles.bgScreen]}>
+      <ScrollView>
+        <Title text='Create task' style={[basicStyles.header, basicStyles.screenHeader]} />
+        <TaskForm onSubmit={handleClick} navigate={navigation.navigate} />
+      </ScrollView>
     </View>
   );
 };

@@ -58,12 +58,9 @@ const TagContainer: React.FC<ITagContainer> = ({ taskTags, onSubmit, btnText, is
             submit={create}
           />
         )}
-        <View>
-          <TagList tags={tags} remove={remove} />
-        </View>
-        <View style={styles.tagList}>
-          <TagList tags={unSelectTags} add={add} />
-        </View>
+        <TagList tags={tags} remove={remove} />
+        <View style={basicStyles.underline} />
+        <TagList tags={unSelectTags} add={add} />
       </ScrollView>
       <Button onPress={submit} title={btnText} />
     </View>
