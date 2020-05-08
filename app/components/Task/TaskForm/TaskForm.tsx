@@ -74,8 +74,10 @@ const TaskForm: React.FC<ITaskForm> = ({ onSubmit, task, navigate }) => {
                 </View>
               </>
             )}
-            <TouchableOpacity onPress={() => navigate(tasksRoutes.TAGS, { values: values.tags, setFieldValue, isEdit: !!task })}>
-              <TextField label='Tags' editable value=' ' />
+            <TouchableOpacity
+              onPress={() => navigate(tasksRoutes.TAGS, { values: values.tags, setFieldValue, isEdit: !!task })}
+            >
+              <TextField label='Tags' disable value=' ' />
               {values.tags && <TagList tags={values.tags} />}
             </TouchableOpacity>
           </View>

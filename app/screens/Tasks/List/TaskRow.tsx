@@ -5,14 +5,14 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { RectButton } from 'react-native-gesture-handler';
 import { alert } from '../../../components/Alert/Alert';
 import { stopActiveTask } from '../../../components/Toast';
+import { Icon } from 'native-base';
 // types
 import { ITask } from '../../../store/type';
 // utils
 import { formatMills, durationFromMills } from '../../../utils/time';
-// images
-import { deleteImg, editImg, playImg, completeImg, pauseImg } from '../../../assets';
-import SvgUri from 'react-native-svg-uri';
-import {tasksRoutes} from '../../../navigation/routes';
+// routes
+import { tasksRoutes } from '../../../navigation/routes';
+import { basicStyles } from '../../../theme/basicStyles';
 
 interface ITaskRow {
   task: ITask;
@@ -60,11 +60,11 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate, pauseTask, startTask, del
     return (
       <RectButton style={styles.option}>
         <TouchableOpacity onPress={showAlert} style={styles.optionIcon}>
-          <SvgUri source={deleteImg} />
+          <Icon type='MaterialCommunityIcons' name='trash-can-outline' style={basicStyles.icon} />
         </TouchableOpacity>
         {!isFinished && (
           <TouchableOpacity onPress={handleEdit} style={styles.optionIcon}>
-            <SvgUri source={editImg} />
+            <Icon type='MaterialCommunityIcons' name='pencil' style={basicStyles.icon} />
           </TouchableOpacity>
         )}
       </RectButton>
@@ -82,17 +82,17 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate, pauseTask, startTask, del
         </TouchableOpacity>
         {isFinished ? (
           <TouchableOpacity style={styles.image}>
-            <SvgUri source={completeImg} />
+            <Icon type='MaterialCommunityIcons' name='check-all' style={basicStyles.icon} />
           </TouchableOpacity>
         ) : (
           <>
             {isActive ? (
               <TouchableOpacity style={styles.image} onPress={() => handlePause(task)}>
-                <SvgUri source={pauseImg} />
+                <Icon type='MaterialCommunityIcons' name='pause-circle' style={basicStyles.icon} />
               </TouchableOpacity>
             ) : (
               <TouchableOpacity style={styles.image} onPress={() => handleStart(task)}>
-                <SvgUri source={playImg} />
+                <Icon type='MaterialCommunityIcons' name='play-circle' style={basicStyles.icon} />
               </TouchableOpacity>
             )}
           </>

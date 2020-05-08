@@ -24,7 +24,10 @@ export const useCharts = () => {
   }, [uid]);
 
   useEffect(() => {
-    fetch().catch(() => console.log('error useCatch'));
+    fetch().catch(() => {
+      setDate([]);
+      console.log('error useCatch');
+    });
   }, [fetch]);
 
   const activeWeeks = useMemo(() => (date.length > 0 ? getActiveWeeks(date) : undefined), [date]);

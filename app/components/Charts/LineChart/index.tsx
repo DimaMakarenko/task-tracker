@@ -2,13 +2,13 @@ import React, { useMemo, useState, useCallback } from 'react';
 import { Dimensions, View, Text, StyleSheet } from 'react-native';
 // component
 import { LineChart as LineChartKit, LineChartData } from 'react-native-chart-kit';
-import DateSelector from './DateSelector';
+import DatePagination from '../DatePagination';
 // const
-import { LINE_CHART_CONFIG, CHART_HEIGHT } from './configs';
+import { LINE_CHART_CONFIG, CHART_HEIGHT } from '../configs';
 // types
-import { TWeek } from './type';
+import { TWeek } from '../type';
 // styles
-import { basicStyles } from '../../theme/basicStyles';
+import { basicStyles } from '../../../theme/basicStyles';
 
 interface ILineChart {
   dataCallback: (arg0: TWeek) => LineChartData;
@@ -16,6 +16,7 @@ interface ILineChart {
   dataIntervals: TWeek[];
   title?: string;
 }
+
 const screenWidth = Dimensions.get('window').width - 35;
 
 const LineChart: React.FC<ILineChart> = ({ dataCallback, yAxisSuffix, dataIntervals, title }) => {
@@ -34,7 +35,7 @@ const LineChart: React.FC<ILineChart> = ({ dataCallback, yAxisSuffix, dataInterv
   return (
     <View style={basicStyles.chartWrapper}>
       <View style={[basicStyles.header, styles.title]}>
-        <DateSelector next={next} prev={prev} date={dataIntervals[activeWeek]} />
+        <DatePagination next={next} prev={prev} date={dataIntervals[activeWeek]} />
         <Text style={basicStyles.subTitle}>{title}</Text>
       </View>
       <LineChartKit

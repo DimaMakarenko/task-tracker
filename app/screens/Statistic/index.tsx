@@ -14,11 +14,11 @@ const Statistic = () => {
 
   return (
     <View style={basicStyles.bgScreen}>
-      {activeWeeks ? (
-        <ScrollView>
-          <View style={basicStyles.container}>
-            <Title text='Statistic' style={[basicStyles.header]} />
-          </View>
+      <ScrollView>
+        <View style={basicStyles.container}>
+          <Title text='Statistic' style={[basicStyles.header]} />
+        </View>
+        {activeWeeks ? (
           <View>
             <Loader isLoading={isLoading}>
               <LineChart
@@ -31,12 +31,12 @@ const Statistic = () => {
               <BarChart dataCallback={dateChartPerDay} title='Logged per day' />
             </Loader>
           </View>
-        </ScrollView>
-      ) : (
-        <View>
-          <Text> List is empty</Text>
-        </View>
-      )}
+        ) : (
+          <View>
+            <Text> List is empty</Text>
+          </View>
+        )}
+      </ScrollView>
     </View>
   );
 };

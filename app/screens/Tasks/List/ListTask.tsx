@@ -29,8 +29,8 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
   const tasks = useSelector(selectTasks);
   const activeTask = useSelector(selectActiveTask);
   const { isLoading, fetchTasks, pauseTask, addActiveTask, startTask, deleteTask } = useTasks();
-  const { fetchTags } = useTags();
-  const { filterTags } = useTags();
+  const { fetchTags, filterTags } = useTags();
+
   const [filteredTags, setFilteredTags] = useState<{ isFiltered: boolean; tags: ITag }>({
     isFiltered: false,
     tags: [],
@@ -38,14 +38,13 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
   const isListEmpty = useMemo(() => tasks.length > 0, [tasks]);
 
   useEffect(() => {
-    addActiveTask(tasks);
-    fetchTags();
-  }, [tasks]);
-
-  useEffect(() => {
     filteredTags.isFiltered ? filterTags(filteredTags.tags) : fetchTasks();
   }, [filteredTags]);
 
+  useEffect(() => {
+    addActiveTask(tasks);
+    fetchTags();
+  }, [tasks]);
   const handlePress = () => {
     firebase.auth().signOut();
   };

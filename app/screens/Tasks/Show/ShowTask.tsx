@@ -1,18 +1,16 @@
 import React, { useMemo, useCallback } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { useTasks } from '../../../hooks/useTasks';
 // components
 import Title from '../../../components/Title/Title';
 import { alert } from '../../../components/Alert/Alert';
 import Button from '../../../components/Button/Button';
 import TagList from '../../../components/Tags/TagList';
+import { Icon } from 'native-base';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
 // utils
 import { dateFromMillis, lastSessionEnd, durationFromMills } from '../../../utils/time';
-// images
-import SvgUri from 'react-native-svg-uri';
-import { editImg, pauseImg, playImg } from '../../../assets';
-import { useTasks } from '../../../hooks/useTasks';
 // routes
 import { tasksRoutes } from '../../../navigation/routes';
 
@@ -53,7 +51,7 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
 
   const makeFinished = useCallback(() => {
     finishTask(currentTask);
-  }, []);
+  }, [currentTask]);
 
   return (
     <ScrollView>
@@ -63,15 +61,15 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
           {!isFinished && (
             <View style={styles.icons}>
               <TouchableOpacity onPress={() => handleEdit()} style={styles.optionIcon}>
-                <SvgUri source={editImg} />
+                <Icon type='MaterialCommunityIcons' name='pencil' style={basicStyles.icon} />
               </TouchableOpacity>
               {isActive ? (
                 <TouchableOpacity style={styles.optionIcon} onPress={() => handlePause(currentTask)}>
-                  <SvgUri source={pauseImg} />
+                  <Icon type='MaterialCommunityIcons' name='pause-circle' style={basicStyles.icon} />
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity style={styles.optionIcon} onPress={() => handleStart(currentTask)}>
-                  <SvgUri source={playImg} />
+                  <Icon type='MaterialCommunityIcons' name='play-circle' style={basicStyles.icon} />
                 </TouchableOpacity>
               )}
             </View>

@@ -1,7 +1,7 @@
 import { DateTime, Duration, Interval, DurationUnit } from 'luxon';
-import { ITask } from '../../store/type';
 import { LineChartData, StackedBarChartData } from 'react-native-chart-kit';
 // types
+import { ITask } from '../../store/type';
 import { TWeek } from './type';
 
 const randomColor = require('randomcolor');
@@ -89,7 +89,7 @@ export const loggedByHours: (date: ITask[], week: TWeek) => LineChartData = (dat
 
 export const loggerPerDay: (date: ITask[], searchData: Date) => StackedBarChartData = (date, searchData) => {
   const datesInterval = getIntervalBetweenDates(searchData, searchData, 'day');
-  const dayIntervals = datesInterval.splitBy(Duration.fromObject({ hour: 1 }));
+  const dayIntervals = datesInterval.splitBy(Duration.fromObject({ hour: 2 }));
 
   const resultsByDate = dayIntervals.map((dayInterval) => {
     const result: { date: string; duration: number[] } = {
@@ -111,18 +111,21 @@ export const loggerPerDay: (date: ITask[], searchData: Date) => StackedBarChartD
           if (dayInterval.contains(sessionStart) && dayInterval.contains(sessionEnd)) {
             const workInterval = Interval.fromDateTimes(sessionStart, sessionEnd);
             const hours = workInterval.toDuration('hours').toObject().hours;
+
             if (hours) {
               result.duration.push(hours);
             }
           } else if (dayInterval.contains(sessionStart) && dayIntervalEnd < sessionEnd) {
             const workInterval = Interval.fromDateTimes(sessionStart, dayIntervalEnd);
             const hours = workInterval.toDuration('hours').toObject().hours;
+
             if (hours) {
               result.duration.push(hours);
             }
           } else if (dayInterval.contains(sessionEnd) && dayIntervalStart > sessionStart) {
             const workInterval = Interval.fromDateTimes(dayIntervalStart, sessionEnd);
             const hours = workInterval.toDuration('hours').toObject().hours;
+
             if (hours) {
               result.duration.push(hours);
             }
@@ -134,10 +137,10 @@ export const loggerPerDay: (date: ITask[], searchData: Date) => StackedBarChartD
           ) {
             const workInterval = Interval.fromDateTimes(dayIntervalStart, dayIntervalEnd);
             const hours = workInterval.toDuration('hours').toObject().hours;
+
             if (hours) {
               result.duration.push(hours);
             }
-          } else {
           }
         }
       });

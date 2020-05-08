@@ -5,8 +5,9 @@ import { lastSessionStart, durationFromMills } from '../../../utils/time';
 // types
 import { ITask } from '../../../store/type';
 // image
-import SvgUri from 'react-native-svg-uri';
-import { pauseImg } from '../../../assets';
+import { Icon } from 'native-base';
+// style
+import { basicStyles } from '../../../theme/basicStyles';
 
 interface IActiveTask {
   pause: Function;
@@ -27,14 +28,14 @@ const ActiveTask: React.FC<IActiveTask> = ({ activeTask, pause }) => {
       setTimer(duration + Date.now() - lastSessionStart(timeSession));
     }, 1000);
     return () => clearInterval(internal);
-  }, [activeTask]);
+  }, [activeTask, duration, timeSession]);
 
   return (
     <View style={[styles.activeTask]}>
       <Text>{title}</Text>
       <Text>{durationFromMills(timer)}</Text>
       <TouchableOpacity onPress={pauseTask} style={styles.image}>
-        <SvgUri source={pauseImg} />
+        <Icon type='MaterialCommunityIcons' name='pause-circle' style={basicStyles.icon} />
       </TouchableOpacity>
     </View>
   );

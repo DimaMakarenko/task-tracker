@@ -33,10 +33,9 @@ export const basicStyles = StyleSheet.create({
   },
   dangerText: { color: Colors.danger },
   icon: {
-    width: 28,
-    height: 28,
-    color: Colors.grey,
+    fontSize: 24,
   },
+  grayColor: { color: Colors.grey },
   underline: {
     marginVertical: 22,
     borderWidth: 1,
