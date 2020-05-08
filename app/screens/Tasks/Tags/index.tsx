@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 // component
 import Title from '../../../components/Title/Title';
 import TagContainer from '../../../components/Tags/TagContainer';
@@ -31,8 +31,8 @@ const Tags: React.FC<ITags> = ({ navigation, route }) => {
   };
 
   return (
-    <View style={[basicStyles.container, basicStyles.fullScreen]}>
-      <Title text='Add tags' />
+    <View style={[basicStyles.container, basicStyles.fullScreen, basicStyles.bgScreen]}>
+      <Title text='Add tags' style={[basicStyles.header, basicStyles.screenHeader]} />
       <TagContainer taskTags={values} btnText='Done' onSubmit={submit} isField />
     </View>
   );

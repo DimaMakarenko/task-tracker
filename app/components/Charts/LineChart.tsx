@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useCallback } from 'react';
-import { Dimensions, View, Text } from 'react-native';
+import { Dimensions, View, Text, StyleSheet } from 'react-native';
 // component
 import { LineChart as LineChartKit, LineChartData } from 'react-native-chart-kit';
 import DateSelector from './DateSelector';
@@ -18,7 +18,7 @@ interface ILineChart {
 }
 
 const LineChart: React.FC<ILineChart> = ({ dataCallback, yAxisSuffix, dataIntervals, title }) => {
-  const screenWidth = useMemo(() => Dimensions.get('window').width, []);
+  const screenWidth = useMemo(() => Dimensions.get('window').width - 35, []);
   const [activeWeek, setActiveWeek] = useState(dataIntervals.length - 1);
 
   const data = useMemo(() => dataCallback(dataIntervals[activeWeek]), [dataCallback, activeWeek, dataIntervals]);
@@ -32,8 +32,8 @@ const LineChart: React.FC<ILineChart> = ({ dataCallback, yAxisSuffix, dataInterv
   const prev = useCallback(() => setActiveWeek(activeWeek === 0 ? activeWeek : activeWeek - 1), [activeWeek]);
 
   return (
-    <View>
-      <View style={basicStyles.header}>
+    <View style={basicStyles.chartWrapper}>
+      <View style={[basicStyles.header, styles.title]}>
         <DateSelector next={next} prev={prev} date={dataIntervals[activeWeek]} />
         <Text style={basicStyles.subTitle}>{title}</Text>
       </View>
@@ -46,10 +46,16 @@ const LineChart: React.FC<ILineChart> = ({ dataCallback, yAxisSuffix, dataInterv
         segments={3}
         formatYLabel={formatYLabel}
         yAxisSuffix={yAxisSuffix && yAxisSuffix}
-        bezier
+        style={{
+          paddingRight: 34,
+        }}
       />
     </View>
   );
 };
 
 export default LineChart;
+
+const styles = StyleSheet.create({
+  title: { paddingHorizontal: 24 },
+});

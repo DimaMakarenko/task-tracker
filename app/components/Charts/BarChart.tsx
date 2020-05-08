@@ -1,25 +1,28 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { Dimensions, View } from 'react-native';
+import { Dimensions, Text, View, StyleSheet } from 'react-native';
 // component
 import { StackedBarChartData } from 'react-native-chart-kit';
 import StackedBarChart from './StackedBarChart';
 import DatePicker from '../DatePicker';
 // utils
 import { BAR_CHART_CONFIG, CHART_HEIGHT } from './configs';
+import { basicStyles } from '../../theme/basicStyles';
 
 interface IBarChart {
   dataCallback: (searchData: Date) => StackedBarChartData;
+  title?: string;
 }
 
-const BarChart: React.FC<IBarChart> = ({ dataCallback }) => {
+const BarChart: React.FC<IBarChart> = ({ dataCallback, title }) => {
   const screenWidth = useMemo(() => Dimensions.get('window').width, []);
-  const [searchData, setSearchData] = useState(new Date(2020, 4, 3));
+  const [searchData, setSearchData] = useState(new Date());
   const formatYLabel = useCallback((label) => Math.round(Number(label)).toString(), []);
 
   const data = useMemo(() => dataCallback(searchData), [dataCallback, searchData]);
 
   return (
     <View>
+      <Text style={[basicStyles.subTitle, styles.title]}>{title}</Text>
       <StackedBarChart
         // @ts-ignore
         data={data}
@@ -31,6 +34,10 @@ const BarChart: React.FC<IBarChart> = ({ dataCallback }) => {
         // @ts-ignore
         decimalPlaces={0}
         withVerticalLabels={true}
+        yAxisSuffix='h'
+        style={{
+          paddingLeft: 5,
+        }}
       />
       <DatePicker setData={setSearchData} data={searchData} />
     </View>
@@ -38,3 +45,7 @@ const BarChart: React.FC<IBarChart> = ({ dataCallback }) => {
 };
 
 export default BarChart;
+
+const styles = StyleSheet.create({
+  title: { flexDirection: 'row', textAlign: 'right', paddingHorizontal: 24 },
+});

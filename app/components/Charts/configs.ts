@@ -4,7 +4,7 @@ export const LINE_CHART_CONFIG = {
   backgroundGradientFrom: '#fff',
   backgroundGradientTo: '#fff',
   propsForBackgroundLines: {
-    stroke: '#000',
+    strokeDasharray: false,
   },
 };
 

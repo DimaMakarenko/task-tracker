@@ -30,7 +30,7 @@ class StackedBarChart extends AbstractChart {
   }): any => {
     const { data, width, height, paddingTop, paddingRight, border, colors, stackedBar = false } = config;
     return data.map((x, i) => {
-      const barWidth = 30 * this.getBarPercentage();
+      const barWidth = 32 * this.getBarPercentage();
       const ret = [];
       let h = 0;
       let st = paddingTop;
@@ -75,7 +75,7 @@ class StackedBarChart extends AbstractChart {
       decimalPlaces,
     } = this.props;
 
-    const width = w * 0.8;
+    const width = w * 0.9;
     const { borderRadius = 0 } = style;
     const config = {
       width,

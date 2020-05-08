@@ -33,8 +33,8 @@ const Filters: React.FC<IFilters> = ({ navigation, route }) => {
   };
 
   return (
-    <View style={[basicStyles.container, basicStyles.fullScreen]}>
-      <View style={basicStyles.header}>
+    <View style={[basicStyles.container, basicStyles.fullScreen, basicStyles.bgScreen]}>
+      <View style={[basicStyles.header, basicStyles.screenHeader]}>
         <View style={basicStyles.flexRow}>
           <Title text='Filter' />
           <View>

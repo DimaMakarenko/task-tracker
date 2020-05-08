@@ -27,5 +27,6 @@ const styles = StyleSheet.create({
   tagsWrapper: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    minHeight: 45,
   },
 });

@@ -5,6 +5,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import TextField from '../Form/Text/TextField';
 // utils
 import { dateToPicker } from '../../utils/time';
+// styles
+import { basicStyles } from '../../theme/basicStyles';
 
 interface IDatePicker {
   data: Date;
@@ -21,7 +23,7 @@ const DatePicker: React.FC<IDatePicker> = ({ setData, data }) => {
   };
 
   return (
-    <View>
+    <View style={basicStyles.container}>
       {show && <DateTimePicker value={data} onChange={onChange} mode={'date'} />}
       <TouchableOpacity onPress={() => setShow(true)} activeOpacity={0.7}>
         <TextField value={dateToPicker(data)} editable iconName='calendar-text-outline' />

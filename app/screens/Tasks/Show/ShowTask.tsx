@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 // components
 import Title from '../../../components/Title/Title';
 import { alert } from '../../../components/Alert/Alert';
@@ -56,64 +56,66 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
   }, []);
 
   return (
-    <View style={basicStyles.container}>
-      <View style={styles.header}>
-        <Title text='Task' />
-        {!isFinished && (
-          <View style={styles.icons}>
-            <TouchableOpacity onPress={() => handleEdit()} style={styles.optionIcon}>
-              <SvgUri source={editImg} />
-            </TouchableOpacity>
-            {isActive ? (
-              <TouchableOpacity style={styles.optionIcon} onPress={() => handlePause(currentTask)}>
-                <SvgUri source={pauseImg} />
+    <ScrollView>
+      <View style={[basicStyles.container, basicStyles.bgScreen]}>
+        <View style={[basicStyles.header, basicStyles.screenHeader]}>
+          <Title text='Task' />
+          {!isFinished && (
+            <View style={styles.icons}>
+              <TouchableOpacity onPress={() => handleEdit()} style={styles.optionIcon}>
+                <SvgUri source={editImg} />
               </TouchableOpacity>
-            ) : (
-              <TouchableOpacity style={styles.optionIcon} onPress={() => handleStart(currentTask)}>
-                <SvgUri source={playImg} />
-              </TouchableOpacity>
-            )}
-          </View>
-        )}
-      </View>
-
-      <View style={styles.block}>
-        <Text style={basicStyles.subTitle}>Title</Text>
-        <Text style={basicStyles.text}>{title}</Text>
-      </View>
-      <View style={styles.block}>
-        <Text style={basicStyles.subTitle}>Project</Text>
-        <Text style={basicStyles.text}>{project}</Text>
-      </View>
-
-      <View style={[styles.block, styles.timeBlock]}>
-        <View>
-          <Text style={basicStyles.subTitle}>Start time</Text>
-          <Text style={basicStyles.text}>{dateFromMillis(startTimer)}</Text>
+              {isActive ? (
+                <TouchableOpacity style={styles.optionIcon} onPress={() => handlePause(currentTask)}>
+                  <SvgUri source={pauseImg} />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity style={styles.optionIcon} onPress={() => handleStart(currentTask)}>
+                  <SvgUri source={playImg} />
+                </TouchableOpacity>
+              )}
+            </View>
+          )}
         </View>
-        {lastEnd && (
-          <View>
-            <Text style={basicStyles.subTitle}>End time</Text>
-            <Text style={basicStyles.text}>{dateFromMillis(lastEnd)}</Text>
-          </View>
-        )}
-      </View>
-      <View style={styles.block}>
-        <Text style={basicStyles.subTitle}>Duration</Text>
-        <Text style={basicStyles.text}>{durationFromMills(duration)} h</Text>
-      </View>
-      <View style={styles.block}>
-        <Text style={basicStyles.subTitle}>Tags</Text>
-        {tags && <TagList tags={tags} />}
-      </View>
 
-      <View style={styles.block}>
-        <Text style={styles.deleteBtn} onPress={showAlert}>
-          Delete
-        </Text>
+        <View style={styles.block}>
+          <Text style={basicStyles.subTitle}>Title</Text>
+          <Text style={basicStyles.text}>{title}</Text>
+        </View>
+        <View style={styles.block}>
+          <Text style={basicStyles.subTitle}>Project</Text>
+          <Text style={basicStyles.text}>{project}</Text>
+        </View>
+
+        <View style={[styles.block, styles.timeBlock]}>
+          <View>
+            <Text style={basicStyles.subTitle}>Start time</Text>
+            <Text style={basicStyles.text}>{dateFromMillis(startTimer)}</Text>
+          </View>
+          {lastEnd && (
+            <View>
+              <Text style={basicStyles.subTitle}>End time</Text>
+              <Text style={basicStyles.text}>{dateFromMillis(lastEnd)}</Text>
+            </View>
+          )}
+        </View>
+        <View style={styles.block}>
+          <Text style={basicStyles.subTitle}>Duration</Text>
+          <Text style={basicStyles.text}>{durationFromMills(duration)} h</Text>
+        </View>
+        <View style={styles.block}>
+          <Text style={basicStyles.subTitle}>Tags</Text>
+          {tags && <TagList tags={tags} />}
+        </View>
+
+        <View style={styles.block}>
+          <Text style={styles.deleteBtn} onPress={showAlert}>
+            Delete
+          </Text>
+        </View>
+        {!isFinished && <Button title='Mark as Completed' onPress={makeFinished} />}
       </View>
-      {!isFinished && <Button title='Mark as Completed' onPress={makeFinished} />}
-    </View>
+    </ScrollView>
   );
 };
 
@@ -121,7 +123,6 @@ const styles = StyleSheet.create({
   block: { marginBottom: 30 },
   timeBlock: { flexDirection: 'row', justifyContent: 'space-between' },
   deleteBtn: { fontSize: 12, color: 'rgba(218, 11, 11,0.6)' },
-  header: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 45 },
   optionIcon: { marginLeft: 14 },
   icons: { flexDirection: 'row' },
 });

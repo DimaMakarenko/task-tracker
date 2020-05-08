@@ -65,7 +65,7 @@ export const loggedByHours: (date: ITask[], week: TWeek) => LineChartData = (dat
           if (dayInterval.contains(sessionStart)) {
             const sessionEnd = DateTime.fromMillis(session.end);
             const workInterval = Interval.fromDateTimes(sessionStart, sessionEnd);
-            const hours = workInterval.toDuration('hours').toObject().hours;
+            const hours = workInterval.toDuration('hour').toObject().hours;
 
             if (hours) {
               result.duration += hours;
@@ -156,7 +156,9 @@ export const loggerPerDay: (date: ITask[], searchData: Date) => StackedBarChartD
 export const getActiveWeeks: (date: ITask[]) => TWeek[] = (date) => {
   const minStartTask = date.reduce((min, b) => Math.min(min, b.startTimer), date[0].startTimer);
   const datesInterval = getIntervalBetweenDates(new Date(minStartTask), new Date(), 'week');
-  const weeksIntervals = datesInterval.splitBy(Duration.fromObject({ week: 1 }));
+  const weeksIntervals = datesInterval.splitBy(Duration.fromObject({ day: 6 }));
+
+  console.log(weeksIntervals);
 
   const resultsByWeeks = weeksIntervals.map((weekInterval) => {
     const result = {
