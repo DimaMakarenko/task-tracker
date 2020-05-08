@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 // component
 import TextField from '../../Form/Text/TextField';
@@ -12,7 +12,7 @@ import { ITask, ITag } from '../../../store/type';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
 // utils
-import { dateFromMillis, durationFromMills, formatMills } from '../../../utils/time';
+import { durationFromMills, formatMills } from '../../../utils/time';
 // routes
 import { tasksRoutes } from '../../../navigation/routes';
 
@@ -74,7 +74,7 @@ const TaskForm: React.FC<ITaskForm> = ({ onSubmit, task, navigate }) => {
                 </View>
               </>
             )}
-            <TouchableOpacity onPress={() => navigate(tasksRoutes.TAGS, { values: values.tags, setFieldValue })}>
+            <TouchableOpacity onPress={() => navigate(tasksRoutes.TAGS, { values: values.tags, setFieldValue, isEdit: !!task })}>
               <TextField label='Tags' editable value=' ' />
               {values.tags && <TagList tags={values.tags} />}
             </TouchableOpacity>

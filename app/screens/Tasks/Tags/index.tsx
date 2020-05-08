@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 // component
 import Title from '../../../components/Title/Title';
 import TagContainer from '../../../components/Tags/TagContainer';
@@ -18,16 +18,17 @@ interface ITags {
     params: {
       values: ITag;
       setFieldValue: Function;
+      isEdit: boolean;
     };
   };
 }
 
 const Tags: React.FC<ITags> = ({ navigation, route }) => {
-  const { values, setFieldValue } = route.params;
+  const { values, setFieldValue, isEdit } = route.params;
 
   const submit = (tags: ITag) => {
     setFieldValue('tags', tags);
-    navigation.navigate(tasksRoutes.EDIT);
+    navigation.navigate(isEdit ? tasksRoutes.EDIT : tasksRoutes.CREATE);
   };
 
   return (

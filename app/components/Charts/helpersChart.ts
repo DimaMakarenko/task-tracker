@@ -158,8 +158,6 @@ export const getActiveWeeks: (date: ITask[]) => TWeek[] = (date) => {
   const datesInterval = getIntervalBetweenDates(new Date(minStartTask), new Date(), 'week');
   const weeksIntervals = datesInterval.splitBy(Duration.fromObject({ day: 6 }));
 
-  console.log(weeksIntervals);
-
   const resultsByWeeks = weeksIntervals.map((weekInterval) => {
     const result = {
       dateS: weekInterval.start.toFormat('D'),
