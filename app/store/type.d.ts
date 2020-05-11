@@ -57,8 +57,16 @@ export interface IDeleteTask {
   taskId: number;
   uid: string;
 }
+
 export interface IFilterTask {
   uid: string;
   filterTags: ITag;
   ref: string;
+}
+
+export type TFakeTask = { [key: number]: ITask };
+
+interface IGenerateTasks {
+  uid: string;
+  tasks: TFakeTask;
 }

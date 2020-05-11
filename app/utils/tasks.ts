@@ -1,11 +1,5 @@
 import { ITask, INewTask } from '../store/type';
 
-export const updateTaskList = (taskList: ITask[], payload: any) => {
-  return taskList.map((task) => {
-    return task.id === payload.task.id ? { ...task, ...payload.task } : task;
-  });
-};
-
 export const getNewTask = (props: INewTask): ITask => {
   const { title, project } = props;
   const dn = Date.now();
@@ -18,6 +12,6 @@ export const getNewTask = (props: INewTask): ITask => {
     isFinished: false,
     startTimer: dn,
     timeSession: [{ start: dn }],
-    tags: ['hi', 'bro'],
+    tags: [],
   };
 };

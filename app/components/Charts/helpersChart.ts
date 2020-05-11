@@ -76,6 +76,7 @@ export const loggedByHours: (date: ITask[], week: TWeek) => LineChartData = (dat
     });
     return result;
   });
+  console.log('result', resultsByDate);
   return {
     labels: resultsByDate.map((el) => el.date),
     datasets: [
@@ -157,8 +158,12 @@ export const loggerPerDay: (date: ITask[], searchData: Date) => StackedBarChartD
 };
 
 export const getActiveWeeks: (date: ITask[]) => TWeek[] = (date) => {
+  console.log(date);
   const minStartTask = date.reduce((min, b) => Math.min(min, b.startTimer), date[0].startTimer);
+  console.log('minStartTask', minStartTask);
   const datesInterval = getIntervalBetweenDates(new Date(minStartTask), new Date(), 'week');
+  console.log('datesInterval', datesInterval);
+
   const weeksIntervals = datesInterval.splitBy(Duration.fromObject({ day: 6 }));
 
   const resultsByWeeks = weeksIntervals.map((weekInterval) => {
@@ -182,7 +187,6 @@ export const getActiveWeeks: (date: ITask[]) => TWeek[] = (date) => {
       });
     return result;
   });
-
   return resultsByWeeks
     .filter((week) => week.isActive)
     .map((week) => ({ start: new Date(week.dateS), end: new Date(week.dateE) }));

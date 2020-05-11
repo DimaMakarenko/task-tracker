@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
-import { listenerTaskDb, deleteTaskDb, updateTaskDb } from '../db/api';
+// api
+import { listenerTaskDb, deleteTaskDb, updateTaskDb, generateTasksDb } from '../db/api';
 import _ from 'lodash';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,6 +12,7 @@ import { selectTasks } from '../store/reducers/tasks/selectors';
 import { ICreateTask, ITask } from '../store/type';
 // utils
 import { findLastDuration, setEndSession, setStartSession } from '../utils/time';
+import { generateFakeTasks } from '../utils/fakeTasks';
 
 export const useTasks = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -112,6 +114,11 @@ export const useTasks = () => {
     [uid],
   );
 
+  const fakeTasks = useCallback(async () => {
+    const tasks = generateFakeTasks();
+    await generateTasksDb({ uid, tasks });
+  }, [uid]);
+
   return {
     isLoading,
     fetchTasks,
@@ -123,5 +130,6 @@ export const useTasks = () => {
     finishTask,
     getTask,
     editTask,
+    fakeTasks,
   };
 };
