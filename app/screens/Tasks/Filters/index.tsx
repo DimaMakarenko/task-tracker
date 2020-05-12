@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { useTags } from '../../../hooks/useTags';
 // component
 import Title from '../../../components/Title/Title';
 import TagContainer from '../../../components/Tags/TagContainer';

@@ -28,7 +28,7 @@ interface IListTask {
 const ListTask: FC<IListTask> = ({ navigation }) => {
   const tasks = useSelector(selectTasks);
   const activeTask = useSelector(selectActiveTask);
-  const { isLoading, fetchTasks, pauseTask, addActiveTask, startTask, deleteTask } = useTasks();
+  const { isLoading, fetchTasks, pauseTask, addActiveTask, startTask, deleteTask, fakeTasks } = useTasks();
   const { fetchTags, filterTags } = useTags();
 
   const [filteredTags, setFilteredTags] = useState<{ isFiltered: boolean; tags: ITag }>({
@@ -88,7 +88,9 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
           {!isListEmpty && !filteredTags.isFiltered ? (
             <View style={styles.emptyList}>
               <Text style={styles.emptyListText}>You don’t have tasks recently added.</Text>
-              <Text style={styles.emptyListText}>Generate list of tasks</Text>
+              <Text style={styles.emptyListText} onPress={fakeTasks}>
+                Generate list of tasks
+              </Text>
             </View>
           ) : (
             <>

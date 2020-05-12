@@ -1,6 +1,6 @@
 import firebase from './firebaseDb';
 // types
-import { ICreateTask, IFetchTasks, IUpdateTask, IDeleteTask, IFilterTask } from '../store/type';
+import { ICreateTask, IFetchTasks, IUpdateTask, IDeleteTask, IFilterTask, IGenerateTasks } from '../store/type';
 import { proxyFilter } from './proxy';
 
 const db = firebase.database();
@@ -12,6 +12,11 @@ export const setTaskDb = (option: ICreateTask) => {
     .ref('users/' + uid + '/tasks/')
     .child(id.toString())
     .set(task);
+};
+
+export const generateTasksDb = (option: IGenerateTasks) => {
+  const { uid, tasks } = option;
+  return db.ref('users/' + uid + '/tasks/').set(tasks);
 };
 
 export const listenerTaskDb = (options: IFetchTasks, callback: any) => {
