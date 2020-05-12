@@ -3,6 +3,7 @@ import { View } from 'react-native';
 // container
 import TasksNavigation from './TasksNavigation';
 import StatisticNavigation from './StatisticNavigation';
+import CalendarNavigation from './Calendarnavigation';
 // navigation
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -44,6 +45,18 @@ const TabNavigation = () => {
             tabBarIcon: ({ focused }) => (
               <View>
                 <Icon type='MaterialCommunityIcons' name='trending-up' style={[!focused && basicStyles.grayColor]} />
+              </View>
+            ),
+          }}
+        />
+        <Tab.Screen
+          name={tabsRoutes.CALENDAR}
+          component={CalendarNavigation}
+          options={{
+            tabBarLabel: '',
+            tabBarIcon: ({ focused }) => (
+              <View>
+                <Icon type='MaterialCommunityIcons' name='calendar-today' style={[!focused && basicStyles.grayColor]} />
               </View>
             ),
           }}

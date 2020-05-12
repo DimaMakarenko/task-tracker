@@ -6,6 +6,7 @@ export enum appRoutes {
 export enum tabsRoutes {
   TASKS = 'TASKS',
   STATISTIC = 'STATISTIC',
+  CALENDAR = 'CALENDAR',
 }
 
 export enum tasksRoutes {
