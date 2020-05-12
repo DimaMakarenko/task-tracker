@@ -16,7 +16,14 @@ const Tab = createBottomTabNavigator();
 const TabNavigation = () => {
   return (
     <NavigationContainer independent>
-      <Tab.Navigator>
+      <Tab.Navigator
+        tabBarOptions={{
+          style: { backgroundColor: '#F1F0F0', height: 65 },
+          showLabel: false,
+          activeTintColor: '#000',
+          inactiveTintColor: '#979797',
+        }}
+      >
         <Tab.Screen
           name={tabsRoutes.TASKS}
           component={TasksNavigation}

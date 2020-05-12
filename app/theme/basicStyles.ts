@@ -1,10 +1,5 @@
 import { StyleSheet } from 'react-native';
-
-const Colors = {
-  grey: 'rgba(0, 0, 0, 0.4)',
-  danger: 'rgba(218, 11, 11,0.6)',
-  white: 'rgba(255, 255, 255, 1)',
-};
+import { Colors } from './colors';
 
 export const basicStyles = StyleSheet.create({
   header: {
@@ -14,7 +9,8 @@ export const basicStyles = StyleSheet.create({
   },
   screenHeader: { marginBottom: 30 },
   container: {
-    padding: 24,
+    paddingHorizontal: 24,
+    paddingBottom: 24,
   },
   bgScreen: {
     backgroundColor: Colors.white,

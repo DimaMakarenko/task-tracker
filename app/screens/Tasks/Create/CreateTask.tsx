@@ -26,16 +26,16 @@ const CreateTask: React.FC<ICreateTask> = ({ navigation }) => {
       createTask({ uid, task: value });
       navigation.navigate(tasksRoutes.LIST);
     },
-    [uid],
+    [navigation, uid],
   );
 
   return (
-    <View style={[basicStyles.container, basicStyles.fullScreen, basicStyles.bgScreen]}>
-      <ScrollView>
+    <ScrollView>
+      <View style={[basicStyles.container, basicStyles.fullScreen, basicStyles.bgScreen]}>
         <Title text='Create task' style={[basicStyles.header, basicStyles.screenHeader]} />
         <TaskForm onSubmit={handleClick} navigate={navigation.navigate} />
-      </ScrollView>
-    </View>
+      </View>
+    </ScrollView>
   );
 };
 

@@ -1,8 +1,7 @@
 import React, { useCallback } from 'react';
-import { Text, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Text, StyleSheet, TouchableOpacity, View, Animated } from 'react-native';
 // components
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import { RectButton } from 'react-native-gesture-handler';
 import { alert } from '../../../components/Alert/Alert';
 import { stopActiveTask } from '../../../components/Toast';
 import { Icon } from 'native-base';
@@ -12,7 +11,9 @@ import { ITask } from '../../../store/type';
 import { formatMills, durationFromMills } from '../../../utils/time';
 // routes
 import { tasksRoutes } from '../../../navigation/routes';
+// styles
 import { basicStyles } from '../../../theme/basicStyles';
+import { Colors } from '../../../theme/colors';
 
 interface ITaskRow {
   task: ITask;
@@ -56,9 +57,14 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate, pauseTask, startTask, del
     isActive ? stopActiveTask() : alert('Deleting task', 'Are you really want delete this task?', handleDelete);
   }, [handleDelete, isActive]);
 
-  const renderLeftActions = () => {
+  const RenderRightAction = ({ dragX }: { dragX: any }) => {
+    const scale = dragX.interpolate({
+      inputRange: [-100, 0],
+      outputRange: [0.8, 1],
+      extrapolate: 'clamp',
+    });
     return (
-      <RectButton style={styles.option}>
+      <Animated.View style={[{ transform: [{ scale }] }, styles.option]}>
         <TouchableOpacity onPress={showAlert} style={styles.optionIcon}>
           <Icon type='MaterialCommunityIcons' name='trash-can-outline' style={basicStyles.icon} />
         </TouchableOpacity>
@@ -67,13 +73,13 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate, pauseTask, startTask, del
             <Icon type='MaterialCommunityIcons' name='pencil' style={basicStyles.icon} />
           </TouchableOpacity>
         )}
-      </RectButton>
+      </Animated.View>
     );
   };
 
   return (
-    <Swipeable renderRightActions={renderLeftActions}>
-      <View style={styles.taskRow}>
+    <Swipeable renderRightActions={(progress, dragX) => <RenderRightAction dragX={dragX} />}>
+      <View style={[styles.taskRow, isActive && styles.activeTask]}>
         <TouchableOpacity style={styles.taskInfo} onPress={handleShow}>
           <Text>{title}</Text>
           <View style={styles.row}>
@@ -103,6 +109,10 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate, pauseTask, startTask, del
 };
 
 const styles = StyleSheet.create({
+  activeTask: {
+    backgroundColor: Colors.active,
+  },
+
   taskRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -116,7 +126,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   image: { marginLeft: 14 },
-  option: { alignItems: 'center', flexDirection: 'row' },
+  option: { alignItems: 'center', flexDirection: 'row', flex: 0 },
   optionIcon: { marginLeft: 20 },
 });
 

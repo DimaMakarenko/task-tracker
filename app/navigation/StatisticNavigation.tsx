@@ -16,6 +16,7 @@ const StatisticNavigation = () => {
         screenOptions={{
           headerTitle: '',
           headerBackTitleStyle: { display: 'none' },
+          headerStyle: { elevation: 0, height: 45 },
         }}
       >
         <Stack.Screen name={tabsRoutes.STATISTIC} component={Statistic} />

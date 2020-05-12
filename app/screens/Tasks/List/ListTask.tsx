@@ -1,9 +1,9 @@
 import React, { FC, useCallback, useEffect, useState, useMemo } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ScrollView } from 'react-native';
+// hooks
 import { useTasks } from '../../../hooks/useTasks';
 import { useTags } from '../../../hooks/useTags';
-// db
-import firebase from 'firebase';
+import { useAuth } from '../../../hooks/useAuth';
 // redux
 import { useSelector } from 'react-redux';
 import { selectTasks, selectActiveTask } from '../../../store/reducers/tasks/selectors';
@@ -28,8 +28,9 @@ interface IListTask {
 const ListTask: FC<IListTask> = ({ navigation }) => {
   const tasks = useSelector(selectTasks);
   const activeTask = useSelector(selectActiveTask);
-  const { isLoading, fetchTasks, pauseTask, addActiveTask, startTask, deleteTask, fakeTasks } = useTasks();
+  const { isLoading, fetchTasks, pauseTask, addActiveTask, startTask, deleteTask, fakeTasks, removeTasks } = useTasks();
   const { fetchTags, filterTags } = useTags();
+  const { logout } = useAuth();
 
   const [filteredTags, setFilteredTags] = useState<{ isFiltered: boolean; tags: ITag }>({
     isFiltered: false,
@@ -39,15 +40,13 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
 
   useEffect(() => {
     filteredTags.isFiltered ? filterTags(filteredTags.tags) : fetchTasks();
+    return removeTasks;
   }, [filteredTags]);
 
   useEffect(() => {
     addActiveTask(tasks);
     fetchTags();
   }, [tasks]);
-  const handlePress = () => {
-    firebase.auth().signOut();
-  };
 
   const setFilter = useCallback((tags: ITag) => {
     setFilteredTags({ isFiltered: tags.length > 0, tags });
@@ -81,7 +80,7 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
                 />
               </TouchableOpacity>
             </View>
-            <Text onPress={handlePress} style={basicStyles.dangerText}>
+            <Text onPress={logout} style={basicStyles.dangerText}>
               Log out
             </Text>
           </View>
