@@ -29,10 +29,14 @@ const PasswordField: React.FC<IPasswordField> = ({ fieldName, onChangeText, onBl
           textContentType='password'
         />
         <TouchableOpacity onPress={() => setIsHide(!isHide)}>
-          <Icon type='MaterialCommunityIcons' name={`eye-${isHide && 'off'}-outline`} style={basicStyles.icon} />
+          <Icon
+            type='MaterialCommunityIcons'
+            name={`eye-${isHide ? 'off-' : ''}outline`}
+            style={[basicStyles.icon, basicStyles.grayColor]}
+          />
         </TouchableOpacity>
       </View>
-      <Text style={styles.error}>{touched && error}</Text>
+      <Text style={basicStyles.dangerText}>{touched && error}</Text>
     </>
   );
 };

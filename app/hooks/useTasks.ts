@@ -5,6 +5,7 @@ import _ from 'lodash';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
 import { createTaskAction, pauseTaskAction, startTaskAction } from '../store/reducers/tasks/actions';
+import { removeTasksAction } from '../store/reducers/tasks/tasks';
 import { addTasksAction, addActiveTaskAction } from '../store/reducers/tasks/tasks';
 import { selectUser } from '../store/reducers/user/selectors';
 import { selectTasks } from '../store/reducers/tasks/selectors';
@@ -114,6 +115,10 @@ export const useTasks = () => {
     [uid],
   );
 
+  const removeTasks = useCallback(() => {
+    dispatch(removeTasksAction());
+  }, [dispatch]);
+
   const fakeTasks = useCallback(async () => {
     const tasks = generateFakeTasks();
     await generateTasksDb({ uid, tasks });
@@ -131,5 +136,6 @@ export const useTasks = () => {
     getTask,
     editTask,
     fakeTasks,
+    removeTasks,
   };
 };

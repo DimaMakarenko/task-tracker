@@ -1,5 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, TextInput, Text } from 'react-native';
+// styles
+import { basicStyles } from '../../../theme/basicStyles';
 
 interface IEmailField {
   onChangeText: Function;
@@ -24,7 +26,7 @@ const EmailField: React.FC<IEmailField> = ({ onChangeText, onBlur, value, error,
           textContentType='emailAddress'
         />
       </View>
-      <Text style={styles.error}>{touched && error}</Text>
+      <Text style={basicStyles.dangerText}>{touched && error}</Text>
     </>
   );
 };

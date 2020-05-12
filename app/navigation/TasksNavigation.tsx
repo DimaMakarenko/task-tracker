@@ -21,6 +21,7 @@ const TasksNavigation = () => {
         screenOptions={{
           headerTitle: '',
           headerBackTitleStyle: { display: 'none' },
+          headerStyle: { elevation: 0, height: 45 },
         }}
       >
         <Stack.Screen name={tasksRoutes.LIST} component={ListTask} />

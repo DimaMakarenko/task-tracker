@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, Dimensions } from 'react-native';
 // utils
 import { lastSessionStart, durationFromMills } from '../../../utils/time';
 // types
@@ -8,11 +8,14 @@ import { ITask } from '../../../store/type';
 import { Icon } from 'native-base';
 // style
 import { basicStyles } from '../../../theme/basicStyles';
+import { Colors } from '../../../theme/colors';
 
 interface IActiveTask {
   pause: Function;
   activeTask: ITask;
 }
+
+const screenWidth = Dimensions.get('window').width;
 
 const ActiveTask: React.FC<IActiveTask> = ({ activeTask, pause }) => {
   const { title, duration, timeSession } = activeTask;
@@ -31,20 +34,25 @@ const ActiveTask: React.FC<IActiveTask> = ({ activeTask, pause }) => {
   }, [activeTask, duration, timeSession]);
 
   return (
-    <View style={[styles.activeTask]}>
-      <Text>{title}</Text>
-      <Text>{durationFromMills(timer)}</Text>
-      <TouchableOpacity onPress={pauseTask} style={styles.image}>
-        <Icon type='MaterialCommunityIcons' name='pause-circle' style={basicStyles.icon} />
-      </TouchableOpacity>
+    <View style={[styles.wrapper]}>
+      <View style={[styles.activeTask]}>
+        <Text>{title}</Text>
+        <Text>{durationFromMills(timer)}</Text>
+        <TouchableOpacity onPress={pauseTask} style={styles.image}>
+          <Icon type='MaterialCommunityIcons' name='pause-circle' style={basicStyles.icon} />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  wrapper: { marginLeft: -24, marginBottom: -24, width: screenWidth },
   activeTask: {
-    height: 85,
-    backgroundColor: '#E9E5E5',
+    paddingHorizontal: 24,
+    height: 70,
+    width: '100%',
+    backgroundColor: Colors.active,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

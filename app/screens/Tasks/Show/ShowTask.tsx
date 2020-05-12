@@ -10,7 +10,7 @@ import { Icon } from 'native-base';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
 // utils
-import { dateFromMillis, lastSessionEnd, durationFromMills } from '../../../utils/time';
+import { dateFromMillis, lastSessionEnd, durationFromMills, formatMills } from '../../../utils/time';
 // routes
 import { tasksRoutes } from '../../../navigation/routes';
 
@@ -88,12 +88,12 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
         <View style={[styles.block, styles.timeBlock]}>
           <View>
             <Text style={basicStyles.subTitle}>Start time</Text>
-            <Text style={basicStyles.text}>{dateFromMillis(startTimer)}</Text>
+            <Text style={basicStyles.text}>{formatMills(startTimer)}</Text>
           </View>
           {lastEnd && (
             <View>
               <Text style={basicStyles.subTitle}>End time</Text>
-              <Text style={basicStyles.text}>{dateFromMillis(lastEnd)}</Text>
+              <Text style={basicStyles.text}>{formatMills(lastEnd)}</Text>
             </View>
           )}
         </View>

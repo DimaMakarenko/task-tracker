@@ -3,6 +3,8 @@ import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Icon } from 'native-base';
 // types
 import { ITagFunc } from '../../store/type';
+// styles
+import { Colors } from '../../theme/colors';
 
 interface ITagContainer {
   title: string;
@@ -29,7 +31,7 @@ export default Tag;
 
 const styles = StyleSheet.create({
   wrapper: {
-    backgroundColor: '#E9E5E5',
+    backgroundColor: Colors.active,
     borderRadius: 15,
     marginRight: 17,
     paddingHorizontal: 10,

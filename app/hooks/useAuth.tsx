@@ -18,5 +18,5 @@ export const useAuth = () => {
     return firebase.auth().signOut();
   }, []);
 
-  return { auth, isLoading };
+  return { auth, isLoading, logout };
 };
