@@ -1,8 +1,8 @@
 export type TCalendarData = {
   title: string;
   duration: number;
-  start: Date;
-  end: Date;
+  start: Date | number;
+  end: Date | number;
   color: string;
   id: number;
 };
@@ -12,6 +12,6 @@ export type TAppt = {
   duration: number;
   color: string;
   title: string;
-  start: Date;
+  start: Date | number;
   id: number;
 };

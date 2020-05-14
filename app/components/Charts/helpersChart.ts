@@ -3,6 +3,7 @@ import { LineChartData, StackedBarChartData } from 'react-native-chart-kit';
 // types
 import { ITask } from '../../store/type';
 import { TWeek } from './type';
+import { TCalendarData } from '../../components/DayCalendar/type';
 
 const randomColor = require('randomcolor');
 
@@ -186,4 +187,44 @@ export const getActiveWeeks: (date: ITask[]) => TWeek[] = (date) => {
   return resultsByWeeks
     .filter((week) => week.isActive)
     .map((week) => ({ start: new Date(week.dateS), end: new Date(week.dateE) }));
+};
+
+export const loggerByDayCalendar: (date: ITask[], searchDay: Date) => TCalendarData[] = (date, searchDay) => {
+  const datesInterval = getIntervalBetweenDates(searchDay, searchDay, 'day');
+
+  const resultsByDate: TCalendarData[] = [];
+
+  date.map((task) => {
+    const { title, id } = task;
+
+    task.timeSession.forEach((session) => {
+      if (session.end) {
+        const { start, end } = session;
+        const sessionStart = DateTime.fromMillis(start);
+        const sessionEnd = DateTime.fromMillis(end);
+
+        const sessionTask = {
+          title,
+          duration: end - start,
+          id,
+          color: '#E9E5E5',
+          start: new Date(start),
+          end: new Date(end),
+        };
+
+        if (datesInterval.contains(sessionStart) && datesInterval.contains(sessionEnd)) {
+          resultsByDate.push(sessionTask);
+        } else if (datesInterval.contains(sessionStart) && datesInterval.isBefore(sessionEnd)) {
+          const startDate = new Date(start);
+          sessionTask.end = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), 24, 30);
+          resultsByDate.push(sessionTask);
+        } else if (datesInterval.contains(sessionEnd) && datesInterval.isAfter(sessionStart)) {
+          const endDate = new Date(end);
+          sessionTask.start = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate(), 0, 0);
+          resultsByDate.push(sessionTask);
+        }
+      }
+    });
+  });
+  return resultsByDate;
 };

@@ -12,6 +12,8 @@ import { hrsToStart } from 'rnschedule/src/services/hrsToPx';
 import { TAppt } from '../type';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
+// utils
+import { durationFromMills } from '../../../utils/time';
 
 interface IApptView {
   topTime: Date;
@@ -30,6 +32,7 @@ const ApptView: React.FC<IApptView> = ({ topTime, appt, hour_size, onEventPress 
         flex: 1,
         marginTop: margin,
         height: appt.height,
+        minHeight: 35,
         backgroundColor: color,
         borderRadius: 5,
         padding: 2,
@@ -39,7 +42,7 @@ const ApptView: React.FC<IApptView> = ({ topTime, appt, hour_size, onEventPress 
       <TouchableOpacity onPress={() => onEventPress(appt)} style={[basicStyles.flexRow, styles.content]}>
         <Text style={[{ fontWeight: '600' }, tinycolor(color).isDark() && { color: 'white' }]}>{appt.title}</Text>
         <Text style={[{ fontWeight: '600' }, tinycolor(color).isDark() && { color: 'white' }]}>
-          {appt.duration} 124
+          {durationFromMills(appt.duration)}
         </Text>
         <Icon type='MaterialCommunityIcons' name='pencil' style={basicStyles.icon} />
       </TouchableOpacity>

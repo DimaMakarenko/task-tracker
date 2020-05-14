@@ -16,25 +16,37 @@ import procData from 'rnschedule/src/services/procData';
 import ScheduledData from './components/ScheduledData';
 // types
 import { TCalendarData } from './type';
+// styles
+import { Colors } from '../../theme/colors';
 
 interface IDayCalendar {
   dataArray: TCalendarData[];
+  searchDay: Date;
+  isDrawGrid?: boolean;
 }
 
 const hourSize = 50;
 
-const DayCalendar: React.FC<IDayCalendar> = ({ dataArray }) => {
+const DayCalendar: React.FC<IDayCalendar> = ({ dataArray, searchDay, isDrawGrid }) => {
   let data = !!dataArray && procData(dataArray, hourSize);
+
   return (
     <ContextProvider hour_size={hourSize}>
       <SmartScroll hour_size={hourSize}>
-        <View style={styles.body}>
+        <View style={[styles.body, { backgroundColor: Colors.white, paddingRight: 10 }]}>
           <View style={styles.hour_col}>
             <TimeCol hour_size={hourSize} />
           </View>
           <View style={styles.schedule_col}>
-            <DrawnGrid />
-            {!!data && <ScheduledData dataArray={data} onEventPress={() => console.log('press')} />}
+            {isDrawGrid && <DrawnGrid />}
+            {!!data && (
+              <ScheduledData
+                dataArray={data}
+                onEventPress={() => console.log('press')}
+                searchDay={searchDay}
+                hour_size={hourSize}
+              />
+            )}
           </View>
         </View>
       </SmartScroll>
