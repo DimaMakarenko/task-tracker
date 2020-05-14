@@ -32,7 +32,7 @@ const ApptView: React.FC<IApptView> = ({ topTime, appt, hour_size, onEventPress 
         flex: 1,
         marginTop: margin,
         height: appt.height,
-        minHeight: 35,
+        // minHeight: 35,
         backgroundColor: color,
         borderRadius: 5,
         padding: 2,
@@ -44,7 +44,7 @@ const ApptView: React.FC<IApptView> = ({ topTime, appt, hour_size, onEventPress 
         <Text style={[{ fontWeight: '600' }, tinycolor(color).isDark() && { color: 'white' }]}>
           {durationFromMills(appt.duration)}
         </Text>
-        <Icon type='MaterialCommunityIcons' name='pencil' style={basicStyles.icon} />
+        <Icon type='MaterialCommunityIcons' name='pencil' style={[basicStyles.icon, { fontSize: 18 }]} />
       </TouchableOpacity>
     </View>
   );

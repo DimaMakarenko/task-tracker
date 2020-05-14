@@ -33,7 +33,9 @@ const DayCalendar: React.FC<IDayCalendar> = ({ dataArray, searchDay, isDrawGrid 
   return (
     <ContextProvider hour_size={hourSize}>
       <SmartScroll hour_size={hourSize}>
-        <View style={[styles.body, { backgroundColor: Colors.white, paddingRight: 10 }]}>
+        <View
+          style={[styles.body, { backgroundColor: Colors.white, paddingRight: 10, paddingBottom: 20, paddingTop: 10 }]}
+        >
           <View style={styles.hour_col}>
             <TimeCol hour_size={hourSize} />
           </View>

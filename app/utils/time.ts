@@ -12,6 +12,8 @@ export const dateToPicker = (date: Date): string => DateTime.fromMillis(+date).t
 
 export const dateToSelect = (date: Date): string => DateTime.fromMillis(+date).toFormat('d.LL');
 
+export const dateToCalendar = (date: Date): string => `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+
 export const findLastDuration = (timeSession: ISession[], dn: number) => {
   return dn - timeSession[timeSession.length - 1].start;
 };

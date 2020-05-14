@@ -198,18 +198,19 @@ export const loggerByDayCalendar: (date: ITask[], searchDay: Date) => TCalendarD
     const { title, id } = task;
 
     task.timeSession.forEach((session) => {
-      if (session.end) {
+      if (session.end && task.isFinished) {
         const { start, end } = session;
         const sessionStart = DateTime.fromMillis(start);
         const sessionEnd = DateTime.fromMillis(end);
 
+        const duration = end - start;
         const sessionTask = {
           title,
-          duration: end - start,
+          duration,
           id,
           color: '#E9E5E5',
           start: new Date(start),
-          end: new Date(end),
+          end: new Date(duration > 1800000 ? end : start + 1800000),
         };
 
         if (datesInterval.contains(sessionStart) && datesInterval.contains(sessionEnd)) {
