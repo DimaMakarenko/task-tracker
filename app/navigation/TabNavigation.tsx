@@ -3,7 +3,7 @@ import { View } from 'react-native';
 // container
 import TasksNavigation from './TasksNavigation';
 import StatisticNavigation from './StatisticNavigation';
-import CalendarNavigation from './Calendarnavigation';
+import CalendarNavigation from './CalendarNavigation';
 // navigation
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';

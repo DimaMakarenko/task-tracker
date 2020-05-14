@@ -19,7 +19,7 @@ interface IApptView {
   topTime: Date;
   appt: TAppt;
   hour_size: number;
-  onEventPress: (arg0: TAppt) => void;
+  onEventPress: Function;
 }
 
 const ApptView: React.FC<IApptView> = ({ topTime, appt, hour_size, onEventPress }) => {

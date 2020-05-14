@@ -23,11 +23,12 @@ interface IDayCalendar {
   dataArray: TCalendarData[];
   searchDay: Date;
   isDrawGrid?: boolean;
+  onClick: Function;
 }
 
 const hourSize = 50;
 
-const DayCalendar: React.FC<IDayCalendar> = ({ dataArray, searchDay, isDrawGrid }) => {
+const DayCalendar: React.FC<IDayCalendar> = ({ dataArray, searchDay, isDrawGrid, onClick }) => {
   let data = !!dataArray && procData(dataArray, hourSize);
 
   return (
@@ -41,14 +42,7 @@ const DayCalendar: React.FC<IDayCalendar> = ({ dataArray, searchDay, isDrawGrid 
           </View>
           <View style={styles.schedule_col}>
             {isDrawGrid && <DrawnGrid />}
-            {!!data && (
-              <ScheduledData
-                dataArray={data}
-                onEventPress={() => console.log('press')}
-                searchDay={searchDay}
-                hour_size={hourSize}
-              />
-            )}
+            {!!data && <ScheduledData dataArray={data} searchDay={searchDay} hour_size={hourSize} onClick={onClick} />}
           </View>
         </View>
       </SmartScroll>

@@ -8,7 +8,7 @@ import { TAppt } from '../type';
 interface IRowView {
   row: any;
   hour_size: number;
-  onEventPress: () => void;
+  onEventPress: Function;
 }
 
 const RowView: React.FC<IRowView> = ({ row, hour_size, onEventPress }) => {

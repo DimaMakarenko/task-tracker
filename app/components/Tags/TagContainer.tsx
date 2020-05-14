@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 // redux
 import { useSelector } from 'react-redux';
 import { selectTags } from '../../store/reducers/tags/selectors';
@@ -50,13 +50,7 @@ const TagContainer: React.FC<ITagContainer> = ({ taskTags, onSubmit, btnText, is
     <View style={basicStyles.justify}>
       <ScrollView>
         {isField && (
-          <TextField
-            label='Tag'
-            value={fieldTag}
-            onChangeText={setFieldTag}
-            iconName='arrow-right-circle'
-            submit={create}
-          />
+          <TextField label='Tag' value={fieldTag} onChangeText={setFieldTag} iconName='tag-plus' submit={create} />
         )}
         <TagList tags={tags} remove={remove} />
         <View style={basicStyles.underline} />
@@ -68,11 +62,3 @@ const TagContainer: React.FC<ITagContainer> = ({ taskTags, onSubmit, btnText, is
 };
 
 export default TagContainer;
-
-const styles = StyleSheet.create({
-  tagList: {
-    borderTopWidth: 1,
-    borderTopColor: '#D8D8D8',
-    paddingTop: 20,
-  },
-});

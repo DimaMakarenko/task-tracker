@@ -1,6 +1,9 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback, useState, useEffect } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+// hooks
 import { useTasks } from '../../../hooks/useTasks';
+import { useTaskHandler } from '../../../hooks/useTaskHandler';
+
 // components
 import Title from '../../../components/Title/Title';
 import { alert } from '../../../components/Alert/Alert';
@@ -10,9 +13,11 @@ import { Icon } from 'native-base';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
 // utils
-import { dateFromMillis, lastSessionEnd, durationFromMills, formatMills } from '../../../utils/time';
+import { lastSessionEnd, durationFromMills, formatMills } from '../../../utils/time';
 // routes
 import { tasksRoutes } from '../../../navigation/routes';
+import { useSelector } from 'react-redux';
+import { selectActiveTask } from '../../../store/reducers/tasks/selectors';
 
 interface IShowTask {
   navigation: { navigate: Function };
@@ -22,36 +27,44 @@ interface IShowTask {
       deleteTask: Function;
       handleEdit: Function;
       handlePause: Function;
-      handleStart: Function;
     };
   };
 }
 
 const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
-  const { taskId, deleteTask, handleEdit, handlePause, handleStart } = route.params;
-
+  const { taskId } = route.params;
+  const { handlePause, handleDelete, handleStart } = useTaskHandler();
   const { finishTask, getTask } = useTasks();
+  const activeTask = useSelector(selectActiveTask);
 
-  const currentTask = getTask(taskId);
+  const [currentTask, setCurrentTask] = useState(getTask(taskId));
 
-  const { id, title, duration, project, startTimer, timeSession, isActive, isFinished, tags } = currentTask;
+  const { title, duration, project, startTimer, timeSession, isActive, isFinished, tags } = currentTask;
 
-  const handleDelete = useCallback(() => {
-    deleteTask(id);
+  const deleteTask = useCallback(() => {
     navigation.navigate(tasksRoutes.LIST);
-  }, [navigation, deleteTask, id]);
+    handleDelete(taskId);
+  }, [navigation, handleDelete, taskId]);
+
+  const editTask = useCallback(() => {
+    navigation.navigate(tasksRoutes.EDIT, { taskId });
+  }, [navigation, taskId]);
 
   const lastEnd = useMemo(() => {
     return lastSessionEnd(timeSession, isActive);
   }, [timeSession, isActive]);
 
   const showAlert = useCallback(() => {
-    alert('Deleting task', 'You really want delete this task?', handleDelete);
-  }, [handleDelete]);
+    alert('Deleting task', 'You really want delete this task?', deleteTask);
+  }, [deleteTask]);
 
   const makeFinished = useCallback(() => {
     finishTask(currentTask);
   }, [currentTask]);
+
+  useEffect(() => {
+    setCurrentTask(getTask(taskId));
+  }, [taskId, getTask]);
 
   return (
     <ScrollView>
@@ -60,7 +73,7 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
           <Title text='Task' />
           {!isFinished && (
             <View style={styles.icons}>
-              <TouchableOpacity onPress={() => handleEdit()} style={styles.optionIcon}>
+              <TouchableOpacity onPress={editTask} style={styles.optionIcon}>
                 <Icon type='MaterialCommunityIcons' name='pencil' style={basicStyles.icon} />
               </TouchableOpacity>
               {isActive ? (
@@ -68,7 +81,7 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
                   <Icon type='MaterialCommunityIcons' name='pause-circle' style={basicStyles.icon} />
                 </TouchableOpacity>
               ) : (
-                <TouchableOpacity style={styles.optionIcon} onPress={() => handleStart(currentTask)}>
+                <TouchableOpacity style={styles.optionIcon} onPress={() => handleStart(currentTask, activeTask)}>
                   <Icon type='MaterialCommunityIcons' name='play-circle' style={basicStyles.icon} />
                 </TouchableOpacity>
               )}

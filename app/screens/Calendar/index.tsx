@@ -1,7 +1,8 @@
 import React, { useState, useCallback, useMemo } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 // hook
 import { useCharts } from '../../hooks/useCharts';
+import { useNavigation } from '@react-navigation/native';
 // component
 // @ts-ignore
 import { WeekCalendar, CalendarProvider } from 'react-native-calendars';
@@ -12,8 +13,13 @@ import { basicStyles } from '../../theme/basicStyles';
 import { Colors } from '../../theme/colors';
 // utils
 import { dateToCalendar } from '../../utils/time';
+import { tasksRoutes, tabsRoutes } from '../../navigation/routes';
+// types
+import { TAppt } from '../../components/DayCalendar/type';
 
-interface ICalendar {}
+interface ICalendar {
+  navigation: { navigate: Function };
+}
 
 const selectedStyle = {
   selected: true,
@@ -21,9 +27,9 @@ const selectedStyle = {
   selectedColor: 'grey',
 };
 
-const Calendar: React.FC<ICalendar> = () => {
+const Calendar: React.FC<ICalendar> = ({}) => {
   const [selectedDate, setSelectDate] = useState({ date: new Date(), string: dateToCalendar(new Date()) });
-
+  const navigation = useNavigation();
   const { dateDayCalendar } = useCharts();
 
   const onDayPress = useCallback((date: string) => {
@@ -31,6 +37,13 @@ const Calendar: React.FC<ICalendar> = () => {
   }, []);
 
   const dayDate = useMemo(() => dateDayCalendar(selectedDate.date), [dateDayCalendar, selectedDate]);
+
+  const editTask = useCallback(
+    (appt: TAppt) => {
+      navigation.navigate(tasksRoutes.EDIT, { taskId: appt.id });
+    },
+    [navigation],
+  );
 
   return (
     <>
@@ -52,7 +65,7 @@ const Calendar: React.FC<ICalendar> = () => {
           />
         </CalendarProvider>
       </View>
-      <DayCalendar dataArray={dayDate} searchDay={selectedDate.date} />
+      <DayCalendar dataArray={dayDate} searchDay={selectedDate.date} onClick={editTask} />
     </>
   );
 };
