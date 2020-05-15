@@ -35,6 +35,7 @@ export interface ITask {
 export interface INewTask {
   title: string;
   project: string;
+  tags?: ITag;
 }
 
 // ACTIONS //

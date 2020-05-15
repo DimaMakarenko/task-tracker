@@ -6,7 +6,7 @@ import { listenerTaskDb } from '../db/api';
 import { selectUser } from '../store/reducers/user/selectors';
 import { useSelector } from 'react-redux';
 // utils
-import { loggedByHours, loggerByTasks, loggerPerDay, getActiveWeeks } from '../components/Charts/helpersChart';
+import { loggedByHours, loggerByTasks, loggerPerDay, getActiveWeeks, loggerByDayCalendar } from '../components/Charts/helpersChart';
 // types
 import { TWeek } from '../components/Charts/type';
 
@@ -38,11 +38,14 @@ export const useCharts = () => {
 
   const dateChartPerDay = useCallback((searchData) => loggerPerDay(date, searchData), [date]);
 
+  const dateDayCalendar = useCallback((searchDay) => loggerByDayCalendar(date, searchDay), [date]);
+
   return {
     isLoading,
     dateChartHours,
     dateChartTasks,
     dateChartPerDay,
     activeWeeks,
+    dateDayCalendar,
   };
 };

@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 import { View, ScrollView } from 'react-native';
+// hooks
 import { useTasks } from '../../../hooks/useTasks';
 // components
 import Title from '../../../components/Title/Title';
@@ -22,22 +23,23 @@ interface IEditTask {
       handleEdit: Function;
       handlePause: Function;
       handleStart: Function;
+      taskId: number;
     };
   };
 }
 
 const EditTask: React.FC<IEditTask> = ({ navigation, route }) => {
-  const { task, deleteTask, handleEdit, handlePause, handleStart } = route.params;
+  const { taskId } = route.params;
+
   const { editTask, getTask } = useTasks();
 
-  const currentTask = getTask(task.id);
+  const currentTask = getTask(taskId);
 
   const handleUpdate = useCallback(
     (value: any) => {
-      editTask(currentTask, value);
-      navigation.navigate(tasksRoutes.SHOW, { taskId: task.id, deleteTask, handleEdit, handlePause, handleStart });
+      editTask(currentTask, value).then((response) => navigation.navigate(tasksRoutes.SHOW, { task: response.task }));
     },
-    [currentTask, deleteTask, handleEdit, handlePause, handleStart, navigation, editTask, task.id],
+    [taskId, currentTask, editTask, navigation],
   );
 
   return (
