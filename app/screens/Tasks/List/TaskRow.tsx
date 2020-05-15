@@ -50,7 +50,7 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate, pauseTask, startTask, del
   }, [task, navigate, deleteTask, handlePause, handleStart]);
 
   const handleShow = useCallback(() => {
-    navigate(tasksRoutes.SHOW, { taskId: task.id, deleteTask, handleEdit, handlePause, handleStart });
+    navigate(tasksRoutes.SHOW, { taskId: task.id, task });
   }, [task, deleteTask, handleEdit, handlePause, handleStart, navigate]);
 
   const showAlert = useCallback(() => {

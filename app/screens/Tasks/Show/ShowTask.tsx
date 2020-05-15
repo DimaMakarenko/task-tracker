@@ -1,9 +1,8 @@
-import React, { useMemo, useCallback, useState, useEffect } from 'react';
+import React, { useMemo, useCallback, useEffect } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 // hooks
 import { useTasks } from '../../../hooks/useTasks';
 import { useTaskHandler } from '../../../hooks/useTaskHandler';
-
 // components
 import Title from '../../../components/Title/Title';
 import { alert } from '../../../components/Alert/Alert';
@@ -18,53 +17,48 @@ import { lastSessionEnd, durationFromMills, formatMills } from '../../../utils/t
 import { tasksRoutes } from '../../../navigation/routes';
 import { useSelector } from 'react-redux';
 import { selectActiveTask } from '../../../store/reducers/tasks/selectors';
+import { ITask } from '../../../store/type';
 
 interface IShowTask {
   navigation: { navigate: Function };
   route: {
     params: {
-      taskId: number;
-      deleteTask: Function;
-      handleEdit: Function;
-      handlePause: Function;
+      task: ITask;
     };
   };
 }
 
 const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
-  const { taskId } = route.params;
-  const { handlePause, handleDelete, handleStart } = useTaskHandler();
-  const { finishTask, getTask } = useTasks();
+  const { task } = route.params;
+
+  const { handlePause, handleStart } = useTaskHandler();
+  const { finishTask, getTask, deleteTask } = useTasks();
   const activeTask = useSelector(selectActiveTask);
 
-  const [currentTask, setCurrentTask] = useState(getTask(taskId));
+  const { id, title, duration, project, startTimer, timeSession, isActive, isFinished, tags } = task;
 
-  const { title, duration, project, startTimer, timeSession, isActive, isFinished, tags } = currentTask;
-
-  const deleteTask = useCallback(() => {
-    navigation.navigate(tasksRoutes.LIST);
-    handleDelete(taskId);
-  }, [navigation, handleDelete, taskId]);
+  const handleDelete = () => {
+    alert('Deleting task', 'You really want delete this task?', () => {
+      deleteTask(id);
+      navigation.navigate(tasksRoutes.LIST);
+    });
+  };
 
   const editTask = useCallback(() => {
-    navigation.navigate(tasksRoutes.EDIT, { taskId });
-  }, [navigation, taskId]);
+    navigation.navigate(tasksRoutes.EDIT, { taskId: id });
+  }, [navigation, id]);
 
   const lastEnd = useMemo(() => {
     return lastSessionEnd(timeSession, isActive);
   }, [timeSession, isActive]);
 
-  const showAlert = useCallback(() => {
-    alert('Deleting task', 'You really want delete this task?', deleteTask);
-  }, [deleteTask]);
-
   const makeFinished = useCallback(() => {
-    finishTask(currentTask);
-  }, [currentTask]);
+    finishTask(task);
+  }, [task]);
 
   useEffect(() => {
-    setCurrentTask(getTask(taskId));
-  }, [taskId, getTask]);
+    // setCurrentTask(getTask(taskId));
+  }, [id, getTask]);
 
   return (
     <ScrollView>
@@ -76,12 +70,12 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
               <TouchableOpacity onPress={editTask} style={styles.optionIcon}>
                 <Icon type='MaterialCommunityIcons' name='pencil' style={basicStyles.icon} />
               </TouchableOpacity>
-              {isActive ? (
-                <TouchableOpacity style={styles.optionIcon} onPress={() => handlePause(currentTask)}>
+              {activeTask && activeTask.id === id ? (
+                <TouchableOpacity style={styles.optionIcon} onPress={() => handlePause(task)}>
                   <Icon type='MaterialCommunityIcons' name='pause-circle' style={basicStyles.icon} />
                 </TouchableOpacity>
               ) : (
-                <TouchableOpacity style={styles.optionIcon} onPress={() => handleStart(currentTask, activeTask)}>
+                <TouchableOpacity style={styles.optionIcon} onPress={() => handleStart(task, activeTask)}>
                   <Icon type='MaterialCommunityIcons' name='play-circle' style={basicStyles.icon} />
                 </TouchableOpacity>
               )}
@@ -120,7 +114,7 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
         </View>
 
         <View style={styles.block}>
-          <Text style={styles.deleteBtn} onPress={showAlert}>
+          <Text style={styles.deleteBtn} onPress={handleDelete}>
             Delete
           </Text>
         </View>

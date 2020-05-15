@@ -111,6 +111,7 @@ export const useTasks = () => {
         },
       };
       await updateTaskDb(updates);
+      return updates;
     },
     [uid],
   );
