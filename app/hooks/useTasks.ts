@@ -29,7 +29,13 @@ export const useTasks = () => {
     handleFetch().catch(() => console.log('Error in data fetching'));
   }, [handleFetch]);
 
-  const createTask = useCallback((options: ICreateTask) => dispatch(createTaskAction(options)), [dispatch]);
+  const createTask = useCallback(
+    async (options: ICreateTask) => {
+      await setIsLoading(true);
+      await dispatch(createTaskAction(options)).then(() => setIsLoading(false));
+    },
+    [dispatch],
+  );
 
   const pauseTask = useCallback(
     ({ task }: { task: ITask }) => {

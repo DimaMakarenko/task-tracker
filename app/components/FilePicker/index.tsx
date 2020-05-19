@@ -1,39 +1,38 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { TouchableOpacity } from 'react-native';
 // components
 import FilePickerManager from 'react-native-file-picker';
-import FilePickerFile from 'react-native-file-picker';
 import TextField from '../Form/Text/TextField';
+// types
+import { TFile } from '../../store/type';
 
-interface IFilePicker {}
+interface IFilePicker {
+  value?: TFile | null;
+  setFieldValue: Function;
+}
 
-const FilePicker: React.FC<IFilePicker> = () => {
-  const [file, setFile] = useState<FilePickerFile | null>(null);
-
-  const a = () => {
+const FilePicker: React.FC<IFilePicker> = ({ value, setFieldValue }) => {
+  const loadFile = () => {
     FilePickerManager.showFilePicker(null, (response) => {
-      console.log('Response = ', response);
-
       if (response.didCancel) {
         console.log('User cancelled file picker');
       } else if (response.error) {
         console.log('FilePickerManager Error: ', response.error);
       } else {
-        setFile(response);
+        setFieldValue('file', response);
       }
     });
   };
-  const removeFile = () => setFile(null);
+  const removeFile = () => setFieldValue('file', null);
 
-  console.log(file);
   return (
-    <TouchableOpacity onPress={!file ? a : undefined} activeOpacity={!file ? 0.7 : 1}>
+    <TouchableOpacity onPress={!value ? loadFile : undefined} activeOpacity={!value ? 0.7 : 1}>
       <TextField
-        label={file ? 'Added file' : 'Add file'}
+        label={value ? 'Added file' : 'Add file'}
         disable
-        value={file ? file.fileName : ''}
-        iconName={file ? 'close-circle' : 'paperclip'}
-        submit={file ? removeFile : undefined}
+        value={value ? value.fileName : ''}
+        iconName={value ? 'close-circle' : 'paperclip'}
+        submit={value ? removeFile : undefined}
       />
     </TouchableOpacity>
   );

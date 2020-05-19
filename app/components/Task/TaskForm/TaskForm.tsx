@@ -9,7 +9,7 @@ import FilePicker from '../../FilePicker';
 import { Formik } from 'formik';
 import { validationTaskForm } from '../../../utils/validation';
 // types
-import { ITask, ITag } from '../../../store/type';
+import { ITask, ITag, TFile } from '../../../store/type';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
 // utils
@@ -27,6 +27,7 @@ export interface MyFormValues {
   title: string;
   project: string;
   tags?: ITag;
+  file?: TFile | null;
 }
 
 const TaskForm: React.FC<ITaskForm> = ({ onSubmit, task, navigate }) => {
@@ -34,6 +35,7 @@ const TaskForm: React.FC<ITaskForm> = ({ onSubmit, task, navigate }) => {
     title: task ? task.title : '',
     project: task ? task.project : '',
     tags: task ? task.tags : [],
+    file: task ? task.file : null,
   };
 
   return (
@@ -81,7 +83,7 @@ const TaskForm: React.FC<ITaskForm> = ({ onSubmit, task, navigate }) => {
               <TextField label='Tags' disable value=' ' />
               {values.tags && <TagList tags={values.tags} />}
             </TouchableOpacity>
-            <FilePicker />
+            <FilePicker value={values.file} setFieldValue={setFieldValue} />
           </View>
           <Button title={task ? 'Update task' : 'Start task'} onPress={handleSubmit} />
         </View>

@@ -1,9 +1,18 @@
 import firebase from './firebaseDb';
 // types
-import { ICreateTask, IFetchTasks, IUpdateTask, IDeleteTask, IFilterTask, IGenerateTasks } from '../store/type';
+import {
+  ICreateTask,
+  IFetchTasks,
+  IUpdateTask,
+  IDeleteTask,
+  IFilterTask,
+  IGenerateTasks,
+  IUploadFileDb,
+} from '../store/type';
 import { proxyFilter } from './proxy';
 
 const db = firebase.database();
+const storage = firebase.storage();
 
 export const setTaskDb = (option: ICreateTask) => {
   const { uid, task } = option;
@@ -44,4 +53,19 @@ export const deleteTaskDb = (options: IDeleteTask) => {
 
 export const filterTaskDb = (options: IFilterTask) => {
   return proxyFilter(options);
+};
+
+export const uploadFileDb = async (options: IUploadFileDb) => {
+  const { uid, file } = options;
+
+  const response = await fetch(file.uri);
+  const blob = await response.blob();
+
+  const ref = storage.ref().child(`file/${uid}/${file.fileName}`);
+
+  const snapshot = await ref.put(blob);
+
+  const uri = await snapshot.ref.getDownloadURL();
+
+  return uri;
 };

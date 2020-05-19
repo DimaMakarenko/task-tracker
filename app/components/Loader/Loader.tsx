@@ -1,5 +1,7 @@
 import React from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
+// colors
+import { Colors } from '../../theme/colors';
 
 interface ILoader {
   isLoading: boolean;
@@ -10,9 +12,7 @@ const Loader: React.FC<ILoader> = ({ isLoading, children }) => {
     <>
       {isLoading ? (
         <View style={styles.loader}>
-          <View style={[styles.container, styles.horizontal]}>
-            <ActivityIndicator size='large' color='#0000ff' />
-          </View>
+          <ActivityIndicator size='large' color='#001245' />
         </View>
       ) : (
         children
@@ -24,18 +24,10 @@ const Loader: React.FC<ILoader> = ({ isLoading, children }) => {
 export default Loader;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  horizontal: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    padding: 10,
-  },
   loader: {
-    flex: 1,
+    backgroundColor: Colors.white,
+    height: '100%',
     alignItems: 'center',
-    flexDirection: 'row',
+    justifyContent: 'center',
   },
 });

@@ -1,7 +1,7 @@
 import { ITask, INewTask } from '../store/type';
 
-export const getNewTask = (props: INewTask): ITask => {
-  const { title, project, tags } = props;
+export const getNewTask = (task: INewTask, fileUrl: string): ITask => {
+  const { title, project, tags } = task;
   const dn = Date.now();
   return {
     id: dn,
@@ -13,5 +13,6 @@ export const getNewTask = (props: INewTask): ITask => {
     startTimer: dn,
     timeSession: [{ start: dn }],
     tags: tags,
+    file: fileUrl,
   };
 };
