@@ -37,9 +37,13 @@ const EditTask: React.FC<IEditTask> = ({ navigation, route }) => {
 
   const handleUpdate = useCallback(
     (value: any) => {
-      editTask(currentTask, value).then((response) => navigation.navigate(tasksRoutes.SHOW, { task: response.task }));
+      const newValue = { ...value, file: value.file ? value.file : null, tags: value.tags ? value.tags : null };
+
+      editTask(currentTask, newValue).then((response) =>
+        navigation.navigate(tasksRoutes.SHOW, { task: response.task }),
+      );
     },
-    [taskId, currentTask, editTask, navigation],
+    [currentTask, editTask, navigation],
   );
 
   return (

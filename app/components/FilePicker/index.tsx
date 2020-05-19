@@ -7,7 +7,7 @@ import TextField from '../Form/Text/TextField';
 import { TFile } from '../../store/type';
 
 interface IFilePicker {
-  value?: TFile | null;
+  value: TFile | null;
   setFieldValue: Function;
 }
 

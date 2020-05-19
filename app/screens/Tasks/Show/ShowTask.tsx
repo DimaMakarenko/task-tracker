@@ -1,5 +1,8 @@
-import React, { useMemo, useCallback, useEffect } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+// redux
+import { useSelector } from 'react-redux';
+import { selectActiveTask } from '../../../store/reducers/tasks/selectors';
 // hooks
 import { useTasks } from '../../../hooks/useTasks';
 import { useTaskHandler } from '../../../hooks/useTaskHandler';
@@ -15,8 +18,7 @@ import { basicStyles } from '../../../theme/basicStyles';
 import { lastSessionEnd, durationFromMills, formatMills } from '../../../utils/time';
 // routes
 import { tasksRoutes } from '../../../navigation/routes';
-import { useSelector } from 'react-redux';
-import { selectActiveTask } from '../../../store/reducers/tasks/selectors';
+// types
 import { ITask } from '../../../store/type';
 
 interface IShowTask {
@@ -32,10 +34,10 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
   const { task } = route.params;
 
   const { handlePause, handleStart } = useTaskHandler();
-  const { finishTask, getTask, deleteTask } = useTasks();
+  const { finishTask, deleteTask } = useTasks();
   const activeTask = useSelector(selectActiveTask);
 
-  const { id, title, duration, project, startTimer, timeSession, isActive, isFinished, tags } = task;
+  const { id, title, duration, project, startTimer, timeSession, isActive, isFinished, tags, file } = task;
 
   const handleDelete = () => {
     alert('Deleting task', 'You really want delete this task?', () => {
@@ -56,13 +58,9 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
     finishTask(task);
   }, [task]);
 
-  useEffect(() => {
-    // setCurrentTask(getTask(taskId));
-  }, [id, getTask]);
-
   return (
     <ScrollView>
-      <View style={[basicStyles.container, basicStyles.bgScreen]}>
+      <View style={[basicStyles.container, basicStyles.bgScreen, basicStyles.fullScreen]}>
         <View style={[basicStyles.header, basicStyles.screenHeader]}>
           <Title text='Task' />
           {!isFinished && (
@@ -108,14 +106,23 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
           <Text style={basicStyles.subTitle}>Duration</Text>
           <Text style={basicStyles.text}>{durationFromMills(duration)} h</Text>
         </View>
-        <View style={styles.block}>
-          <Text style={basicStyles.subTitle}>Tags</Text>
-          {tags && <TagList tags={tags} />}
-        </View>
+        {tags && (
+          <View style={styles.block}>
+            <Text style={basicStyles.subTitle}>Tags</Text>
+            <TagList tags={tags} />
+          </View>
+        )}
+
+        {file && (
+          <View style={styles.block}>
+            <Text style={basicStyles.subTitle}>Added file</Text>
+            <Text style={basicStyles.text}>{file.fileName}</Text>
+          </View>
+        )}
 
         <View style={styles.block}>
           <Text style={styles.deleteBtn} onPress={handleDelete}>
-            Delete
+            Delete task
           </Text>
         </View>
         {!isFinished && <Button title='Mark as Completed' onPress={makeFinished} />}

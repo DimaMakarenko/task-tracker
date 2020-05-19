@@ -36,13 +36,14 @@ export interface ITask {
   startTimer: number;
   timeSession: ISession[];
   tags?: ITag;
-  file?: TFile;
+  file: TFile | null;
 }
 
 export interface INewTask {
   title: string;
   project: string;
   tags?: ITag;
+  file: TFile | null;
 }
 
 // ACTIONS //

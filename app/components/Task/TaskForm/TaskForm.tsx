@@ -27,7 +27,7 @@ export interface MyFormValues {
   title: string;
   project: string;
   tags?: ITag;
-  file?: TFile | null;
+  file: TFile | null;
 }
 
 const TaskForm: React.FC<ITaskForm> = ({ onSubmit, task, navigate }) => {
