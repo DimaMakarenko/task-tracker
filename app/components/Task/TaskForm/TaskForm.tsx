@@ -1,9 +1,10 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 // component
 import TextField from '../../Form/Text/TextField';
 import Button from '../../Button/Button';
 import TagList from '../../Tags/TagList';
+import FilePicker from '../../FilePicker';
 // form
 import { Formik } from 'formik';
 import { validationTaskForm } from '../../../utils/validation';
@@ -80,6 +81,7 @@ const TaskForm: React.FC<ITaskForm> = ({ onSubmit, task, navigate }) => {
               <TextField label='Tags' disable value=' ' />
               {values.tags && <TagList tags={values.tags} />}
             </TouchableOpacity>
+            <FilePicker />
           </View>
           <Button title={task ? 'Update task' : 'Start task'} onPress={handleSubmit} />
         </View>
