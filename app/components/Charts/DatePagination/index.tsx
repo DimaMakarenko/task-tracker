@@ -1,6 +1,7 @@
 import React from 'react';
-import { TouchableOpacity, View, StyleSheet, Text } from 'react-native';
-import { Icon } from 'native-base';
+import { View, StyleSheet, Text } from 'react-native';
+// components
+import TouchableIcon from '../../TouchableIcon';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
 // types
@@ -17,15 +18,11 @@ interface IDateSelector {
 const Index: React.FC<IDateSelector> = ({ next, prev, date }) => {
   return (
     <View style={basicStyles.flexRow}>
-      <TouchableOpacity activeOpacity={0.7} onPress={prev}>
-        <Icon type='MaterialCommunityIcons' name='chevron-left' style={[basicStyles.icon, basicStyles.grayColor]} />
-      </TouchableOpacity>
+      <TouchableIcon name='chevron-left' onPress={prev} gray />
       <Text style={[basicStyles.subTitle, styles.text]}>
         {dateToSelect(date.start)} - {dateToSelect(date.end)}
       </Text>
-      <TouchableOpacity activeOpacity={0.7} onPress={next}>
-        <Icon type='MaterialCommunityIcons' name='chevron-right' style={[basicStyles.icon, basicStyles.grayColor]} />
-      </TouchableOpacity>
+      <TouchableIcon name='chevron-right' onPress={next} gray />
     </View>
   );
 };

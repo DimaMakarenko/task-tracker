@@ -63,6 +63,8 @@ const TextField: React.FC<ITextField> = ({
   );
 };
 
+export default TextField;
+
 const styles = StyleSheet.create({
   field: { marginTop: 10 },
   label: {
@@ -83,5 +85,3 @@ const styles = StyleSheet.create({
     color: 'red',
   },
 });
-
-export default TextField;

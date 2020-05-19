@@ -5,6 +5,7 @@ import TextField from '../../Form/Text/TextField';
 import Button from '../../Button/Button';
 import TagList from '../../Tags/TagList';
 import FilePicker from '../../FilePicker';
+import ViewBox from '../../ViewBlock';
 // form
 import { Formik } from 'formik';
 import { validationTaskForm } from '../../../utils/validation';
@@ -62,19 +63,10 @@ const TaskForm: React.FC<ITaskForm> = ({ onSubmit, task, navigate }) => {
             {task && (
               <>
                 <View style={[styles.block, styles.timeBlock]}>
-                  <View>
-                    <Text style={basicStyles.subTitle}>Start time</Text>
-                    <Text style={basicStyles.text}>{formatMills(task.startTimer)}</Text>
-                  </View>
-                  <View>
-                    <Text style={basicStyles.subTitle}>End time</Text>
-                    <Text style={basicStyles.text}>{formatMills(task.startTimer + task.duration)}</Text>
-                  </View>
+                  <ViewBox title='Start time' text={formatMills(task.startTimer)} />
+                  <ViewBox title='End time' text={formatMills(task.startTimer + task.duration)} />
                 </View>
-                <View style={styles.block}>
-                  <Text style={basicStyles.subTitle}>Duration</Text>
-                  <Text style={basicStyles.text}>{durationFromMills(task.duration)} h</Text>
-                </View>
+                <ViewBox title='Duration' text={`${durationFromMills(task.duration)} h`} />
               </>
             )}
             <TouchableOpacity

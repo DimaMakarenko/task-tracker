@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { Text, View, StyleSheet, ScrollView } from 'react-native';
 // redux
 import { useSelector } from 'react-redux';
 import { selectActiveTask } from '../../../store/reducers/tasks/selectors';
@@ -11,7 +11,8 @@ import Title from '../../../components/Title/Title';
 import { alert } from '../../../components/Alert/Alert';
 import Button from '../../../components/Button/Button';
 import TagList from '../../../components/Tags/TagList';
-import { Icon } from 'native-base';
+import ViewBox from '../../../components/ViewBlock';
+import TouchableIcon from '../../../components/TouchableIcon';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
 // utils
@@ -65,47 +66,24 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
           <Title text='Task' />
           {!isFinished && (
             <View style={styles.icons}>
-              <TouchableOpacity onPress={editTask} style={styles.optionIcon}>
-                <Icon type='MaterialCommunityIcons' name='pencil' style={basicStyles.icon} />
-              </TouchableOpacity>
+              <TouchableIcon name='pencil' onPress={editTask} />
               {activeTask && activeTask.id === id ? (
-                <TouchableOpacity style={styles.optionIcon} onPress={() => handlePause(task)}>
-                  <Icon type='MaterialCommunityIcons' name='pause-circle' style={basicStyles.icon} />
-                </TouchableOpacity>
+                <TouchableIcon name='pause-circle' onPress={() => handlePause(task)} />
               ) : (
-                <TouchableOpacity style={styles.optionIcon} onPress={() => handleStart(task, activeTask)}>
-                  <Icon type='MaterialCommunityIcons' name='play-circle' style={basicStyles.icon} />
-                </TouchableOpacity>
+                <TouchableIcon name='play-circle' onPress={() => handleStart(task, activeTask)} />
               )}
             </View>
           )}
         </View>
 
-        <View style={styles.block}>
-          <Text style={basicStyles.subTitle}>Title</Text>
-          <Text style={basicStyles.text}>{title}</Text>
-        </View>
-        <View style={styles.block}>
-          <Text style={basicStyles.subTitle}>Project</Text>
-          <Text style={basicStyles.text}>{project}</Text>
-        </View>
-
+        <ViewBox title='Title' text={title} />
+        <ViewBox title='Project' text={project} />
         <View style={[styles.block, styles.timeBlock]}>
-          <View>
-            <Text style={basicStyles.subTitle}>Start time</Text>
-            <Text style={basicStyles.text}>{formatMills(startTimer)}</Text>
-          </View>
-          {lastEnd && (
-            <View>
-              <Text style={basicStyles.subTitle}>End time</Text>
-              <Text style={basicStyles.text}>{formatMills(lastEnd)}</Text>
-            </View>
-          )}
+          <ViewBox title='Start time' text={formatMills(startTimer)} />
+          {lastEnd && <ViewBox title='End time' text={formatMills(lastEnd)} />}
         </View>
-        <View style={styles.block}>
-          <Text style={basicStyles.subTitle}>Duration</Text>
-          <Text style={basicStyles.text}>{durationFromMills(duration)} h</Text>
-        </View>
+        <ViewBox title='Duration' text={`${durationFromMills(duration)} h`} />
+
         {tags && (
           <View style={styles.block}>
             <Text style={basicStyles.subTitle}>Tags</Text>
@@ -113,12 +91,7 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
           </View>
         )}
 
-        {file && (
-          <View style={styles.block}>
-            <Text style={basicStyles.subTitle}>Added file</Text>
-            <Text style={basicStyles.text}>{file.fileName}</Text>
-          </View>
-        )}
+        {file && <ViewBox title='Added file' text={file.fileName} />}
 
         <View style={styles.block}>
           <Text style={styles.deleteBtn} onPress={handleDelete}>

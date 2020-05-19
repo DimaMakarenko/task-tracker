@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useMemo } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 // hook
 import { useCharts } from '../../hooks/useCharts';
 import { useNavigation } from '@react-navigation/native';
@@ -13,7 +13,7 @@ import { basicStyles } from '../../theme/basicStyles';
 import { Colors } from '../../theme/colors';
 // utils
 import { dateToCalendar } from '../../utils/time';
-import { tasksRoutes, tabsRoutes } from '../../navigation/routes';
+import { tasksRoutes } from '../../navigation/routes';
 // types
 import { TAppt } from '../../components/DayCalendar/type';
 
