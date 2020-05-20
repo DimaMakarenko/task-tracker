@@ -24,6 +24,7 @@ export type TFile = {
   type: string;
   path: string;
   uri: string;
+  fileUrl: string;
 };
 
 export interface ITask {

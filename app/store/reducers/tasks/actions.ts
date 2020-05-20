@@ -8,7 +8,8 @@ import { getNewTask } from '../../../utils/tasks';
 export const createTaskAction: any = createAsyncThunk('tasks/createTask', async (options: ICreateTask) => {
   const { uid, task } = options;
   const fileUrl = task.file && (await uploadFileDb({ uid, file: task.file }));
-  const newTask = getNewTask(task, fileUrl);
+  const file = { ...task.file, fileUrl };
+  const newTask = getNewTask(task, file);
   await setTaskDb({ uid, task: newTask });
   return newTask;
 });

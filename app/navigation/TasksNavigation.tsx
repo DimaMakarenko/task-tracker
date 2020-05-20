@@ -8,7 +8,6 @@ import Tags from '../screens/Tasks/Tags';
 import Filters from '../screens/Tasks/Filters';
 // navigation
 import { tasksRoutes } from './routes';
-import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 const Stack = createStackNavigator();

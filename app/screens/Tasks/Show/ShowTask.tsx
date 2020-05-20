@@ -13,6 +13,7 @@ import Button from '../../../components/Button/Button';
 import TagList from '../../../components/Tags/TagList';
 import ViewBox from '../../../components/ViewBlock';
 import TouchableIcon from '../../../components/TouchableIcon';
+import DownloadFile from '../../../components/DownloadFile';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
 // utils
@@ -92,6 +93,7 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
         )}
 
         {file && <ViewBox title='Added file' text={file.fileName} />}
+        {file && <DownloadFile url={file.fileUrl} />}
 
         <View style={styles.block}>
           <Text style={styles.deleteBtn} onPress={handleDelete}>

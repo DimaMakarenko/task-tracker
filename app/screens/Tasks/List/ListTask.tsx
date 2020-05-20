@@ -78,57 +78,57 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
     <View style={basicStyles.bgScreen}>
       <Loader isLoading={isLoading}>
         <View style={[basicStyles.container, basicStyles.fullScreen]}>
-          <ScrollView>
-            <View style={[basicStyles.header, basicStyles.screenHeader]}>
-              <View style={basicStyles.flexRow}>
-                <Title text='Tasks' />
-                <TouchableOpacity onPress={handleFilter}>
-                  <Icon
-                    type='MaterialCommunityIcons'
-                    name='filter-variant'
-                    style={[styles.filterIcon, filteredTags.isFiltered && basicStyles.dangerText]}
-                  />
-                </TouchableOpacity>
-              </View>
-              <Text onPress={logout} style={basicStyles.dangerText}>
-                Log out
+          {/*<ScrollView>*/}
+          <View style={[basicStyles.header, basicStyles.screenHeader]}>
+            <View style={basicStyles.flexRow}>
+              <Title text='Tasks' />
+              <TouchableOpacity onPress={handleFilter}>
+                <Icon
+                  type='MaterialCommunityIcons'
+                  name='filter-variant'
+                  style={[styles.filterIcon, filteredTags.isFiltered && basicStyles.dangerText]}
+                />
+              </TouchableOpacity>
+            </View>
+            <Text onPress={logout} style={basicStyles.dangerText}>
+              Log out
+            </Text>
+          </View>
+          {!isListEmpty && !filteredTags.isFiltered ? (
+            <View style={styles.emptyList}>
+              <Text style={styles.emptyListText}>You don’t have tasks recently added.</Text>
+              <Text style={styles.emptyListText} onPress={fakeTasks}>
+                Generate list of tasks
               </Text>
             </View>
-            {!isListEmpty && !filteredTags.isFiltered ? (
-              <View style={styles.emptyList}>
-                <Text style={styles.emptyListText}>You don’t have tasks recently added.</Text>
-                <Text style={styles.emptyListText} onPress={fakeTasks}>
-                  Generate list of tasks
-                </Text>
-              </View>
-            ) : (
-              <>
-                {filteredTags.isFiltered && <TagList tags={filteredTags.tags} remove={removeFilterTag} />}
-                {!isListEmpty && filteredTags.isFiltered ? (
-                  <View style={styles.emptyList}>
-                    <Text style={styles.emptyListText}>Not found tasks</Text>
-                  </View>
-                ) : (
-                  <View>
-                    <FlatList
-                      data={tasks}
-                      keyExtractor={(item) => item.id.toString()}
-                      renderItem={({ item }: { item: any }) => (
-                        <TaskRow
-                          task={item}
-                          navigate={navigation.navigate}
-                          pauseTask={pauseTask}
-                          startTask={startTask}
-                          deleteTask={deleteTask}
-                          activeTask={activeTask}
-                        />
-                      )}
-                    />
-                  </View>
-                )}
-              </>
-            )}
-          </ScrollView>
+          ) : (
+            <>
+              {filteredTags.isFiltered && <TagList tags={filteredTags.tags} remove={removeFilterTag} />}
+              {!isListEmpty && filteredTags.isFiltered ? (
+                <View style={styles.emptyList}>
+                  <Text style={styles.emptyListText}>Not found tasks</Text>
+                </View>
+              ) : (
+                <View>
+                  <FlatList
+                    data={tasks}
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={({ item }: { item: any }) => (
+                      <TaskRow
+                        task={item}
+                        navigate={navigation.navigate}
+                        pauseTask={pauseTask}
+                        startTask={startTask}
+                        deleteTask={deleteTask}
+                        activeTask={activeTask}
+                      />
+                    )}
+                  />
+                </View>
+              )}
+            </>
+          )}
+          {/*</ScrollView>*/}
           {activeTask ? (
             <ActiveTask activeTask={activeTask} pause={pauseTask} />
           ) : (

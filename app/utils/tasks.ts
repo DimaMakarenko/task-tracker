@@ -1,6 +1,6 @@
 import { ITask, INewTask, TFile } from '../store/type';
 
-export const getNewTask = (task: INewTask, fileUrl: TFile): ITask => {
+export const getNewTask = (task: INewTask, fileUrl: TFile | null): ITask => {
   const { title, project, tags } = task;
   const dn = Date.now();
   return {
