@@ -92,8 +92,7 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
           </View>
         )}
 
-        {file && <ViewBox title='Added file' text={file.fileName} />}
-        {file && <DownloadFile url={file.fileUrl} />}
+        {file && <DownloadFile url={file.fileUrl} name={file.fileName} title='Added file' />}
 
         <View style={styles.block}>
           <Text style={styles.deleteBtn} onPress={handleDelete}>

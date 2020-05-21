@@ -5,6 +5,7 @@ import { useTasks } from '../../../hooks/useTasks';
 // components
 import Title from '../../../components/Title/Title';
 import TaskForm from '../../../components/Task/TaskForm/TaskForm';
+import Loader from '../../../components/Loader/Loader';
 // types
 import { ITask } from '../../../store/type';
 // styles
@@ -31,7 +32,7 @@ interface IEditTask {
 const EditTask: React.FC<IEditTask> = ({ navigation, route }) => {
   const { taskId } = route.params;
 
-  const { editTask, getTask } = useTasks();
+  const { editTask, getTask, isLoading } = useTasks();
 
   const currentTask = getTask(taskId);
 
@@ -47,12 +48,14 @@ const EditTask: React.FC<IEditTask> = ({ navigation, route }) => {
   );
 
   return (
-    <ScrollView>
-      <View style={[basicStyles.container, basicStyles.fullScreen, basicStyles.bgScreen]}>
-        <Title text='Edit' style={[basicStyles.header, basicStyles.screenHeader]} />
-        <TaskForm onSubmit={handleUpdate} task={currentTask} navigate={navigation.navigate} />
-      </View>
-    </ScrollView>
+    <Loader isLoading={isLoading}>
+      <ScrollView>
+        <View style={[basicStyles.container, basicStyles.fullScreen, basicStyles.bgScreen]}>
+          <Title text='Edit' style={[basicStyles.header, basicStyles.screenHeader]} />
+          <TaskForm onSubmit={handleUpdate} task={currentTask} navigate={navigation.navigate} />
+        </View>
+      </ScrollView>
+    </Loader>
   );
 };
 

@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 // api
-import { listenerTaskDb, deleteTaskDb, updateTaskDb, generateTasksDb } from '../db/api';
+import { listenerTaskDb, deleteTaskDb, updateTaskDb, generateTasksDb, uploadFileDb } from '../db/api';
 import _ from 'lodash';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
@@ -108,7 +108,20 @@ export const useTasks = () => {
   );
 
   const editTask = useCallback(
-    async (task: ITask, newValue: any) => {
+    async (task: ITask, _newValue: any) => {
+      await setIsLoading(true);
+      const fileUrl: string = _newValue.file && (await uploadFileDb({ uid, file: _newValue.file }));
+
+      const newValue = _newValue.file
+        ? {
+            ..._newValue,
+            file: {
+              ..._newValue.file,
+              fileUrl,
+            },
+          }
+        : { ..._newValue };
+
       const updates = {
         uid,
         task: {
@@ -116,7 +129,7 @@ export const useTasks = () => {
           ...newValue,
         },
       };
-      await updateTaskDb(updates);
+      await updateTaskDb(updates).then(() => setIsLoading(false));
       return updates;
     },
     [uid],
