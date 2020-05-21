@@ -28,7 +28,17 @@ interface IListTask {
 const ListTask: FC<IListTask> = ({ navigation }) => {
   const tasks = useSelector(selectTasks);
   const activeTask = useSelector(selectActiveTask);
-  const { isLoading, fetchTasks, pauseTask, addActiveTask, startTask, deleteTask, fakeTasks, removeTasks } = useTasks();
+  const {
+    isLoading,
+    fetchTasks,
+    pauseTask,
+    addActiveTask,
+    startTask,
+    deleteTask,
+    fakeTasks,
+    removeTasks,
+    createTask,
+  } = useTasks();
   const { fetchTags, filterTags } = useTags();
   const { logout } = useAuth();
 
@@ -66,9 +76,9 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
 
   return (
     <View style={basicStyles.bgScreen}>
-      <Loader isLoading={isLoading} />
-      <View style={[basicStyles.container, basicStyles.fullScreen]}>
-        <ScrollView>
+      <Loader isLoading={isLoading}>
+        <View style={[basicStyles.container, basicStyles.fullScreen]}>
+          {/*<ScrollView>*/}
           <View style={[basicStyles.header, basicStyles.screenHeader]}>
             <View style={basicStyles.flexRow}>
               <Title text='Tasks' />
@@ -118,13 +128,14 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
               )}
             </>
           )}
-        </ScrollView>
-        {activeTask ? (
-          <ActiveTask activeTask={activeTask} pause={pauseTask} />
-        ) : (
-          <Button title='Add task' onPress={() => navigation.navigate(tasksRoutes.CREATE)} />
-        )}
-      </View>
+          {/*</ScrollView>*/}
+          {activeTask ? (
+            <ActiveTask activeTask={activeTask} pause={pauseTask} />
+          ) : (
+            <Button title='Add task' onPress={() => navigation.navigate(tasksRoutes.CREATE, { createTask })} />
+          )}
+        </View>
+      </Loader>
     </View>
   );
 };

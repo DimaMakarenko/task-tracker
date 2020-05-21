@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Dimensions } from 'react-native';
+// component
+import TouchableIcon from '../../TouchableIcon';
 // utils
 import { lastSessionStart, durationFromMills } from '../../../utils/time';
 // types
@@ -38,9 +40,7 @@ const ActiveTask: React.FC<IActiveTask> = ({ activeTask, pause }) => {
       <View style={[styles.activeTask]}>
         <Text>{title}</Text>
         <Text>{durationFromMills(timer)}</Text>
-        <TouchableOpacity onPress={pauseTask} style={styles.image}>
-          <Icon type='MaterialCommunityIcons' name='pause-circle' style={basicStyles.icon} />
-        </TouchableOpacity>
+        <TouchableIcon onPress={pauseTask} name='pause-circle' />
       </View>
     </View>
   );

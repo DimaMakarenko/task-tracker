@@ -63,6 +63,8 @@ const TextField: React.FC<ITextField> = ({
   );
 };
 
+export default TextField;
+
 const styles = StyleSheet.create({
   field: { marginTop: 10 },
   label: {
@@ -73,7 +75,7 @@ const styles = StyleSheet.create({
   wrapper: {
     position: 'relative',
   },
-  imageWrapper: { position: 'absolute', right: 10, top: '50%', zIndex: 2 },
+  imageWrapper: { position: 'absolute', right: 10, top: '50%', zIndex: 5, padding: 3 },
   image: { color: '#666' },
   input: {
     flex: 1,
@@ -83,5 +85,3 @@ const styles = StyleSheet.create({
     color: 'red',
   },
 });
-
-export default TextField;

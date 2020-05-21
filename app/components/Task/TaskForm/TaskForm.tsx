@@ -1,14 +1,16 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 // component
 import TextField from '../../Form/Text/TextField';
 import Button from '../../Button/Button';
 import TagList from '../../Tags/TagList';
+import FilePicker from '../../FilePicker';
+import ViewBox from '../../ViewBlock';
 // form
 import { Formik } from 'formik';
 import { validationTaskForm } from '../../../utils/validation';
 // types
-import { ITask, ITag } from '../../../store/type';
+import { ITask, ITag, TFile } from '../../../store/type';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
 // utils
@@ -26,6 +28,7 @@ export interface MyFormValues {
   title: string;
   project: string;
   tags?: ITag;
+  file: TFile | null;
 }
 
 const TaskForm: React.FC<ITaskForm> = ({ onSubmit, task, navigate }) => {
@@ -33,6 +36,7 @@ const TaskForm: React.FC<ITaskForm> = ({ onSubmit, task, navigate }) => {
     title: task ? task.title : '',
     project: task ? task.project : '',
     tags: task ? task.tags : [],
+    file: task ? task.file : null,
   };
 
   return (
@@ -59,19 +63,10 @@ const TaskForm: React.FC<ITaskForm> = ({ onSubmit, task, navigate }) => {
             {task && (
               <>
                 <View style={[styles.block, styles.timeBlock]}>
-                  <View>
-                    <Text style={basicStyles.subTitle}>Start time</Text>
-                    <Text style={basicStyles.text}>{formatMills(task.startTimer)}</Text>
-                  </View>
-                  <View>
-                    <Text style={basicStyles.subTitle}>End time</Text>
-                    <Text style={basicStyles.text}>{formatMills(task.startTimer + task.duration)}</Text>
-                  </View>
+                  <ViewBox title='Start time' text={formatMills(task.startTimer)} />
+                  <ViewBox title='End time' text={formatMills(task.startTimer + task.duration)} />
                 </View>
-                <View style={styles.block}>
-                  <Text style={basicStyles.subTitle}>Duration</Text>
-                  <Text style={basicStyles.text}>{durationFromMills(task.duration)} h</Text>
-                </View>
+                <ViewBox title='Duration' text={`${durationFromMills(task.duration)} h`} />
               </>
             )}
             <TouchableOpacity
@@ -80,6 +75,7 @@ const TaskForm: React.FC<ITaskForm> = ({ onSubmit, task, navigate }) => {
               <TextField label='Tags' disable value=' ' />
               {values.tags && <TagList tags={values.tags} />}
             </TouchableOpacity>
+            <FilePicker value={values.file} setFieldValue={setFieldValue} />
           </View>
           <Button title={task ? 'Update task' : 'Start task'} onPress={handleSubmit} />
         </View>

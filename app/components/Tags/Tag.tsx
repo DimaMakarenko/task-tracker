@@ -1,6 +1,7 @@
 import React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Icon } from 'native-base';
+import { Text, StyleSheet, TouchableOpacity } from 'react-native';
+// component
+import TouchableIcon from '../TouchableIcon';
 // types
 import { ITagFunc } from '../../store/type';
 // styles
@@ -16,13 +17,7 @@ const Tag: React.FC<ITagContainer> = ({ title, onRemove, onAdd }) => {
   return (
     <TouchableOpacity style={styles.wrapper} onPress={onAdd ? () => onAdd(title) : undefined} activeOpacity={1}>
       <Text style={styles.text}>{title}</Text>
-      {onRemove && (
-        <TouchableOpacity onPress={() => onRemove(title)}>
-          <View>
-            <Icon type='MaterialCommunityIcons' name='close-circle' style={styles.icon} />
-          </View>
-        </TouchableOpacity>
-      )}
+      {onRemove && <TouchableIcon onPress={() => onRemove(title)} name='close-circle' />}
     </TouchableOpacity>
   );
 };

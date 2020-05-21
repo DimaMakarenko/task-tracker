@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TextInput, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TextInput, Text } from 'react-native';
+// component
+import TouchableIcon from '../../TouchableIcon';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
-import { Icon } from 'native-base';
 
 interface IPasswordField {
   fieldName: string;
@@ -28,18 +29,14 @@ const PasswordField: React.FC<IPasswordField> = ({ fieldName, onChangeText, onBl
           secureTextEntry={isHide}
           textContentType='password'
         />
-        <TouchableOpacity onPress={() => setIsHide(!isHide)}>
-          <Icon
-            type='MaterialCommunityIcons'
-            name={`eye-${isHide ? 'off-' : ''}outline`}
-            style={[basicStyles.icon, basicStyles.grayColor]}
-          />
-        </TouchableOpacity>
+        <TouchableIcon onPress={() => setIsHide(!isHide)} name={`eye-${isHide ? 'off-' : ''}outline`} />
       </View>
       <Text style={basicStyles.dangerText}>{touched && error}</Text>
     </>
   );
 };
+
+export default PasswordField;
 
 const styles = StyleSheet.create({
   container: {
@@ -60,5 +57,3 @@ const styles = StyleSheet.create({
     color: 'red',
   },
 });
-
-export default PasswordField;

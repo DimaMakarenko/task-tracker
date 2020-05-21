@@ -1,5 +1,4 @@
 import { Platform, InteractionManager } from 'react-native';
-
 const _setTimeout = global.setTimeout;
 const _clearTimeout = global.clearTimeout;
 const MAX_TIMER_DURATION_MS = 60 * 1000;

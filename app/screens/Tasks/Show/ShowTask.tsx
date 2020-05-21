@@ -1,5 +1,8 @@
-import React, { useMemo, useCallback, useEffect } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useMemo, useCallback } from 'react';
+import { Text, View, StyleSheet, ScrollView } from 'react-native';
+// redux
+import { useSelector } from 'react-redux';
+import { selectActiveTask } from '../../../store/reducers/tasks/selectors';
 // hooks
 import { useTasks } from '../../../hooks/useTasks';
 import { useTaskHandler } from '../../../hooks/useTaskHandler';
@@ -8,15 +11,16 @@ import Title from '../../../components/Title/Title';
 import { alert } from '../../../components/Alert/Alert';
 import Button from '../../../components/Button/Button';
 import TagList from '../../../components/Tags/TagList';
-import { Icon } from 'native-base';
+import ViewBox from '../../../components/ViewBlock';
+import TouchableIcon from '../../../components/TouchableIcon';
+import DownloadFile from '../../../components/DownloadFile';
 // styles
 import { basicStyles } from '../../../theme/basicStyles';
 // utils
 import { lastSessionEnd, durationFromMills, formatMills } from '../../../utils/time';
 // routes
 import { tasksRoutes } from '../../../navigation/routes';
-import { useSelector } from 'react-redux';
-import { selectActiveTask } from '../../../store/reducers/tasks/selectors';
+// types
 import { ITask } from '../../../store/type';
 
 interface IShowTask {
@@ -32,10 +36,10 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
   const { task } = route.params;
 
   const { handlePause, handleStart } = useTaskHandler();
-  const { finishTask, getTask, deleteTask } = useTasks();
+  const { finishTask, deleteTask } = useTasks();
   const activeTask = useSelector(selectActiveTask);
 
-  const { id, title, duration, project, startTimer, timeSession, isActive, isFinished, tags } = task;
+  const { id, title, duration, project, startTimer, timeSession, isActive, isFinished, tags, file } = task;
 
   const handleDelete = () => {
     alert('Deleting task', 'You really want delete this task?', () => {
@@ -56,66 +60,43 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
     finishTask(task);
   }, [task]);
 
-  useEffect(() => {
-    // setCurrentTask(getTask(taskId));
-  }, [id, getTask]);
-
   return (
     <ScrollView>
-      <View style={[basicStyles.container, basicStyles.bgScreen]}>
+      <View style={[basicStyles.container, basicStyles.bgScreen, basicStyles.fullScreen]}>
         <View style={[basicStyles.header, basicStyles.screenHeader]}>
           <Title text='Task' />
           {!isFinished && (
             <View style={styles.icons}>
-              <TouchableOpacity onPress={editTask} style={styles.optionIcon}>
-                <Icon type='MaterialCommunityIcons' name='pencil' style={basicStyles.icon} />
-              </TouchableOpacity>
+              <TouchableIcon name='pencil' onPress={editTask} />
               {activeTask && activeTask.id === id ? (
-                <TouchableOpacity style={styles.optionIcon} onPress={() => handlePause(task)}>
-                  <Icon type='MaterialCommunityIcons' name='pause-circle' style={basicStyles.icon} />
-                </TouchableOpacity>
+                <TouchableIcon name='pause-circle' onPress={() => handlePause(task)} />
               ) : (
-                <TouchableOpacity style={styles.optionIcon} onPress={() => handleStart(task, activeTask)}>
-                  <Icon type='MaterialCommunityIcons' name='play-circle' style={basicStyles.icon} />
-                </TouchableOpacity>
+                <TouchableIcon name='play-circle' onPress={() => handleStart(task, activeTask)} />
               )}
             </View>
           )}
         </View>
 
-        <View style={styles.block}>
-          <Text style={basicStyles.subTitle}>Title</Text>
-          <Text style={basicStyles.text}>{title}</Text>
-        </View>
-        <View style={styles.block}>
-          <Text style={basicStyles.subTitle}>Project</Text>
-          <Text style={basicStyles.text}>{project}</Text>
-        </View>
-
+        <ViewBox title='Title' text={title} />
+        <ViewBox title='Project' text={project} />
         <View style={[styles.block, styles.timeBlock]}>
-          <View>
-            <Text style={basicStyles.subTitle}>Start time</Text>
-            <Text style={basicStyles.text}>{formatMills(startTimer)}</Text>
+          <ViewBox title='Start time' text={formatMills(startTimer)} />
+          {lastEnd && <ViewBox title='End time' text={formatMills(lastEnd)} />}
+        </View>
+        <ViewBox title='Duration' text={`${durationFromMills(duration)} h`} />
+
+        {tags && (
+          <View style={styles.block}>
+            <Text style={basicStyles.subTitle}>Tags</Text>
+            <TagList tags={tags} />
           </View>
-          {lastEnd && (
-            <View>
-              <Text style={basicStyles.subTitle}>End time</Text>
-              <Text style={basicStyles.text}>{formatMills(lastEnd)}</Text>
-            </View>
-          )}
-        </View>
-        <View style={styles.block}>
-          <Text style={basicStyles.subTitle}>Duration</Text>
-          <Text style={basicStyles.text}>{durationFromMills(duration)} h</Text>
-        </View>
-        <View style={styles.block}>
-          <Text style={basicStyles.subTitle}>Tags</Text>
-          {tags && <TagList tags={tags} />}
-        </View>
+        )}
+
+        {file && <DownloadFile url={file.fileUrl} name={file.fileName} title='Added file' />}
 
         <View style={styles.block}>
           <Text style={styles.deleteBtn} onPress={handleDelete}>
-            Delete
+            Delete task
           </Text>
         </View>
         {!isFinished && <Button title='Mark as Completed' onPress={makeFinished} />}

@@ -19,6 +19,14 @@ export type ISession = {
   end?: number;
 };
 
+export type TFile = {
+  fileName: string;
+  type: string;
+  path: string;
+  uri: string;
+  fileUrl: string;
+};
+
 export interface ITask {
   id: number;
   title: string;
@@ -29,13 +37,14 @@ export interface ITask {
   startTimer: number;
   timeSession: ISession[];
   tags?: ITag;
-  file?: any;
+  file: TFile | null;
 }
 
 export interface INewTask {
   title: string;
   project: string;
   tags?: ITag;
+  file: TFile | null;
 }
 
 // ACTIONS //
@@ -70,4 +79,8 @@ export type TFakeTask = { [key: number]: ITask };
 interface IGenerateTasks {
   uid: string;
   tasks: TFakeTask;
+}
+interface IUploadFileDb {
+  uid: string;
+  file: TFile;
 }
