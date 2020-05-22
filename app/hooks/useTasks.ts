@@ -22,11 +22,15 @@ export const useTasks = () => {
   const taskList = useSelector(selectTasks);
 
   const handleFetch = useCallback(async () => {
-    await listenerTaskDb({ uid }, (value: any) => dispatch(addTasksAction(_.toArray(value))));
+    await setIsLoading(true);
+    const result = await listenerTaskDb({ uid }, (value: []) => dispatch(addTasksAction(_.toArray(value))));
+    return result;
   }, [dispatch, uid]);
 
   const fetchTasks = useCallback(() => {
-    handleFetch().catch(() => console.log('Error in data fetching'));
+    handleFetch()
+      .catch(() => console.log('Error in data fetching'))
+      .finally(() => setIsLoading(false));
   }, [handleFetch]);
 
   const createTask = useCallback(
@@ -64,7 +68,7 @@ export const useTasks = () => {
   );
 
   const startTask = useCallback(
-    (task: ITask) => {
+    async (task: ITask) => {
       const dn = Date.now();
       const updates = {
         uid,
@@ -74,7 +78,7 @@ export const useTasks = () => {
           timeSession: setStartSession([...task.timeSession], dn),
         },
       };
-      dispatch(startTaskAction(updates));
+      await dispatch(startTaskAction(updates));
     },
     [dispatch, uid],
   );

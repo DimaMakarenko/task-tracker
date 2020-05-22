@@ -18,9 +18,9 @@ const Statistic = () => {
         <View style={basicStyles.container}>
           <Title text='Statistic' style={[basicStyles.header]} />
         </View>
-        {activeWeeks ? (
-          <View>
-            <Loader isLoading={isLoading}>
+        <Loader isLoading={isLoading}>
+          {activeWeeks ? (
+            <View>
               <LineChart
                 dataCallback={dateChartHours}
                 yAxisSuffix='h'
@@ -29,13 +29,13 @@ const Statistic = () => {
               />
               <LineChart dataCallback={dateChartTasks} dataIntervals={activeWeeks} title='Logged tasks' />
               <BarChart dataCallback={dateChartPerDay} title='Logged per day' />
-            </Loader>
-          </View>
-        ) : (
-          <View>
-            <Text> List is empty</Text>
-          </View>
-        )}
+            </View>
+          ) : (
+            <View>
+              <Text> List is empty</Text>
+            </View>
+          )}
+        </Loader>
       </ScrollView>
     </View>
   );

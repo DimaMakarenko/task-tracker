@@ -22,6 +22,7 @@ const AppNavigation: React.FC = () => {
 
   user && dispatch(setUser(user.uid));
 
+  console.log('user', user);
   return (
     <Loader isLoading={isLoading}>
       <NavigationContainer>

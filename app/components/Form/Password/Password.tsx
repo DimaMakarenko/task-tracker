@@ -29,7 +29,7 @@ const PasswordField: React.FC<IPasswordField> = ({ fieldName, onChangeText, onBl
           secureTextEntry={isHide}
           textContentType='password'
         />
-        <TouchableIcon onPress={() => setIsHide(!isHide)} name={`eye-${isHide ? 'off-' : ''}outline`} />
+        <TouchableIcon onPress={() => setIsHide(!isHide)} name={`eye-${isHide ? 'off-' : ''}outline`} gray />
       </View>
       <Text style={basicStyles.dangerText}>{touched && error}</Text>
     </>

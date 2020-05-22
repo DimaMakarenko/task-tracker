@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useState, useMemo } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 // hooks
 import { useTasks } from '../../../hooks/useTasks';
 import { useTags } from '../../../hooks/useTags';
@@ -39,6 +39,7 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
     removeTasks,
     createTask,
   } = useTasks();
+
   const { fetchTags, filterTags } = useTags();
   const { logout } = useAuth();
 
@@ -78,7 +79,6 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
     <View style={basicStyles.bgScreen}>
       <Loader isLoading={isLoading}>
         <View style={[basicStyles.container, basicStyles.fullScreen]}>
-          {/*<ScrollView>*/}
           <View style={[basicStyles.header, basicStyles.screenHeader]}>
             <View style={basicStyles.flexRow}>
               <Title text='Tasks' />
@@ -109,7 +109,7 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
                   <Text style={styles.emptyListText}>Not found tasks</Text>
                 </View>
               ) : (
-                <View>
+                <View style={styles.list}>
                   <FlatList
                     data={tasks}
                     keyExtractor={(item) => item.id.toString()}
@@ -124,15 +124,14 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
                       />
                     )}
                   />
+                  {activeTask ? (
+                    <ActiveTask activeTask={activeTask} pause={pauseTask} />
+                  ) : (
+                    <Button title='Add task' onPress={() => navigation.navigate(tasksRoutes.CREATE, { createTask })} />
+                  )}
                 </View>
               )}
             </>
-          )}
-          {/*</ScrollView>*/}
-          {activeTask ? (
-            <ActiveTask activeTask={activeTask} pause={pauseTask} />
-          ) : (
-            <Button title='Add task' onPress={() => navigation.navigate(tasksRoutes.CREATE, { createTask })} />
           )}
         </View>
       </Loader>
@@ -150,6 +149,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginLeft: 10,
   },
+  list: { justifyContent: 'space-between', flex: 1 },
 });
 
 export default ListTask;

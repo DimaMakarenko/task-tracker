@@ -94,11 +94,14 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
 
         {file && <DownloadFile url={file.fileUrl} name={file.fileName} title='Added file' />}
 
-        <View style={styles.block}>
-          <Text style={styles.deleteBtn} onPress={handleDelete}>
-            Delete task
-          </Text>
-        </View>
+        {!activeTask && (
+          <View style={styles.block}>
+            <Text style={styles.deleteBtn} onPress={handleDelete}>
+              Delete task
+            </Text>
+          </View>
+        )}
+
         {!isFinished && <Button title='Mark as Completed' onPress={makeFinished} />}
       </View>
     </ScrollView>
