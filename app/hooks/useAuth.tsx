@@ -9,8 +9,8 @@ export const useAuth = () => {
   const checkUser = async () => {
     await firebase.auth().onAuthStateChanged(async (user) => {
       const result = await setAuth({ user });
-      console.log('make false', result);
       setIsLoading(false);
+      return result;
     });
   };
 

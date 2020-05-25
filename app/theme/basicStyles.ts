@@ -40,4 +40,6 @@ export const basicStyles = StyleSheet.create({
   chartWrapper: {
     marginBottom: 40,
   },
+  emptyList: { justifyContent: 'center', flex: 1, alignItems: 'center', height: '100%' },
+  emptyListText: { textAlign: 'center' },
 });

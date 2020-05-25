@@ -21,12 +21,14 @@ interface ITagContainer {
 
 const TagContainer: React.FC<ITagContainer> = ({ taskTags, onSubmit, btnText, isField }) => {
   const [tags, setTags] = useState(taskTags ? taskTags : []);
+
   const [fieldTag, setFieldTag] = useState('');
   const tagsList = useSelector(selectTags);
 
   const unSelectTags = useMemo(() => tagsList.filter((tag) => (tags.length > 0 ? !tags.includes(tag) : tagsList)), [
     tagsList,
     tags,
+    taskTags,
   ]);
 
   const add = useCallback((tagName: string) => {

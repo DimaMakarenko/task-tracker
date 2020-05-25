@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native
 import { useTasks } from '../../../hooks/useTasks';
 import { useTags } from '../../../hooks/useTags';
 import { useAuth } from '../../../hooks/useAuth';
+import { useListener } from '../../../hooks/useListener';
 // redux
 import { useSelector } from 'react-redux';
 import { selectTasks, selectActiveTask } from '../../../store/reducers/tasks/selectors';
@@ -28,18 +29,9 @@ interface IListTask {
 const ListTask: FC<IListTask> = ({ navigation }) => {
   const tasks = useSelector(selectTasks);
   const activeTask = useSelector(selectActiveTask);
-  const {
-    isLoading,
-    fetchTasks,
-    pauseTask,
-    addActiveTask,
-    startTask,
-    deleteTask,
-    fakeTasks,
-    removeTasks,
-    createTask,
-  } = useTasks();
+  const { pauseTask, addActiveTask, startTask, deleteTask, fakeTasks, removeTasks, createTask } = useTasks();
 
+  const { isLoading, fetchData } = useListener();
   const { fetchTags, filterTags } = useTags();
   const { logout } = useAuth();
 
@@ -50,7 +42,7 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
   const isListEmpty = useMemo(() => tasks.length > 0, [tasks]);
 
   useEffect(() => {
-    filteredTags.isFiltered ? filterTags(filteredTags.tags) : fetchTasks();
+    filteredTags.isFiltered ? filterTags(filteredTags.tags) : fetchData();
     return removeTasks;
   }, [filteredTags]);
 
@@ -63,9 +55,14 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
     setFilteredTags({ isFiltered: tags.length > 0, tags });
   }, []);
 
+  const removeAllTags = useCallback(() => {
+    console.log('press');
+    setFilteredTags({ isFiltered: false, tags: [] });
+  }, []);
+
   const handleFilter = useCallback(() => {
-    navigation.navigate(tasksRoutes.FILTERS, { setFilter, filteredTags: filteredTags.tags });
-  }, [navigation, setFilter, filteredTags]);
+    navigation.navigate(tasksRoutes.FILTERS, { setFilter, filteredTags: filteredTags.tags, removeAllTags });
+  }, [navigation, setFilter, filteredTags, removeAllTags]);
 
   const removeFilterTag = useCallback(
     (value) => {
@@ -95,9 +92,9 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
             </Text>
           </View>
           {!isListEmpty && !filteredTags.isFiltered ? (
-            <View style={styles.emptyList}>
-              <Text style={styles.emptyListText}>You don’t have tasks recently added.</Text>
-              <Text style={styles.emptyListText} onPress={fakeTasks}>
+            <View style={basicStyles.emptyList}>
+              <Text style={basicStyles.emptyListText}>You don’t have tasks recently added.</Text>
+              <Text style={basicStyles.emptyListText} onPress={fakeTasks}>
                 Generate list of tasks
               </Text>
             </View>
@@ -105,8 +102,8 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
             <>
               {filteredTags.isFiltered && <TagList tags={filteredTags.tags} remove={removeFilterTag} />}
               {!isListEmpty && filteredTags.isFiltered ? (
-                <View style={styles.emptyList}>
-                  <Text style={styles.emptyListText}>Not found tasks</Text>
+                <View style={basicStyles.emptyList}>
+                  <Text style={basicStyles.emptyListText}>Not found tasks</Text>
                 </View>
               ) : (
                 <View style={styles.list}>
@@ -140,8 +137,6 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  emptyList: { justifyContent: 'center', flex: 1, alignItems: 'center', height: '100%' },
-  emptyListText: { textAlign: 'center' },
   text: {
     fontSize: 26,
   },
