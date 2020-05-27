@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback, useState } from 'react';
 import { Text, View, StyleSheet, ScrollView } from 'react-native';
 // redux
 import { useSelector } from 'react-redux';
@@ -21,17 +21,6 @@ import { lastSessionEnd, durationFromMills, formatMills } from '../../../utils/t
 // routes
 import { tasksRoutes } from '../../../navigation/routes';
 // types
-import { ITask } from '../../../store/type';
-
-interface IShowTask {
-  navigation: { navigate: Function };
-  route: {
-    params: {
-      task: ITask;
-    };
-  };
-}
-
 const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
   const { task } = route.params;
 
@@ -40,6 +29,8 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
   const activeTask = useSelector(selectActiveTask);
 
   const { id, title, duration, project, startTimer, timeSession, isActive, isFinished, tags, file } = task;
+
+  const [_isFinished, setIsFinished] = useState(isFinished);
 
   const handleDelete = () => {
     alert('Deleting task', 'You really want delete this task?', () => {
@@ -57,15 +48,16 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
   }, [timeSession, isActive]);
 
   const makeFinished = useCallback(() => {
+    setIsFinished(true);
     finishTask(task);
-  }, [task]);
+  }, [task, finishTask]);
 
   return (
-    <ScrollView>
-      <View style={[basicStyles.container, basicStyles.bgScreen, basicStyles.fullScreen]}>
+    <View style={[basicStyles.container, basicStyles.bgScreen, basicStyles.fullScreen]}>
+      <ScrollView>
         <View style={[basicStyles.header, basicStyles.screenHeader]}>
           <Title text='Task' />
-          {!isFinished && (
+          {!_isFinished && (
             <View style={styles.icons}>
               <TouchableIcon name='pencil' onPress={editTask} />
               {activeTask && activeTask.id === id ? (
@@ -79,7 +71,7 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
 
         <ViewBox title='Title' text={title} />
         <ViewBox title='Project' text={project} />
-        <View style={[styles.block, styles.timeBlock]}>
+        <View style={[styles.timeBlock]}>
           <ViewBox title='Start time' text={formatMills(startTimer)} />
           {lastEnd && <ViewBox title='End time' text={formatMills(lastEnd)} />}
         </View>
@@ -102,11 +94,22 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
           </View>
         )}
 
-        {!isFinished && <Button title='Mark as Completed' onPress={makeFinished} />}
-      </View>
-    </ScrollView>
+        {!_isFinished && <Button title='Mark as Completed' onPress={makeFinished} />}
+      </ScrollView>
+    </View>
   );
 };
+
+import { ITask } from '../../../store/type';
+
+interface IShowTask {
+  navigation: { navigate: Function };
+  route: {
+    params: {
+      task: ITask;
+    };
+  };
+}
 
 const styles = StyleSheet.create({
   block: { marginBottom: 30 },

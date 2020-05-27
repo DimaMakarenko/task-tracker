@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 // component
 import TextField from '../../Form/Text/TextField';
 import Button from '../../Button/Button';
@@ -62,7 +62,7 @@ const TaskForm: React.FC<ITaskForm> = ({ onSubmit, task, navigate }) => {
             />
             {task && (
               <>
-                <View style={[styles.block, styles.timeBlock]}>
+                <View style={[styles.timeBlock]}>
                   <ViewBox title='Start time' text={formatMills(task.startTimer)} />
                   <ViewBox title='End time' text={formatMills(task.startTimer + task.duration)} />
                 </View>

@@ -51,8 +51,13 @@ const Calendar: React.FC<ICalendar> = ({}) => {
         <Title text='Calendars' />
       </View>
       <View>
-        <CalendarProvider disabledOpacity={1} style={styles.weekCalendar} onDateChanged={onDayPress}>
-          <WeekCalendar allowShadow={false} height={30} markedDates={{ [selectedDate.string]: selectedStyle }} />
+        <CalendarProvider disabledOpacity={1} date='2020-05-03' style={styles.weekCalendar} onDateChanged={onDayPress}>
+          <WeekCalendar
+            allowShadow={false}
+            height={30}
+            markedDates={{ [selectedDate.string]: selectedStyle }}
+            firstDay={1}
+          />
         </CalendarProvider>
       </View>
       <DayCalendar dataArray={dayDate} searchDay={selectedDate.date} onClick={editTask} />

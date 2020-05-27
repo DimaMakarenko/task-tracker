@@ -37,7 +37,6 @@ const Filters: React.FC<IFilters> = ({ navigation, route }) => {
     setTags([]);
   };
 
-  console.log(tags);
   return (
     <View style={[basicStyles.container, basicStyles.fullScreen, basicStyles.bgScreen]}>
       <View style={[basicStyles.header, basicStyles.screenHeader]}>

@@ -25,7 +25,7 @@ interface ITaskRow {
 }
 
 const TaskRow: React.FC<ITaskRow> = ({ task, navigate, pauseTask, startTask, deleteTask, activeTask }) => {
-  const { id, title, duration, isActive, isFinished, startTimer } = task;
+  const { id, title, project, duration, isActive, isFinished, startTimer } = task;
 
   const handleDelete = useCallback(() => {
     deleteTask(id);
@@ -51,7 +51,7 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate, pauseTask, startTask, del
 
   const handleShow = useCallback(() => {
     navigate(tasksRoutes.SHOW, { taskId: task.id, task });
-  }, [task, deleteTask, handleEdit, handlePause, handleStart, navigate]);
+  }, [task, navigate]);
 
   const showAlert = useCallback(() => {
     isActive ? stopActiveTask() : alert('Deleting task', 'Are you really want delete this task?', handleDelete);
@@ -81,7 +81,7 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate, pauseTask, startTask, del
     <Swipeable renderRightActions={(progress, dragX) => <RenderRightAction dragX={dragX} />}>
       <View style={[styles.taskRow, isActive && styles.activeTask]}>
         <TouchableOpacity style={styles.taskInfo} onPress={handleShow}>
-          <Text>{title}</Text>
+          <Text>{`${title} ${project}`}</Text>
           <View style={styles.row}>
             <Text>{isActive ? formatMills(startTimer) : durationFromMills(duration)}</Text>
           </View>

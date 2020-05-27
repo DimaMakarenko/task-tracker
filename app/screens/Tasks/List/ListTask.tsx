@@ -29,7 +29,16 @@ interface IListTask {
 const ListTask: FC<IListTask> = ({ navigation }) => {
   const tasks = useSelector(selectTasks);
   const activeTask = useSelector(selectActiveTask);
-  const { pauseTask, addActiveTask, startTask, deleteTask, fakeTasks, removeTasks, createTask } = useTasks();
+  const {
+    isLoading: _isLoading,
+    pauseTask,
+    addActiveTask,
+    startTask,
+    deleteTask,
+    fakeTasks,
+    removeTasks,
+    createTask,
+  } = useTasks();
 
   const { isLoading, fetchData } = useListener();
   const { fetchTags, filterTags } = useTags();
@@ -44,19 +53,18 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
   useEffect(() => {
     filteredTags.isFiltered ? filterTags(filteredTags.tags) : fetchData();
     return removeTasks;
-  }, [filteredTags]);
+  }, []);
 
   useEffect(() => {
     addActiveTask(tasks);
     fetchTags();
-  }, [tasks]);
+  }, [tasks, fetchTags, addActiveTask]);
 
   const setFilter = useCallback((tags: ITag) => {
     setFilteredTags({ isFiltered: tags.length > 0, tags });
   }, []);
 
   const removeAllTags = useCallback(() => {
-    console.log('press');
     setFilteredTags({ isFiltered: false, tags: [] });
   }, []);
 
@@ -74,7 +82,7 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
 
   return (
     <View style={basicStyles.bgScreen}>
-      <Loader isLoading={isLoading}>
+      <Loader isLoading={isLoading || _isLoading}>
         <View style={[basicStyles.container, basicStyles.fullScreen]}>
           <View style={[basicStyles.header, basicStyles.screenHeader]}>
             <View style={basicStyles.flexRow}>
@@ -94,9 +102,9 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
           {!isListEmpty && !filteredTags.isFiltered ? (
             <View style={basicStyles.emptyList}>
               <Text style={basicStyles.emptyListText}>You don’t have tasks recently added.</Text>
-              <Text style={basicStyles.emptyListText} onPress={fakeTasks}>
-                Generate list of tasks
-              </Text>
+              <TouchableOpacity onPress={fakeTasks}>
+                <Text style={[basicStyles.emptyListText, styles.underline]}>Generate list of tasks</Text>
+              </TouchableOpacity>
             </View>
           ) : (
             <>
@@ -145,6 +153,9 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   list: { justifyContent: 'space-between', flex: 1 },
+  underline: {
+    textDecorationLine: 'underline',
+  },
 });
 
 export default ListTask;
