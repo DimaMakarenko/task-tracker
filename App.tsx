@@ -5,6 +5,12 @@ import { Provider } from 'react-redux';
 // utils for remove warning setTimeout
 import './app/utils/timeout';
 
+import { YellowBox } from 'react-native';
+
+YellowBox.ignoreWarnings(['Non-serializable values were found in the navigation state']);
+YellowBox.ignoreWarnings(['ImmutableStateInvariantMiddleware took']);
+YellowBox.ignoreWarnings(['Require cycle:']);
+
 import { store } from './app/store/store';
 
 const App = () => {

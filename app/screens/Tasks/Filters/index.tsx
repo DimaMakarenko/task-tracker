@@ -1,5 +1,5 @@
-import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 // component
 import Title from '../../../components/Title/Title';
 import TagContainer from '../../../components/Tags/TagContainer';
@@ -26,9 +26,15 @@ interface IFilters {
 const Filters: React.FC<IFilters> = ({ navigation, route }) => {
   const { setFilter, filteredTags } = route.params;
 
+  const [tags, setTags] = useState(filteredTags);
+
   const applyFilter = (value: ITag) => {
     setFilter(value);
     navigation.navigate(tasksRoutes.LIST);
+  };
+
+  const removeAllTags = () => {
+    setTags([]);
   };
 
   return (
@@ -40,11 +46,11 @@ const Filters: React.FC<IFilters> = ({ navigation, route }) => {
             <Icon type='MaterialCommunityIcons' name='filter-variant' style={styles.filterIcon} />
           </View>
         </View>
-        <Text onPress={() => {}} style={basicStyles.dangerText}>
-          Clear Filters
-        </Text>
+        <TouchableOpacity onPress={removeAllTags}>
+          <Text style={basicStyles.dangerText}>Clear Filters</Text>
+        </TouchableOpacity>
       </View>
-      <TagContainer taskTags={filteredTags} onSubmit={applyFilter} btnText='Apply filters' />
+      <TagContainer taskTags={tags} onSubmit={applyFilter} btnText='Apply filters' />
     </View>
   );
 };

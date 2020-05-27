@@ -1,12 +1,11 @@
 import { useState, useCallback } from 'react';
 // api
-import { listenerTaskDb, deleteTaskDb, updateTaskDb, generateTasksDb, uploadFileDb } from '../db/api';
-import _ from 'lodash';
+import { deleteTaskDb, updateTaskDb, generateTasksDb, uploadFileDb } from '../db/api';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
 import { createTaskAction, pauseTaskAction, startTaskAction } from '../store/reducers/tasks/actions';
 import { removeTasksAction } from '../store/reducers/tasks/tasks';
-import { addTasksAction, addActiveTaskAction } from '../store/reducers/tasks/tasks';
+import { addActiveTaskAction } from '../store/reducers/tasks/tasks';
 import { selectUser } from '../store/reducers/user/selectors';
 import { selectTasks } from '../store/reducers/tasks/selectors';
 // types
@@ -20,14 +19,6 @@ export const useTasks = () => {
   const dispatch = useDispatch();
   const { uid } = useSelector(selectUser);
   const taskList = useSelector(selectTasks);
-
-  const handleFetch = useCallback(async () => {
-    await listenerTaskDb({ uid }, (value: any) => dispatch(addTasksAction(_.toArray(value))));
-  }, [dispatch, uid]);
-
-  const fetchTasks = useCallback(() => {
-    handleFetch().catch(() => console.log('Error in data fetching'));
-  }, [handleFetch]);
 
   const createTask = useCallback(
     async (options: ICreateTask) => {
@@ -64,7 +55,7 @@ export const useTasks = () => {
   );
 
   const startTask = useCallback(
-    (task: ITask) => {
+    async (task: ITask) => {
       const dn = Date.now();
       const updates = {
         uid,
@@ -74,7 +65,7 @@ export const useTasks = () => {
           timeSession: setStartSession([...task.timeSession], dn),
         },
       };
-      dispatch(startTaskAction(updates));
+      await dispatch(startTaskAction(updates));
     },
     [dispatch, uid],
   );
@@ -146,7 +137,6 @@ export const useTasks = () => {
 
   return {
     isLoading,
-    fetchTasks,
     createTask,
     pauseTask,
     addActiveTask,

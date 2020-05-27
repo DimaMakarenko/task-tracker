@@ -1,9 +1,10 @@
 import React, { FC, useCallback, useEffect, useState, useMemo } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 // hooks
 import { useTasks } from '../../../hooks/useTasks';
 import { useTags } from '../../../hooks/useTags';
 import { useAuth } from '../../../hooks/useAuth';
+import { useListener } from '../../../hooks/useListener';
 // redux
 import { useSelector } from 'react-redux';
 import { selectTasks, selectActiveTask } from '../../../store/reducers/tasks/selectors';
@@ -29,8 +30,7 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
   const tasks = useSelector(selectTasks);
   const activeTask = useSelector(selectActiveTask);
   const {
-    isLoading,
-    fetchTasks,
+    isLoading: _isLoading,
     pauseTask,
     addActiveTask,
     startTask,
@@ -39,6 +39,8 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
     removeTasks,
     createTask,
   } = useTasks();
+
+  const { isLoading, fetchData } = useListener();
   const { fetchTags, filterTags } = useTags();
   const { logout } = useAuth();
 
@@ -49,22 +51,26 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
   const isListEmpty = useMemo(() => tasks.length > 0, [tasks]);
 
   useEffect(() => {
-    filteredTags.isFiltered ? filterTags(filteredTags.tags) : fetchTasks();
+    filteredTags.isFiltered ? filterTags(filteredTags.tags) : fetchData();
     return removeTasks;
-  }, [filteredTags]);
+  }, []);
 
   useEffect(() => {
     addActiveTask(tasks);
     fetchTags();
-  }, [tasks]);
+  }, [tasks, fetchTags, addActiveTask]);
 
   const setFilter = useCallback((tags: ITag) => {
     setFilteredTags({ isFiltered: tags.length > 0, tags });
   }, []);
 
+  const removeAllTags = useCallback(() => {
+    setFilteredTags({ isFiltered: false, tags: [] });
+  }, []);
+
   const handleFilter = useCallback(() => {
-    navigation.navigate(tasksRoutes.FILTERS, { setFilter, filteredTags: filteredTags.tags });
-  }, [navigation, setFilter, filteredTags]);
+    navigation.navigate(tasksRoutes.FILTERS, { setFilter, filteredTags: filteredTags.tags, removeAllTags });
+  }, [navigation, setFilter, filteredTags, removeAllTags]);
 
   const removeFilterTag = useCallback(
     (value) => {
@@ -76,9 +82,8 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
 
   return (
     <View style={basicStyles.bgScreen}>
-      <Loader isLoading={isLoading}>
+      <Loader isLoading={isLoading || _isLoading}>
         <View style={[basicStyles.container, basicStyles.fullScreen]}>
-          {/*<ScrollView>*/}
           <View style={[basicStyles.header, basicStyles.screenHeader]}>
             <View style={basicStyles.flexRow}>
               <Title text='Tasks' />
@@ -95,21 +100,21 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
             </Text>
           </View>
           {!isListEmpty && !filteredTags.isFiltered ? (
-            <View style={styles.emptyList}>
-              <Text style={styles.emptyListText}>You don’t have tasks recently added.</Text>
-              <Text style={styles.emptyListText} onPress={fakeTasks}>
-                Generate list of tasks
-              </Text>
+            <View style={basicStyles.emptyList}>
+              <Text style={basicStyles.emptyListText}>You don’t have tasks recently added.</Text>
+              <TouchableOpacity onPress={fakeTasks}>
+                <Text style={[basicStyles.emptyListText, styles.underline]}>Generate list of tasks</Text>
+              </TouchableOpacity>
             </View>
           ) : (
             <>
               {filteredTags.isFiltered && <TagList tags={filteredTags.tags} remove={removeFilterTag} />}
               {!isListEmpty && filteredTags.isFiltered ? (
-                <View style={styles.emptyList}>
-                  <Text style={styles.emptyListText}>Not found tasks</Text>
+                <View style={basicStyles.emptyList}>
+                  <Text style={basicStyles.emptyListText}>Not found tasks</Text>
                 </View>
               ) : (
-                <View>
+                <View style={styles.list}>
                   <FlatList
                     data={tasks}
                     keyExtractor={(item) => item.id.toString()}
@@ -124,15 +129,14 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
                       />
                     )}
                   />
+                  {activeTask ? (
+                    <ActiveTask activeTask={activeTask} pause={pauseTask} />
+                  ) : (
+                    <Button title='Add task' onPress={() => navigation.navigate(tasksRoutes.CREATE, { createTask })} />
+                  )}
                 </View>
               )}
             </>
-          )}
-          {/*</ScrollView>*/}
-          {activeTask ? (
-            <ActiveTask activeTask={activeTask} pause={pauseTask} />
-          ) : (
-            <Button title='Add task' onPress={() => navigation.navigate(tasksRoutes.CREATE, { createTask })} />
           )}
         </View>
       </Loader>
@@ -141,14 +145,16 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  emptyList: { justifyContent: 'center', flex: 1, alignItems: 'center', height: '100%' },
-  emptyListText: { textAlign: 'center' },
   text: {
     fontSize: 26,
   },
   filterIcon: {
     fontSize: 20,
     marginLeft: 10,
+  },
+  list: { justifyContent: 'space-between', flex: 1 },
+  underline: {
+    textDecorationLine: 'underline',
   },
 });
 

@@ -17,23 +17,22 @@ import {
 import { TWeek } from '../components/Charts/type';
 
 export const useCharts = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [date, setDate] = useState([]);
 
   const { uid } = useSelector(selectUser);
 
   const fetch = useCallback(async () => {
-    setIsLoading(true);
     const response = await listenerTaskDb({ uid }, (value: []) => setDate(_.toArray(value)));
     return response;
   }, [uid]);
 
   useEffect(() => {
-    fetch().catch(() => {
-      setDate([]);
-      console.log('error useCatch');
-    });
-    setIsLoading(false);
+    fetch()
+      .catch(() => setDate([]))
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, [fetch]);
 
   const activeWeeks = useMemo(() => (date.length > 0 ? getActiveWeeks(date) : undefined), [date]);

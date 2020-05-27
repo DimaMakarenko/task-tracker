@@ -6,12 +6,16 @@ export const useAuth = () => {
   const user = firebase.auth().currentUser;
   const [auth, setAuth] = useState({ user });
 
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged((user) => {
-      setAuth({ user });
+  const checkUser = async () => {
+    await firebase.auth().onAuthStateChanged(async (user) => {
+      const result = await setAuth({ user });
+      setIsLoading(false);
+      return result;
     });
+  };
 
-    setIsLoading(false);
+  useEffect(() => {
+    checkUser();
   }, []);
 
   const logout = useCallback(() => {

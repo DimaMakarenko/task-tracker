@@ -30,7 +30,7 @@ export const generateTasksDb = (option: IGenerateTasks) => {
 
 export const listenerTaskDb = (options: IFetchTasks, callback: any) => {
   const { uid } = options;
-  db.ref('users/' + uid + '/tasks').on('value', (snapshot) => {
+  return db.ref('users/' + uid + '/tasks').on('value', (snapshot) => {
     callback(snapshot.val());
   });
 };

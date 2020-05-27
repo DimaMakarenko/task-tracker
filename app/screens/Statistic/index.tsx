@@ -13,30 +13,24 @@ const Statistic = () => {
   const { isLoading, dateChartHours, dateChartTasks, dateChartPerDay, activeWeeks } = useCharts();
 
   return (
-    <View style={basicStyles.bgScreen}>
-      <ScrollView>
-        <View style={basicStyles.container}>
+    <View style={[basicStyles.bgScreen, basicStyles.fullScreen]}>
+      <Loader isLoading={isLoading}>
+        <View style={[basicStyles.container]}>
           <Title text='Statistic' style={[basicStyles.header]} />
         </View>
+
         {activeWeeks ? (
-          <View>
-            <Loader isLoading={isLoading}>
-              <LineChart
-                dataCallback={dateChartHours}
-                yAxisSuffix='h'
-                dataIntervals={activeWeeks}
-                title='Logged time'
-              />
-              <LineChart dataCallback={dateChartTasks} dataIntervals={activeWeeks} title='Logged tasks' />
-              <BarChart dataCallback={dateChartPerDay} title='Logged per day' />
-            </Loader>
-          </View>
+          <ScrollView>
+            <LineChart dataCallback={dateChartHours} yAxisSuffix='h' dataIntervals={activeWeeks} title='Logged time' />
+            <LineChart dataCallback={dateChartTasks} dataIntervals={activeWeeks} title='Logged tasks' />
+            <BarChart dataCallback={dateChartPerDay} title='Logged per day' />
+          </ScrollView>
         ) : (
-          <View>
-            <Text> List is empty</Text>
+          <View style={basicStyles.emptyList}>
+            <Text style={basicStyles.emptyListText}> List is empty</Text>
           </View>
         )}
-      </ScrollView>
+      </Loader>
     </View>
   );
 };

@@ -14,11 +14,10 @@ interface IDownloadFile {
 
 const DownloadFile: React.FC<IDownloadFile> = ({ url, name, title }) => {
   const downloadFile = async () => {
-    console.log('url', url);
     RNFetchBlob.config({
       fileCache: true,
     })
-      .fetch('GET', 'http://google.com/')
+      .fetch('GET', url)
       .then(() => customToast('File saved!'))
       .catch(() => customToast('File not saved!'));
   };
