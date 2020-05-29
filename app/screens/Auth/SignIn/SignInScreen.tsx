@@ -36,7 +36,7 @@ const SignInScreen: React.FC<ISignInScreen> = ({ navigation }) => {
   };
 
   return (
-    <View style={[basicStyles.container, styles.container, basicStyles.bgScreen]}>
+    <View style={[basicStyles.container, styles.container, basicStyles.bgScreen]} testID='signIn'>
       <Title text='Sign-in' style={[basicStyles.header, basicStyles.screenHeader]} />
       <Formik
         initialValues={initialValues}
