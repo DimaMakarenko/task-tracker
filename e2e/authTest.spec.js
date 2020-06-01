@@ -1,15 +1,8 @@
-import { getById, getByText } from './helpers';
-
-const sleep = (duration) => new Promise((resolve) => setTimeout(() => resolve(), duration));
+import { getById, correctAuth } from './helpers';
 
 const failAuth = {
   login: 'test@test.com',
   password: '123456',
-};
-
-const correctAuth = {
-  login: 'q@qq.qq',
-  password: '111111',
 };
 
 describe('Example', () => {

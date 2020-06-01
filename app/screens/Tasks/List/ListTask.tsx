@@ -118,6 +118,7 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
                   <FlatList
                     data={tasks}
                     keyExtractor={(item) => item.id.toString()}
+                    testID='list'
                     renderItem={({ item }: { item: any }) => (
                       <TaskRow
                         task={item}
@@ -126,6 +127,7 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
                         startTask={startTask}
                         deleteTask={deleteTask}
                         activeTask={activeTask}
+
                       />
                     )}
                   />
