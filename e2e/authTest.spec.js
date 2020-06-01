@@ -1,4 +1,4 @@
-import { getById, correctAuth } from './helpers';
+import { getById } from './helpers';
 
 const failAuth = {
   login: 'test@test.com',

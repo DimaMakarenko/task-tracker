@@ -21,6 +21,17 @@ import { lastSessionEnd, durationFromMills, formatMills } from '../../../utils/t
 // routes
 import { tasksRoutes } from '../../../navigation/routes';
 // types
+import { ITask } from '../../../store/type';
+
+interface IShowTask {
+  navigation: { navigate: Function };
+  route: {
+    params: {
+      task: ITask;
+    };
+  };
+}
+
 const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
   const { task } = route.params;
 
@@ -53,13 +64,13 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
   }, [task, finishTask]);
 
   return (
-    <View style={[basicStyles.container, basicStyles.bgScreen, basicStyles.fullScreen]}>
+    <View style={[basicStyles.container, basicStyles.bgScreen, basicStyles.fullScreen]} testID='show'>
       <ScrollView>
         <View style={[basicStyles.header, basicStyles.screenHeader]}>
           <Title text='Task' />
           {!_isFinished && (
             <View style={styles.icons}>
-              <TouchableIcon name='pencil' onPress={editTask} />
+              <TouchableIcon name='pencil' onPress={editTask} testID='editIcon' />
               {activeTask && activeTask.id === id ? (
                 <TouchableIcon name='pause-circle' onPress={() => handlePause(task)} />
               ) : (
@@ -99,17 +110,6 @@ const ShowTask: React.FC<IShowTask> = ({ navigation, route }) => {
     </View>
   );
 };
-
-import { ITask } from '../../../store/type';
-
-interface IShowTask {
-  navigation: { navigate: Function };
-  route: {
-    params: {
-      task: ITask;
-    };
-  };
-}
 
 const styles = StyleSheet.create({
   block: { marginBottom: 30 },

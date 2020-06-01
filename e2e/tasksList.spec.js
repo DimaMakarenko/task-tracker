@@ -1,10 +1,4 @@
-import { getById, correctAuth, sleep } from './helpers';
-
-const login = async () => {
-  await getById('email').replaceText(correctAuth.login);
-  await getById('password').replaceText(correctAuth.password);
-  await getById('signInBtn').tap();
-};
+import { getById, login } from './helpers';
 
 describe('Example', () => {
   beforeEach(async () => {
