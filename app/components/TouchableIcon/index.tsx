@@ -10,11 +10,12 @@ interface ITouchableIcon {
   onPress: () => void;
   gray?: boolean;
   danger?: boolean;
+  testID?: string;
 }
 
-const TouchableIcon: React.FC<ITouchableIcon> = ({ name, onPress, gray, danger }) => {
+const TouchableIcon: React.FC<ITouchableIcon> = ({ name, onPress, gray, danger, testID }) => {
   return (
-    <TouchableOpacity style={styles.optionIcon} onPress={onPress}>
+    <TouchableOpacity style={styles.optionIcon} onPress={onPress} testID={testID}>
       <Icon
         type='MaterialCommunityIcons'
         name={name}

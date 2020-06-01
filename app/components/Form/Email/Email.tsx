@@ -24,6 +24,7 @@ const EmailField: React.FC<IEmailField> = ({ onChangeText, onBlur, value, error,
           autoCompleteType='email'
           keyboardType='email-address'
           textContentType='emailAddress'
+          testID='email'
         />
       </View>
       <Text style={basicStyles.dangerText}>{touched && error}</Text>

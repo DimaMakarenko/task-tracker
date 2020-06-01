@@ -69,7 +69,7 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate, pauseTask, startTask, del
           <Icon type='MaterialCommunityIcons' name='trash-can-outline' style={basicStyles.icon} />
         </TouchableOpacity>
         {!isFinished && (
-          <TouchableOpacity onPress={handleEdit} style={styles.optionIcon}>
+          <TouchableOpacity onPress={handleEdit} style={styles.optionIcon} testID='edit'>
             <Icon type='MaterialCommunityIcons' name='pencil' style={basicStyles.icon} />
           </TouchableOpacity>
         )}
@@ -79,10 +79,10 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate, pauseTask, startTask, del
 
   return (
     <Swipeable renderRightActions={(progress, dragX) => <RenderRightAction dragX={dragX} />}>
-      <View style={[styles.taskRow, isActive && styles.activeTask]}>
+      <View style={[styles.taskRow, isActive && styles.activeTask]} testID='taskRow'>
         <TouchableOpacity style={styles.taskInfo} onPress={handleShow}>
           <Text>{`${title} ${project}`}</Text>
-          <View style={styles.row}>
+          <View style={styles.row} testID='task'>
             <Text>{isActive ? formatMills(startTimer) : durationFromMills(duration)}</Text>
           </View>
         </TouchableOpacity>
@@ -93,11 +93,11 @@ const TaskRow: React.FC<ITaskRow> = ({ task, navigate, pauseTask, startTask, del
         ) : (
           <>
             {isActive ? (
-              <TouchableOpacity style={styles.image} onPress={() => handlePause(task)}>
+              <TouchableOpacity style={styles.image} onPress={() => handlePause(task)} testID='pause'>
                 <Icon type='MaterialCommunityIcons' name='pause-circle' style={basicStyles.icon} />
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity style={styles.image} onPress={() => handleStart(task)}>
+              <TouchableOpacity style={styles.image} onPress={() => handleStart(task)} testID='start'>
                 <Icon type='MaterialCommunityIcons' name='play-circle' style={basicStyles.icon} />
               </TouchableOpacity>
             )}

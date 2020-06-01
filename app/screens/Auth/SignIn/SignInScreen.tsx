@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 // firebase
 import firebase from '../../../db/firebaseDb';
 // components
@@ -36,7 +36,7 @@ const SignInScreen: React.FC<ISignInScreen> = ({ navigation }) => {
   };
 
   return (
-    <View style={[basicStyles.container, styles.container, basicStyles.bgScreen]}>
+    <View style={[basicStyles.container, styles.container, basicStyles.bgScreen]} testID='signIn'>
       <Title text='Sign-in' style={[basicStyles.header, basicStyles.screenHeader]} />
       <Formik
         initialValues={initialValues}
@@ -54,7 +54,9 @@ const SignInScreen: React.FC<ISignInScreen> = ({ navigation }) => {
       >
         {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
           <View>
-            <Text style={styles.error}>{errors.error}</Text>
+            <Text style={styles.error} testID='signInError'>
+              {errors.error}
+            </Text>
             <EmailField
               onChangeText={handleChange('email')}
               onBlur={handleBlur('email')}
@@ -69,17 +71,20 @@ const SignInScreen: React.FC<ISignInScreen> = ({ navigation }) => {
               value={values.password}
               error={errors.password}
               touched={touched.password}
+              testID='password'
             />
 
-            <Button title='Sign in' onPress={handleSubmit} loading={isLoading} />
+            <Button title='Sign in' onPress={handleSubmit} loading={isLoading} testID='signInBtn' />
           </View>
         )}
       </Formik>
       <View style={styles.textContainer}>
         <Text style={styles.text}>Don’t have an account yet?</Text>
-        <Text style={[styles.text, styles.textNavigate]} onPress={() => navigation.navigate(authRoutes.SIGN_UP)}>
-          Sign In
-        </Text>
+        <TouchableOpacity onPress={() => navigation.navigate(authRoutes.SIGN_UP)}>
+          <Text style={[styles.text, styles.textNavigate]} testID='toSignUp'>
+            Sign Up
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

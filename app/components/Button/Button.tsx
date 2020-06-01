@@ -9,9 +9,10 @@ interface IButton {
   onPress: Function;
   loading?: boolean;
   style?: object;
+  testID?: string;
 }
 
-const Button: React.FC<IButton> = ({ title, onPress, loading, style }) => {
+const Button: React.FC<IButton> = ({ title, onPress, loading, style, testID }) => {
   return (
     <View style={style}>
       <RNPButton
@@ -22,6 +23,7 @@ const Button: React.FC<IButton> = ({ title, onPress, loading, style }) => {
         mode='text'
         loading={loading}
         onPress={() => onPress()}
+        testID={testID}
       >
         <Text>{title}</Text>
       </RNPButton>

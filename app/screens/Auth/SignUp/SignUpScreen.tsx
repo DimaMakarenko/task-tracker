@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 // firebase
 import firebase from '../../../db/firebaseDb';
 // components
@@ -39,7 +39,7 @@ const SignUpScreen: React.FC<ISignUpScreen> = ({ navigation }) => {
   };
 
   return (
-    <View style={[basicStyles.container, styles.container, basicStyles.bgScreen]}>
+    <View style={[basicStyles.container, styles.container, basicStyles.bgScreen]} testID='signUp'>
       <Title text='Sign-up' style={[basicStyles.header, basicStyles.screenHeader]} />
       <Formik
         initialValues={initialValues}
@@ -75,6 +75,7 @@ const SignUpScreen: React.FC<ISignUpScreen> = ({ navigation }) => {
               value={values.password}
               error={errors.password}
               touched={touched.password}
+              testID='password'
             />
             <PasswordField
               fieldName='Repeat password'
@@ -83,16 +84,19 @@ const SignUpScreen: React.FC<ISignUpScreen> = ({ navigation }) => {
               value={values.repeatPassword}
               error={errors.repeatPassword}
               touched={touched.repeatPassword}
+              testID='repeatPassword'
             />
-            <Button title='Sign up' onPress={handleSubmit} loading={isLoading} />
+            <Button title='Sign up' onPress={handleSubmit} loading={isLoading} testID='signUpBtn' />
           </View>
         )}
       </Formik>
       <View style={styles.textContainer}>
         <Text style={styles.text}>Already have an account?</Text>
-        <Text style={[styles.text, styles.textNavigate]} onPress={() => navigation.navigate(authRoutes.SIGN_IN)}>
-          Sign In
-        </Text>
+        <TouchableOpacity onPress={() => navigation.navigate(authRoutes.SIGN_IN)}>
+          <Text style={[styles.text, styles.textNavigate]} testID='toSignIn'>
+            Sign In
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

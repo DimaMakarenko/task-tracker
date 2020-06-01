@@ -2,6 +2,8 @@ import { ITask, TFakeTask } from '../store/type';
 
 export const faker = require('faker');
 
+export const fakeEmail = faker.internet.email();
+
 let endTimeTask = +new Date(2020, 4, 1);
 
 const fakeTask: () => ITask = () => {
@@ -44,6 +46,7 @@ const fakeTask: () => ITask = () => {
     timeSession,
     isActive: false,
     tags,
+    file: null,
   };
 };
 
