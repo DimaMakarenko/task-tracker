@@ -81,7 +81,7 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
   );
 
   return (
-    <View style={basicStyles.bgScreen}>
+    <View style={basicStyles.bgScreen} testID='tasksList'>
       <Loader isLoading={isLoading || _isLoading}>
         <View style={[basicStyles.container, basicStyles.fullScreen]}>
           <View style={[basicStyles.header, basicStyles.screenHeader]}>
@@ -95,7 +95,7 @@ const ListTask: FC<IListTask> = ({ navigation }) => {
                 />
               </TouchableOpacity>
             </View>
-            <Text onPress={logout} style={basicStyles.dangerText}>
+            <Text onPress={logout} style={basicStyles.dangerText} testID='logOut'>
               Log out
             </Text>
           </View>

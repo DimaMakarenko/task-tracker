@@ -12,9 +12,18 @@ interface IPasswordField {
   value: string;
   error?: string;
   touched?: boolean;
+  testID?: string;
 }
 
-const PasswordField: React.FC<IPasswordField> = ({ fieldName, onChangeText, onBlur, value, error, touched }) => {
+const PasswordField: React.FC<IPasswordField> = ({
+  fieldName,
+  onChangeText,
+  onBlur,
+  value,
+  error,
+  touched,
+  testID,
+}) => {
   const [isHide, setIsHide] = useState(true);
 
   return (
@@ -28,6 +37,7 @@ const PasswordField: React.FC<IPasswordField> = ({ fieldName, onChangeText, onBl
           placeholder={fieldName}
           secureTextEntry={isHide}
           textContentType='password'
+          testID={testID}
         />
         <TouchableIcon onPress={() => setIsHide(!isHide)} name={`eye-${isHide ? 'off-' : ''}outline`} gray />
       </View>
